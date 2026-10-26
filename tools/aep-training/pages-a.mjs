@@ -298,7 +298,7 @@ export function productPage(product, { id = '07', name = 'Product Details' } = {
       variant({
         location: 'pdp-cross-sell', activity: 'RECS-PDP-CROSS-SELL', type: 'recs', audience: 'default', experience: 'Frequently Bought Together',
       }, [h(2, 'Frequently bought together'), productCarousel(cross, ['recommendations'])]),
-      section([h(2, 'Customer reviews', 'reviews'), p(`<strong>★ ${product.rating.toFixed(1)} out of 5</strong> based on ${product.reviews.toLocaleString('en-US')} reviews.`), testimonials([
+      section([h(2, 'Customer reviews', 'customer-reviews'), p(`<strong>★ ${product.rating.toFixed(1)} out of 5</strong> based on ${product.reviews.toLocaleString('en-US')} reviews.`), testimonials([
         {
           image: avatar(3), quote: `Exactly as described. The ${product.name} exceeded my expectations.`, name: 'Daniel K.', role: 'Verified buyer', rating: 5,
         },
@@ -390,17 +390,17 @@ const deals = {
   sections: [
     variant({
       location: 'deals-headline', activity: 'MVT-DEALS', type: 'mvt', audience: '', experience: 'A',
-    }, hero(scene('deals'), 'Deals of the week', heroContent('Deals of the week', 'Top brands, lowest prices of the season.', [['#deals-grid', 'Shop deals']]))),
+    }, hero(scene('deals'), 'Deals of the week', heroContent('Deals of the week', 'Top brands, lowest prices of the season.', [['#all-deals', 'Shop deals']]))),
     variant({
       location: 'deals-headline', activity: 'MVT-DEALS', type: 'mvt', audience: '', experience: 'B',
-    }, hero(scene('deals'), 'Up to 30% off', heroContent('Up to 30% off. This week only.', 'Prices drop on TVs, headphones, vacuums and boots.', [['#deals-grid', 'See all deals']]))),
+    }, hero(scene('deals'), 'Up to 30% off', heroContent('Up to 30% off. This week only.', 'Prices drop on TVs, headphones, vacuums and boots.', [['#all-deals', 'See all deals']]))),
     variant({
       location: 'deals-banner', activity: 'MVT-DEALS', type: 'mvt', audience: '', experience: 'A', campaignId: 'CMP-DEALS-A',
     }, banner({ text: `${h(2, 'Extra 10% off everything on sale')}${p('Stack this code with sale prices at checkout.')}`, coupon: 'SAVE10', campaignId: 'CMP-DEALS-A' })),
     variant({
       location: 'deals-banner', activity: 'MVT-DEALS', type: 'mvt', audience: '', experience: 'B', campaignId: 'CMP-DEALS-B',
     }, banner({ text: `${h(2, 'Free shipping on every deal')}${p('No minimum spend until Sunday.')}`, coupon: 'FREESHIP', campaignId: 'CMP-DEALS-B', variants: ['dark'] })),
-    section([h(2, 'All deals', 'deals-grid'), productGrid(PRODUCTS.filter((x) => x.compareAt), ['filters'])]),
+    section([h(2, 'All deals', 'all-deals'), productGrid(PRODUCTS.filter((x) => x.compareAt), ['filters'])]),
     section([h(2, 'Deal questions'), faq([
       ['Can I combine coupon codes?', p('One coupon code per order. Coupon codes can be combined with sale prices.')],
       ['Do deals include price match?', p('Yes. If a deal price drops further within 14 days we refund the difference.')],
@@ -427,19 +427,19 @@ const seasonal = {
   sections: [
     variant({
       location: 'seasonal-hero', activity: 'XT-SEASONAL-HERO', type: 'xt', audience: 'geo-europe', experience: 'Europe Hero', campaignId: 'CMP-FALL-EU',
-    }, hero(scene('seasonal-europe'), 'Autumn in Europe', heroContent('Autumn favourites, delivered across Europe', 'Duties included and free returns to our Berlin hub.', [['#seasonal-grid', 'Shop autumn']]))),
+    }, hero(scene('seasonal-europe'), 'Autumn in Europe', heroContent('Autumn favourites, delivered across Europe', 'Duties included and free returns to our Berlin hub.', [['#shop-the-season', 'Shop autumn']]))),
     variant({
       location: 'seasonal-hero', activity: 'XT-SEASONAL-HERO', type: 'xt', audience: 'geo-us-west', experience: 'US West Hero', campaignId: 'CMP-FALL-USW',
-    }, hero(scene('seasonal'), 'Fall layers', heroContent('Light layers for West Coast fall', 'Linen, light jackets and outdoor tech for sunny autumn days.', [['#seasonal-grid', 'Shop the edit']]))),
+    }, hero(scene('seasonal'), 'Fall layers', heroContent('Light layers for West Coast fall', 'Linen, light jackets and outdoor tech for sunny autumn days.', [['#shop-the-season', 'Shop the edit']]))),
     variant({
       location: 'seasonal-hero', activity: 'XT-SEASONAL-HERO', type: 'xt', audience: 'default', experience: 'Default Hero', campaignId: 'CMP-FALL-2026',
-    }, hero(scene('seasonal'), 'Fall favourites', heroContent('Fall favourites are here', 'Cosy layers, warm drinks and gifts for everyone on your list.', [['#seasonal-grid', 'Shop seasonal offers']]))),
+    }, hero(scene('seasonal'), 'Fall favourites', heroContent('Fall favourites are here', 'Cosy layers, warm drinks and gifts for everyone on your list.', [['#shop-the-season', 'Shop seasonal offers']]))),
     section([h(2, 'Seasonal collections'), carousel([
       { image: scene('tile-fashion'), alt: 'Outerwear', body: `${h(3, 'Outerwear')}${p('Puffers and boots built for cold mornings.')}${primary('fashion', 'Shop outerwear')}` },
       { image: scene('tile-home'), alt: 'Warm drinks', body: `${h(3, 'Warm drinks')}${p('Espresso machines and smart kettles.')}${primary('home-appliances', 'Shop kitchen')}` },
       { image: scene('tile-electronics'), alt: 'Cosy tech', body: `${h(3, 'Cosy tech')}${p('TVs and speakers for nights in.')}${primary('electronics', 'Shop tech')}` },
     ])]),
-    section([h(2, 'Shop the season', 'seasonal-grid'), productGrid(byTag('seasonal'), ['filters'])]),
+    section([h(2, 'Shop the season', 'shop-the-season'), productGrid(byTag('seasonal'), ['filters'])]),
     section([cta(`${h(2, 'Holiday gifting made easy')}${p('Free gift wrap and extended returns until January 31.')}${primary('faq', 'Holiday shipping dates')}`, { variants: ['accent'] })]),
   ],
 };

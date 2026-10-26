@@ -41,6 +41,7 @@
         ],
         "Cards": [
           "Image",
+          "Alt text",
           "Text"
         ],
         "Product Carousel": [
@@ -232,6 +233,7 @@
         ],
         "Cards": [
           "Image",
+          "Alt text",
           "Text"
         ],
         "Product Carousel": [
@@ -2057,6 +2059,7 @@
       "blocks": {
         "Cards": [
           "Image",
+          "Alt text",
           "Text"
         ],
         "CTA": [
@@ -2364,6 +2367,7 @@
         ],
         "Cards": [
           "Image",
+          "Alt text",
           "Text"
         ],
         "FAQ": [
@@ -2555,6 +2559,7 @@
         ],
         "Cards": [
           "Image",
+          "Alt text",
           "Text"
         ],
         "Testimonials": [
@@ -2651,6 +2656,7 @@
         ],
         "Cards": [
           "Image",
+          "Alt text",
           "Text"
         ],
         "CTA": [
@@ -2763,6 +2769,7 @@
         ],
         "Cards": [
           "Image",
+          "Alt text",
           "Text"
         ]
       },
@@ -2858,6 +2865,7 @@
         ],
         "Cards": [
           "Image",
+          "Alt text",
           "Text"
         ],
         "Columns": [
@@ -3461,6 +3469,7 @@
         ],
         "Cards": [
           "Image",
+          "Alt text",
           "Text"
         ],
         "Product Carousel": [

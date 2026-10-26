@@ -8,7 +8,7 @@
 | --- | --- | --- | --- | --- | --- |
 | Hero | `blocks/hero` | default | Image, Alt, Text | heroClick | 01, 02, 03, 04, 05, 08, 09, 10, 11, 19, 21, 22, 25, 29 |
 | Tabs | `blocks/tabs` | default | Tab label, Content | tabClick | 03, 04, 05, 07, 22 |
-| Cards | `blocks/cards` | default | Image, Text | ctaClick | 01, 02, 16, 19, 21, 22, 23, 24, 30 |
+| Cards | `blocks/cards` | default | Image, Alt text, Text | ctaClick | 01, 02, 16, 19, 21, 22, 23, 24, 30 |
 | Carousel | `blocks/carousel` | default | Style, Image, Alt text, Text | carouselClick, carouselNavigate | 11 |
 | Accordion | `blocks/accordion` | default | Label, Body | accordionToggle | 16, 20 |
 | Columns | `blocks/columns` | default | Columns, Rows | ctaClick | 01, 02, 07, 20, 21, 24, 25 |

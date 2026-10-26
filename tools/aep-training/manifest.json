@@ -1,0 +1,234 @@
+{
+  "pages": [
+    {
+      "path": "",
+      "title": "NovaMart"
+    },
+    {
+      "path": "shop",
+      "title": "Shop All Departments"
+    },
+    {
+      "path": "electronics",
+      "title": "Electronics"
+    },
+    {
+      "path": "fashion",
+      "title": "Fashion"
+    },
+    {
+      "path": "home-appliances",
+      "title": "Home Appliances"
+    },
+    {
+      "path": "products",
+      "title": "All Products"
+    },
+    {
+      "path": "products/nova-pro-wireless-headphones",
+      "title": "Nova Pro Wireless Headphones"
+    },
+    {
+      "path": "best-sellers",
+      "title": "Best Sellers"
+    },
+    {
+      "path": "new-arrivals",
+      "title": "New Arrivals"
+    },
+    {
+      "path": "deals",
+      "title": "Deals & Discounts"
+    },
+    {
+      "path": "seasonal-offers",
+      "title": "Seasonal Offers: Fall Favourites"
+    },
+    {
+      "path": "wishlist",
+      "title": "My Wishlist"
+    },
+    {
+      "path": "cart",
+      "title": "Shopping Cart"
+    },
+    {
+      "path": "checkout",
+      "title": "Checkout"
+    },
+    {
+      "path": "order-confirmation",
+      "title": "Order Confirmation"
+    },
+    {
+      "path": "account",
+      "title": "My Account"
+    },
+    {
+      "path": "account/orders",
+      "title": "Order History"
+    },
+    {
+      "path": "account/track-order",
+      "title": "Track Your Order"
+    },
+    {
+      "path": "support",
+      "title": "Customer Support"
+    },
+    {
+      "path": "contact",
+      "title": "Contact Us"
+    },
+    {
+      "path": "about",
+      "title": "About NovaMart"
+    },
+    {
+      "path": "blog",
+      "title": "The NovaMart Edit"
+    },
+    {
+      "path": "blog/how-to-choose-noise-cancelling-headphones",
+      "title": "How to Choose Noise Cancelling Headphones in 2026"
+    },
+    {
+      "path": "stores",
+      "title": "Find a Store"
+    },
+    {
+      "path": "membership",
+      "title": "NovaMart Rewards"
+    },
+    {
+      "path": "faq",
+      "title": "Frequently Asked Questions"
+    },
+    {
+      "path": "privacy-policy",
+      "title": "Privacy Policy"
+    },
+    {
+      "path": "terms",
+      "title": "Terms and Conditions"
+    },
+    {
+      "path": "recommendations",
+      "title": "Recommended For You"
+    },
+    {
+      "path": "404",
+      "title": "Page Not Found"
+    },
+    {
+      "path": "products/lumen-book-14-laptop",
+      "title": "Lumen Book 14 Laptop"
+    },
+    {
+      "path": "products/pulse-x-smartphone",
+      "title": "Pulse X Smartphone"
+    },
+    {
+      "path": "products/orbit-smartwatch",
+      "title": "Orbit Smartwatch"
+    },
+    {
+      "path": "products/aperture-m50-mirrorless-camera",
+      "title": "Aperture M50 Mirrorless Camera"
+    },
+    {
+      "path": "products/echo-mini-bluetooth-speaker",
+      "title": "Echo Mini Bluetooth Speaker"
+    },
+    {
+      "path": "products/vista-55-4k-tv",
+      "title": "Vista 55\" 4K Smart TV"
+    },
+    {
+      "path": "products/airlite-wireless-earbuds",
+      "title": "AirLite Wireless Earbuds"
+    },
+    {
+      "path": "products/summit-puffer-jacket",
+      "title": "Summit Puffer Jacket"
+    },
+    {
+      "path": "products/riviera-linen-dress",
+      "title": "Riviera Linen Dress"
+    },
+    {
+      "path": "products/trailblazer-running-sneakers",
+      "title": "Trailblazer Running Sneakers"
+    },
+    {
+      "path": "products/coastline-polarized-sunglasses",
+      "title": "Coastline Polarized Sunglasses"
+    },
+    {
+      "path": "products/everyday-organic-hoodie",
+      "title": "Everyday Organic Hoodie"
+    },
+    {
+      "path": "products/weekender-canvas-tote",
+      "title": "Weekender Canvas Tote"
+    },
+    {
+      "path": "products/heritage-leather-boots",
+      "title": "Heritage Leather Boots"
+    },
+    {
+      "path": "products/metro-commuter-backpack",
+      "title": "Metro Commuter Backpack"
+    },
+    {
+      "path": "products/vortex-pro-blender",
+      "title": "Vortex Pro Blender"
+    },
+    {
+      "path": "products/cyclone-cordless-vacuum",
+      "title": "Cyclone Cordless Vacuum"
+    },
+    {
+      "path": "products/barista-touch-espresso-machine",
+      "title": "Barista Touch Espresso Machine"
+    },
+    {
+      "path": "products/crispair-xl-air-fryer",
+      "title": "CrispAir XL Air Fryer"
+    },
+    {
+      "path": "products/pour-over-smart-kettle",
+      "title": "Pour-Over Smart Kettle"
+    },
+    {
+      "path": "products/freshload-front-load-washer",
+      "title": "FreshLoad Front-Load Washer"
+    },
+    {
+      "path": "products/purebreeze-air-purifier",
+      "title": "PureBreeze Air Purifier"
+    },
+    {
+      "path": "products/bakemaster-stand-mixer",
+      "title": "BakeMaster Stand Mixer"
+    },
+    {
+      "path": "blog/capsule-wardrobe-essentials",
+      "title": "Capsule Wardrobe: 8 Essentials for Fall"
+    },
+    {
+      "path": "blog/smart-kitchen-appliances-guide",
+      "title": "The Smart Kitchen: Which Appliances Are Worth It?"
+    }
+  ],
+  "fragments": [
+    {
+      "path": "nav",
+      "title": "Navigation"
+    },
+    {
+      "path": "footer",
+      "title": "Footer"
+    }
+  ]
+}

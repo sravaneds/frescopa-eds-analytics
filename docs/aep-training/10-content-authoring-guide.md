@@ -100,7 +100,15 @@ Each visitor gets a sticky experience.
 1. Preview (Universal Editor > Publish > Preview) and check `aem.page` with `?aep-debug=1`.
 2. Publish to Live. The query index adds the page to `sitemap.json` / `sitemap-content.xml`.
 
-## 7. Local preview (training workspace)
+## 7. Installing the site in AEM
+
+The whole site is available as a content package:
+`packages/aep-training-content/aep-training-content-1.0.0.zip`. Install it with Package Manager on
+the author instance. It replaces `/content/aep-training` and `/content/dam/aep-training`. Then check the
+root page's cloud configuration, reprocess the images and preview the site. Full steps are in
+`packages/aep-training-content/README.md`.
+
+## 8. Local preview (training workspace)
 
 The local workspace pages are generated from `tools/aep-training/` with
 `node tools/aep-training/generate.mjs`. Edits made directly to `content/aep-training/*.plain.html`

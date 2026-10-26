@@ -94,7 +94,7 @@ export default function decorate(block) {
     <p class="product-info-brand"></p>
     <h1 class="product-info-name"></h1>
     <p class="product-info-sku">SKU: <span></span></p>
-    <a class="product-info-rating" href="#reviews" data-track="reviewsClick"></a>
+    <a class="product-info-rating" href="#customer-reviews" data-track="reviewsClick"></a>
     <p class="product-info-price"></p>
     <fieldset class="product-info-options" hidden><legend>Colour</legend></fieldset>
     <div class="product-info-buy">

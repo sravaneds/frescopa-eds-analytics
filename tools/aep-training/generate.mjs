@@ -205,6 +205,12 @@ const footerHtml = [
 ].join('\n');
 write(join(SITE_DIR, 'footer.plain.html'), `${footerHtml}\n`);
 
+// page list used by build-package.mjs (AEM content package)
+write(join(REPO, 'tools/aep-training/manifest.json'), `${JSON.stringify({
+  pages: allPages.map((page) => ({ path: page.path, title: page.title.split(' | ')[0] })),
+  fragments: [{ path: 'nav', title: 'Navigation' }, { path: 'footer', title: 'Footer' }],
+}, null, 2)}\n`);
+
 /* ---------- assets ---------- */
 
 PRODUCTS.forEach((product) => {

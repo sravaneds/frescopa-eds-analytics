@@ -16,3 +16,4 @@ _*.json
 plugins/experimentation/documentation/images/*
 docs/
 tools/aep-training/
+packages/

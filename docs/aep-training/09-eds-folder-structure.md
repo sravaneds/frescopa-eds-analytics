@@ -59,7 +59,12 @@ repo/
 │   ├── pages-a.mjs / pages-b.mjs    # the 30 page definitions (+ product/article templates)
 │   ├── events.mjs                   # event dictionary (Analytics + XDM mapping)
 │   ├── html.mjs / images.mjs        # markup + SVG helpers
-│   └── generate.mjs                 # writes content, assets and generated docs, validates
+│   ├── generate.mjs                 # writes content, assets, manifest.json and generated docs, validates
+│   ├── build-package.mjs            # converts the pages into an AEM content package (Universal Editor JCR)
+│   └── assets/                      # JPEG/PNG renders of the SVG illustrations (DAM assets in the package)
+├── packages/aep-training-content/   # AEM content package (not served)
+│   ├── aep-training-content-1.0.0.zip
+│   └── README.md                    # install and verification steps
 └── docs/aep-training/               # the 12 deliverables (not served)
 ```
 
