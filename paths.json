@@ -22,11 +22,14 @@
     "/content/frescopa/metadata:/metadata.json",
     "/content/frescopa/configs:/configs.json",
     "/content/frescopa/configs-dev:/configs-dev.json",
-    "/content/frescopa/configs-stage:/configs-stage.json"
+    "/content/frescopa/configs-stage:/configs-stage.json",
+    "/content/aep-training/:/aep-training/"
   ],
   "includes": [
     "/content/frescopa/",
     "/content/dam/frescopa/",
-    "/content/forms/af"
+    "/content/forms/af",
+    "/content/aep-training/",
+    "/content/dam/aep-training/"
   ]
 }

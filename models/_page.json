@@ -1,30 +1,224 @@
 {
     "models": [
         {
-          "id": "page-metadata",
-          "fields": [
-            {
-              "component": "text",
-              "name": "title",
-              "label": "Title"
-            },
-            {
-              "component": "text",
-              "name": "description",
-              "label": "Description"
-            },
-            {
-              "component": "reference",
-              "name": "image",
-              "label": "Image"
-            },
-            {
-              "component": "text",
-              "name": "robots",
-              "label": "Robots",
-              "description": "Index control via robots"
-            }
-          ]
+            "id": "page-metadata",
+            "fields": [
+                {
+                    "component": "text",
+                    "name": "title",
+                    "label": "Title"
+                },
+                {
+                    "component": "text",
+                    "name": "description",
+                    "label": "Description"
+                },
+                {
+                    "component": "reference",
+                    "name": "image",
+                    "label": "Image"
+                },
+                {
+                    "component": "text",
+                    "name": "robots",
+                    "label": "Robots",
+                    "description": "Index control via robots"
+                },
+                {
+                    "component": "select",
+                    "name": "template",
+                    "label": "Template",
+                    "options": [
+                        {
+                            "name": "Default",
+                            "value": ""
+                        },
+                        {
+                            "name": "AEP Training",
+                            "value": "aep-training"
+                        }
+                    ]
+                },
+                {
+                    "component": "select",
+                    "name": "page-type",
+                    "label": "Page type (analytics pageType)",
+                    "options": [
+                        {
+                            "name": "home",
+                            "value": "home"
+                        },
+                        {
+                            "name": "shop",
+                            "value": "shop"
+                        },
+                        {
+                            "name": "category",
+                            "value": "category"
+                        },
+                        {
+                            "name": "product-listing",
+                            "value": "product-listing"
+                        },
+                        {
+                            "name": "product",
+                            "value": "product"
+                        },
+                        {
+                            "name": "merchandising",
+                            "value": "merchandising"
+                        },
+                        {
+                            "name": "wishlist",
+                            "value": "wishlist"
+                        },
+                        {
+                            "name": "cart",
+                            "value": "cart"
+                        },
+                        {
+                            "name": "checkout",
+                            "value": "checkout"
+                        },
+                        {
+                            "name": "order-confirmation",
+                            "value": "order-confirmation"
+                        },
+                        {
+                            "name": "account",
+                            "value": "account"
+                        },
+                        {
+                            "name": "order-history",
+                            "value": "order-history"
+                        },
+                        {
+                            "name": "order-tracking",
+                            "value": "order-tracking"
+                        },
+                        {
+                            "name": "support",
+                            "value": "support"
+                        },
+                        {
+                            "name": "contact",
+                            "value": "contact"
+                        },
+                        {
+                            "name": "content",
+                            "value": "content"
+                        },
+                        {
+                            "name": "blog",
+                            "value": "blog"
+                        },
+                        {
+                            "name": "article",
+                            "value": "article"
+                        },
+                        {
+                            "name": "store-locator",
+                            "value": "store-locator"
+                        },
+                        {
+                            "name": "membership",
+                            "value": "membership"
+                        },
+                        {
+                            "name": "faq",
+                            "value": "faq"
+                        },
+                        {
+                            "name": "legal",
+                            "value": "legal"
+                        },
+                        {
+                            "name": "recommendations",
+                            "value": "recommendations"
+                        },
+                        {
+                            "name": "error",
+                            "value": "error"
+                        }
+                    ]
+                },
+                {
+                    "component": "text",
+                    "name": "page-name",
+                    "label": "Page name override (analytics pageName)",
+                    "description": "Default: novamart:<path segments>"
+                },
+                {
+                    "component": "text",
+                    "name": "site-section",
+                    "label": "Site section (analytics channel)"
+                },
+                {
+                    "component": "text",
+                    "name": "category",
+                    "label": "Category"
+                },
+                {
+                    "component": "text",
+                    "name": "product-id",
+                    "label": "Product ID (PDP only)"
+                },
+                {
+                    "component": "text",
+                    "name": "product-name",
+                    "label": "Product name (PDP only)"
+                },
+                {
+                    "component": "text",
+                    "name": "product-brand",
+                    "label": "Product brand (PDP only)"
+                },
+                {
+                    "component": "text",
+                    "name": "product-price",
+                    "label": "Product price (PDP only)"
+                },
+                {
+                    "component": "text",
+                    "name": "campaign-id",
+                    "label": "Default campaign ID"
+                },
+                {
+                    "component": "select",
+                    "name": "personalization-mode",
+                    "label": "Personalization mode",
+                    "options": [
+                        {
+                            "name": "Simulator (local audience rules)",
+                            "value": "simulator"
+                        },
+                        {
+                            "name": "Adobe Target (Web SDK)",
+                            "value": "target"
+                        }
+                    ]
+                },
+                {
+                    "component": "text",
+                    "name": "author",
+                    "label": "Author (articles)"
+                },
+                {
+                    "component": "text",
+                    "name": "published-date",
+                    "label": "Published date (articles, YYYY-MM-DD)"
+                },
+                {
+                    "component": "text",
+                    "name": "nav",
+                    "label": "Navigation fragment path"
+                },
+                {
+                    "component": "text",
+                    "name": "footer",
+                    "label": "Footer fragment path"
+                }
+            ]
         }
     ]
 }

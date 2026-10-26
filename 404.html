@@ -16,6 +16,24 @@
     window.isErrorPage = true;
     window.errorCode = '404';
   </script>
+  <script type="text/javascript">
+    // AEP training site: 404s below the training root use the training template so the
+    // errorPageView event, data layer and NovaMart header/footer are applied
+    (function aepTraining404() {
+      var path = window.location.pathname;
+      var root = '';
+      if (path.indexOf('/content/aep-training') === 0) root = '/content/aep-training';
+      else if (path.indexOf('/aep-training/') === 0) root = '/aep-training';
+      if (!root) return;
+      [['template', 'aep-training'], ['page-type', 'error'], ['site-section', 'error'], ['page-name', 'novamart:404'],
+        ['nav', root + '/nav'], ['footer', root + '/footer']].forEach(function addMeta(entry) {
+        var meta = document.createElement('meta');
+        meta.name = entry[0];
+        meta.content = entry[1];
+        document.head.appendChild(meta);
+      });
+    }());
+  </script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta property="og:title" content="Page not found">
   <script type="module">

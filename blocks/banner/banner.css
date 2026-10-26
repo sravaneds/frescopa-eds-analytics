@@ -1,0 +1,113 @@
+.banner {
+  position: relative;
+  display: grid;
+  gap: 16px;
+  align-items: center;
+  padding: 20px 24px;
+  border-radius: var(--nm-radius, 12px);
+  background: linear-gradient(120deg, var(--nm-color-primary, #1d4ed8), var(--nm-color-primary-dark, #1e3a8a));
+  color: #fff;
+}
+
+.banner .banner-content > :first-child {
+  margin-top: 0;
+}
+
+.banner .banner-content > :last-child {
+  margin-bottom: 0;
+}
+
+.banner .banner-content a:any-link:not(.button) {
+  color: #fff;
+}
+
+.banner a.button:any-link {
+  background: #fff;
+  border-color: #fff;
+  color: var(--nm-color-primary-dark, #1e3a8a);
+}
+
+.banner a.button:any-link:hover {
+  background: var(--nm-color-surface-alt, #eef2ff);
+  color: var(--nm-color-primary-dark, #1e3a8a);
+}
+
+.banner .banner-image img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: var(--nm-radius-small, 6px);
+}
+
+.banner .banner-coupon {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.banner .banner-coupon code {
+  padding: 4px 10px;
+  border: 2px dashed currentcolor;
+  border-radius: var(--nm-radius-small, 6px);
+  font: 700 1rem/1.4 ui-monospace, monospace;
+  letter-spacing: 0.08em;
+}
+
+.banner .banner-copy {
+  padding: 6px 14px;
+  border: 1px solid currentcolor;
+  border-radius: 999px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+
+.banner .banner-close {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 32px;
+  height: 32px;
+  border: 0;
+  border-radius: 50%;
+  background: rgb(255 255 255 / 20%);
+  color: inherit;
+  cursor: pointer;
+}
+
+.banner .banner-close::before {
+  content: '×';
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+.banner.alert {
+  background: var(--nm-color-accent-light, #ffedd5);
+  color: var(--nm-color-text, #0f172a);
+}
+
+.banner.alert .banner-content a:any-link:not(.button) {
+  color: var(--nm-color-accent, #c2410c);
+}
+
+.banner.alert a.button:any-link {
+  background: var(--nm-color-accent, #c2410c);
+  border-color: var(--nm-color-accent, #c2410c);
+  color: #fff;
+}
+
+.banner.dark {
+  background: var(--nm-color-dark, #0f172a);
+}
+
+@media (width >= 900px) {
+  .banner {
+    padding: 28px 40px;
+  }
+
+  .banner.banner-has-image {
+    grid-template-columns: 280px 1fr;
+  }
+}

@@ -64,9 +64,81 @@
             {
               "name": "Columns",
               "value": "columns"
+            },
+            {
+              "name": "Dark",
+              "value": "dark"
+            },
+            {
+              "name": "Accent",
+              "value": "accent"
+            },
+            {
+              "name": "Centered",
+              "value": "centered"
+            },
+            {
+              "name": "Narrow",
+              "value": "narrow"
+            },
+            {
+              "name": "Full Width",
+              "value": "full-width"
             }
-            
           ]
+        },
+        {
+          "component": "text",
+          "name": "target-location",
+          "label": "Target Location (decision scope / mbox)",
+          "description": "Sections sharing a location are alternative experiences of one Adobe Target activity, e.g. home-hero"
+        },
+        {
+          "component": "text",
+          "name": "audience",
+          "label": "Audience",
+          "description": "Comma separated audience ids (new-visitors, returning-visitors, logged-in-users, high-value-customers, ...) or 'default'"
+        },
+        {
+          "component": "text",
+          "name": "activity",
+          "label": "Target Activity name",
+          "description": "Reported as activityId in the data layer, e.g. XT-HOME-HERO"
+        },
+        {
+          "component": "select",
+          "name": "activity-type",
+          "label": "Activity type",
+          "options": [
+            {
+              "name": "Experience Targeting (XT)",
+              "value": "xt"
+            },
+            {
+              "name": "A/B Test",
+              "value": "ab"
+            },
+            {
+              "name": "Multivariate Test",
+              "value": "mvt"
+            },
+            {
+              "name": "Recommendations",
+              "value": "recs"
+            }
+          ]
+        },
+        {
+          "component": "text",
+          "name": "experience",
+          "label": "Experience name",
+          "description": "e.g. A, B, Returning Visitor Hero"
+        },
+        {
+          "component": "text",
+          "name": "campaign-id",
+          "label": "Campaign ID",
+          "description": "Internal campaign id reported with clicks in this section"
         }
       ]
     }
@@ -103,7 +175,22 @@
         "reward-sticky",
         "sticky-cta",
         "quiz",
-        "insights"
+        "insights",
+        "tabs",
+        "carousel",
+        "accordion",
+        "cta",
+        "faq",
+        "banner",
+        "product-grid",
+        "product-carousel",
+        "testimonials",
+        "search",
+        "product-info",
+        "cart",
+        "checkout",
+        "wishlist",
+        "orders"
       ]
     }
   ]

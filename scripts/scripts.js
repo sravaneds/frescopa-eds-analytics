@@ -163,7 +163,7 @@ async function applyTemplates(doc) {
     buildTemplateColumns(doc);
   }
 
-  const templates = ['dashboard'];
+  const templates = ['dashboard', 'aep-training'];
   const activeTemplate = templates.find((t) => doc.body.classList.contains(t));
   if (activeTemplate) {
     await loadCSS(`${window.hlx.codeBasePath}/templates/${activeTemplate}/${activeTemplate}.css`);
@@ -435,6 +435,9 @@ async function loadLazy(doc) {
   }
 
   trackHistory();
+  if (doc.body.classList.contains('aep-training')) {
+    import('./aep/index.js').then(({ initLazy }) => initLazy(main));
+  }
   loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
   loadFonts();
 

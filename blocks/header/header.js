@@ -179,6 +179,11 @@ export default async function decorate(block) {
   if (langRoot && !navPath.startsWith(`${langRoot}/`)) {
     navPath = `${langRoot}${navPath}`;
   }
+  if (document.body.classList.contains('aep-training')) {
+    const { default: decorateTrainingHeader } = await import('./header-aep.js');
+    await decorateTrainingHeader(block, navPath);
+    return;
+  }
   const fragment = await loadFragment(navPath);
 
   // decorate nav DOM

@@ -1,0 +1,42 @@
+.tabs .tabs-list {
+  display: flex;
+  gap: 4px;
+  overflow-x: auto;
+  border-bottom: 1px solid var(--nm-color-border, #e2e8f0);
+  scrollbar-width: thin;
+}
+
+.tabs .tabs-tab {
+  flex: 0 0 auto;
+  margin: 0;
+  padding: 12px 18px;
+  border: 0;
+  border-bottom: 3px solid transparent;
+  background: none;
+  color: var(--nm-color-muted, #475569);
+  font: inherit;
+  font-weight: 600;
+  line-height: 1.2;
+  cursor: pointer;
+}
+
+.tabs .tabs-tab:hover {
+  color: var(--nm-color-text, #0f172a);
+}
+
+.tabs .tabs-tab[aria-selected='true'] {
+  color: var(--nm-color-primary, #1d4ed8);
+  border-bottom-color: currentcolor;
+}
+
+.tabs .tabs-panel {
+  padding: 24px 0;
+}
+
+.tabs .tabs-panel > :first-child {
+  margin-top: 0;
+}
+
+.tabs .tabs-panel[hidden] {
+  display: none;
+}

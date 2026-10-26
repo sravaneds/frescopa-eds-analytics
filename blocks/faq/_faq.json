@@ -1,0 +1,78 @@
+{
+  "definitions": [
+    {
+      "title": "FAQ",
+      "id": "faq",
+      "plugins": {
+        "xwalk": {
+          "page": {
+            "resourceType": "core/franklin/components/block/v1/block",
+            "template": {
+              "name": "FAQ",
+              "model": "faq",
+              "filter": "faq"
+            }
+          }
+        }
+      }
+    },
+    {
+      "title": "Question",
+      "id": "faq-item",
+      "plugins": {
+        "xwalk": {
+          "page": {
+            "resourceType": "core/franklin/components/block/v1/block/item",
+            "template": {
+              "name": "Question",
+              "model": "faq-item"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "models": [
+    {
+      "id": "faq",
+      "fields": [
+        {
+          "component": "multiselect",
+          "name": "classes",
+          "label": "Options",
+          "valueType": "string",
+          "options": [
+            { "name": "Searchable", "value": "searchable" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "faq-item",
+      "fields": [
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "question",
+          "label": "Question",
+          "value": ""
+        },
+        {
+          "component": "richtext",
+          "name": "answer",
+          "value": "",
+          "label": "Answer",
+          "valueType": "string"
+        }
+      ]
+    }
+  ],
+  "filters": [
+    {
+      "id": "faq",
+      "components": [
+        "faq-item"
+      ]
+    }
+  ]
+}
