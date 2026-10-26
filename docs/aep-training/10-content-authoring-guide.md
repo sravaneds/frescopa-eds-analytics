@@ -77,7 +77,7 @@ Each visitor gets a sticky experience.
 
 ## 4. Links and action links
 
-- Internal links: pick the page (`/content/aep-training/...`); paths are mapped to `/aep-training/...` on publish.
+- Internal links: pick the page (`/content/aep-training/...`); on publish they are mapped to the site root (`/content/aep-training/shop` -> `/shop`).
 - Demo actions are normal links with these targets:
 
 | Link | Action | Event |
@@ -103,7 +103,7 @@ Each visitor gets a sticky experience.
 ## 7. Installing the site in AEM
 
 The whole site is available as a content package:
-`packages/aep-training-content/aep-training-content-1.0.1.zip`. Install it with Package Manager on
+`packages/aep-training-content/aep-training-content-1.0.2.zip`. Install it with Package Manager on
 the author instance. It replaces `/content/aep-training` and `/content/dam/aep-training`. Then check the
 root page's cloud configuration, reprocess the images and preview the site. Full steps are in
 `packages/aep-training-content/README.md`.

@@ -17,9 +17,9 @@ State is pushed once per page in the eager phase and updated by events. Read it 
     "template": "aep-training",
     "title": "Nova Pro Wireless Headphones | Nova Audio | NovaMart",
     "language": "en",
-    "url": "https://main--frescopa-eds-analytics--sravaneds.aem.page/aep-training/products/nova-pro-wireless-headphones",
-    "path": "/aep-training/products/nova-pro-wireless-headphones",
-    "referrer": "https://main--frescopa-eds-analytics--sravaneds.aem.page/aep-training/electronics",
+    "url": "https://main--frescopa-eds-analytics--sravaneds.aem.page/products/nova-pro-wireless-headphones",
+    "path": "/products/nova-pro-wireless-headphones",
+    "referrer": "https://main--frescopa-eds-analytics--sravaneds.aem.page/electronics",
     "server": "main--frescopa-eds-analytics--sravaneds.aem.page",
     "environment": "preview",
     "contentType": "",
@@ -60,7 +60,7 @@ State is pushed once per page in the eager phase and updated by events. Read it 
     "couponCode": "",
     "freeShipping": true,
     "items": [
-      { "productId": "EL-1006", "productName": "Echo Mini Bluetooth Speaker", "price": 79, "category": "electronics", "brand": "Nova Audio", "url": "/aep-training/products/echo-mini-bluetooth-speaker", "quantity": 1 }
+      { "productId": "EL-1006", "productName": "Echo Mini Bluetooth Speaker", "price": 79, "category": "electronics", "brand": "Nova Audio", "url": "/products/echo-mini-bluetooth-speaker", "quantity": 1 }
     ]
   },
   "campaign": {

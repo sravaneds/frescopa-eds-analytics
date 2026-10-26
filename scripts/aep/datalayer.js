@@ -11,8 +11,18 @@
 import { getMetadata } from '../aem.js';
 
 export const SITE_NAME = 'novamart';
-// AEM path in the local preview / Universal Editor, mapped path on aem.page/aem.live
-export const SITE_ROOT = window.location.pathname.startsWith('/content/') ? '/content/aep-training' : '/aep-training';
+/**
+ * Site root, so links work wherever the site is mounted:
+ * /content/aep-training (local preview, Universal Editor), /aep-training (sub-path mapping)
+ * or '' when /content/aep-training is published at the root of the domain.
+ */
+function detectSiteRoot() {
+  const { pathname } = window.location;
+  if (pathname.startsWith('/content/aep-training')) return '/content/aep-training';
+  if (pathname === '/aep-training' || pathname.startsWith('/aep-training/')) return '/aep-training';
+  return '';
+}
+export const SITE_ROOT = detectSiteRoot();
 export const CURRENCY = 'USD';
 
 const MAX_LOG = 50;
