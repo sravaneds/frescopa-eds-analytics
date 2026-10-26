@@ -103,7 +103,7 @@ Each visitor gets a sticky experience.
 ## 7. Installing the site in AEM
 
 The whole site is available as a content package:
-`packages/aep-training-content/aep-training-content-1.0.0.zip`. Install it with Package Manager on
+`packages/aep-training-content/aep-training-content-1.0.1.zip`. Install it with Package Manager on
 the author instance. It replaces `/content/aep-training` and `/content/dam/aep-training`. Then check the
 root page's cloud configuration, reprocess the images and preview the site. Full steps are in
 `packages/aep-training-content/README.md`.

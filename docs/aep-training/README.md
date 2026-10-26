@@ -25,7 +25,7 @@ experimentation, AEP Web SDK integration, audience building and commerce journey
 Files 01-05 and `page-inventory.json` are generated from the page spec, so they always match the
 pages. Regenerate with `node tools/aep-training/generate.mjs`.
 
-**AEM content package:** `packages/aep-training-content/aep-training-content-1.0.0.zip` contains
+**AEM content package:** `packages/aep-training-content/aep-training-content-1.0.1.zip` contains
 all pages and images for `/content/aep-training`. Install steps are in
 [the package README](../../packages/aep-training-content/README.md).
 

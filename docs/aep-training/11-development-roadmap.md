@@ -16,7 +16,7 @@
 
 ## Phase 1 - Platform setup (week 1)
 
-1. Install the content package `packages/aep-training-content/aep-training-content-1.0.0.zip`
+1. Install the content package `packages/aep-training-content/aep-training-content-1.0.1.zip`
    (pages under `/content/aep-training`, images under `/content/dam/aep-training/images`), then
    check the site's cloud configuration and reprocess the assets. See
    `packages/aep-training-content/README.md`.

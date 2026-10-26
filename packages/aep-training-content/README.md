@@ -1,6 +1,6 @@
 # AEP training content package
 
-`aep-training-content-1.0.0.zip` is an AEM content package (FileVault) with the NovaMart training site
+`aep-training-content-1.0.1.zip` is an AEM content package (FileVault) with the NovaMart training site
 for Universal Editor / Edge Delivery Services:
 
 | Path | Content |
@@ -19,10 +19,12 @@ page type, category, product fields and so on). Section properties hold the Targ
 1. **Check the filter first.** The package uses the default *replace* mode on `/content/aep-training`
    and `/content/dam/aep-training`. Anything already under those paths is replaced.
 2. AEM author > **Tools > Deployment > Packages** > *Upload Package* > choose the zip > **Install**.
-3. Check the site root's **Cloud Configuration** (`cq:conf`). The package sets it to `/conf/frescopa`,
-   the configuration assumed to connect this GitHub repository to Edge Delivery Services. If your
-   site uses another configuration, change it in the root page properties, or rebuild with
-   `--conf` (see below).
+3. Check the site root's **Cloud Configuration** (`cq:conf`). The package sets it to
+   `/conf/aep-training`. That configuration (Tools > Cloud Services > Edge Delivery Services
+   Configuration) must point to GitHub owner `sravaneds`, repository `frescopa-eds-analytics`, and the
+   branch that contains the training code (`feature/aep-training-site` until the pull request is
+   merged, then `main`). For a different configuration, rebuild with `--conf` (see below).
+   The repo's `head.html` and `config.json` point to the author instance `author-p220207-e2271469`.
 4. In Assets, select `/content/dam/aep-training/images` > **Reprocess Assets**. Packages don't
    trigger asset processing, so thumbnails and renditions are created only after this step.
 5. Open `/content/aep-training` in Universal Editor and check a few pages. Then use **Publish >
@@ -44,7 +46,7 @@ against your author instance yet:
 ```sh
 node tools/aep-training/generate.mjs        # regenerate the preview pages + manifest
 node tools/aep-training/build-package.mjs   # build this zip
-node tools/aep-training/build-package.mjs --conf /conf/my-site --version 1.0.1
+node tools/aep-training/build-package.mjs --conf /conf/my-site --version 1.0.2
 ```
 
 The builder reads `content/aep-training/**/*.plain.html` (via `tools/aep-training/manifest.json`)

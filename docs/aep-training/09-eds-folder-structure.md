@@ -63,7 +63,7 @@ repo/
 │   ├── build-package.mjs            # converts the pages into an AEM content package (Universal Editor JCR)
 │   └── assets/                      # JPEG/PNG renders of the SVG illustrations (DAM assets in the package)
 ├── packages/aep-training-content/   # AEM content package (not served)
-│   ├── aep-training-content-1.0.0.zip
+│   ├── aep-training-content-1.0.1.zip
 │   └── README.md                    # install and verification steps
 └── docs/aep-training/               # the 12 deliverables (not served)
 ```
