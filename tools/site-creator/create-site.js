@@ -113,6 +113,7 @@ function replaceHtml(text) {
 
   return `
     <body>
+    <script type="text/javascript">_satellite.pageBottom();</script>
       <header></header>
       <main>${inner}</main>
       <footer></footer>
