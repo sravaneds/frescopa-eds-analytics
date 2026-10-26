@@ -91,6 +91,48 @@
       ]
     },
     {
+      "title": "AEP Training",
+      "id": "aep-training",
+      "components": [
+        {
+          "...": "../blocks/tabs/_*.json#/definitions"
+        },
+        {
+          "...": "../blocks/carousel/_*.json#/definitions"
+        },
+        {
+          "...": "../blocks/accordion/_*.json#/definitions"
+        },
+        {
+          "...": "../blocks/cta/_*.json#/definitions"
+        },
+        {
+          "...": "../blocks/faq/_*.json#/definitions"
+        },
+        {
+          "...": "../blocks/banner/_*.json#/definitions"
+        },
+        {
+          "...": "../blocks/testimonials/_*.json#/definitions"
+        },
+        {
+          "...": "../blocks/search/_*.json#/definitions"
+        },
+        {
+          "...": "../blocks/cart/_*.json#/definitions"
+        },
+        {
+          "...": "../blocks/checkout/_*.json#/definitions"
+        },
+        {
+          "...": "../blocks/wishlist/_*.json#/definitions"
+        },
+        {
+          "...": "../blocks/orders/_*.json#/definitions"
+        }
+      ]
+    },
+    {
       "title": "Product",
       "id": "product",
       "components": [

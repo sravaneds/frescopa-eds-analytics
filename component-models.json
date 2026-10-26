@@ -22,6 +22,200 @@
         "name": "robots",
         "label": "Robots",
         "description": "Index control via robots"
+      },
+      {
+        "component": "select",
+        "name": "template",
+        "label": "Template",
+        "options": [
+          {
+            "name": "Default",
+            "value": ""
+          },
+          {
+            "name": "AEP Training",
+            "value": "aep-training"
+          }
+        ]
+      },
+      {
+        "component": "select",
+        "name": "page-type",
+        "label": "Page type (analytics pageType)",
+        "options": [
+          {
+            "name": "home",
+            "value": "home"
+          },
+          {
+            "name": "shop",
+            "value": "shop"
+          },
+          {
+            "name": "category",
+            "value": "category"
+          },
+          {
+            "name": "product-listing",
+            "value": "product-listing"
+          },
+          {
+            "name": "product",
+            "value": "product"
+          },
+          {
+            "name": "merchandising",
+            "value": "merchandising"
+          },
+          {
+            "name": "wishlist",
+            "value": "wishlist"
+          },
+          {
+            "name": "cart",
+            "value": "cart"
+          },
+          {
+            "name": "checkout",
+            "value": "checkout"
+          },
+          {
+            "name": "order-confirmation",
+            "value": "order-confirmation"
+          },
+          {
+            "name": "account",
+            "value": "account"
+          },
+          {
+            "name": "order-history",
+            "value": "order-history"
+          },
+          {
+            "name": "order-tracking",
+            "value": "order-tracking"
+          },
+          {
+            "name": "support",
+            "value": "support"
+          },
+          {
+            "name": "contact",
+            "value": "contact"
+          },
+          {
+            "name": "content",
+            "value": "content"
+          },
+          {
+            "name": "blog",
+            "value": "blog"
+          },
+          {
+            "name": "article",
+            "value": "article"
+          },
+          {
+            "name": "store-locator",
+            "value": "store-locator"
+          },
+          {
+            "name": "membership",
+            "value": "membership"
+          },
+          {
+            "name": "faq",
+            "value": "faq"
+          },
+          {
+            "name": "legal",
+            "value": "legal"
+          },
+          {
+            "name": "recommendations",
+            "value": "recommendations"
+          },
+          {
+            "name": "error",
+            "value": "error"
+          }
+        ]
+      },
+      {
+        "component": "text",
+        "name": "page-name",
+        "label": "Page name override (analytics pageName)",
+        "description": "Default: novamart:<path segments>"
+      },
+      {
+        "component": "text",
+        "name": "site-section",
+        "label": "Site section (analytics channel)"
+      },
+      {
+        "component": "text",
+        "name": "category",
+        "label": "Category"
+      },
+      {
+        "component": "text",
+        "name": "product-id",
+        "label": "Product ID (PDP only)"
+      },
+      {
+        "component": "text",
+        "name": "product-name",
+        "label": "Product name (PDP only)"
+      },
+      {
+        "component": "text",
+        "name": "product-brand",
+        "label": "Product brand (PDP only)"
+      },
+      {
+        "component": "text",
+        "name": "product-price",
+        "label": "Product price (PDP only)"
+      },
+      {
+        "component": "text",
+        "name": "campaign-id",
+        "label": "Default campaign ID"
+      },
+      {
+        "component": "select",
+        "name": "personalization-mode",
+        "label": "Personalization mode",
+        "options": [
+          {
+            "name": "Simulator (local audience rules)",
+            "value": "simulator"
+          },
+          {
+            "name": "Adobe Target (Web SDK)",
+            "value": "target"
+          }
+        ]
+      },
+      {
+        "component": "text",
+        "name": "author",
+        "label": "Author (articles)"
+      },
+      {
+        "component": "text",
+        "name": "published-date",
+        "label": "Published date (articles, YYYY-MM-DD)"
+      },
+      {
+        "component": "text",
+        "name": "nav",
+        "label": "Navigation fragment path"
+      },
+      {
+        "component": "text",
+        "name": "footer",
+        "label": "Footer fragment path"
       }
     ]
   },
@@ -166,8 +360,100 @@
           {
             "name": "Columns",
             "value": "columns"
+          },
+          {
+            "name": "Dark",
+            "value": "dark"
+          },
+          {
+            "name": "Accent",
+            "value": "accent"
+          },
+          {
+            "name": "Centered",
+            "value": "centered"
+          },
+          {
+            "name": "Narrow",
+            "value": "narrow"
+          },
+          {
+            "name": "Full Width",
+            "value": "full-width"
           }
         ]
+      },
+      {
+        "component": "text",
+        "name": "target-location",
+        "label": "Target Location (decision scope / mbox)",
+        "description": "Sections sharing a location are alternative experiences of one Adobe Target activity, e.g. home-hero"
+      },
+      {
+        "component": "text",
+        "name": "audience",
+        "label": "Audience",
+        "description": "Comma separated audience ids (new-visitors, returning-visitors, logged-in-users, high-value-customers, ...) or 'default'"
+      },
+      {
+        "component": "text",
+        "name": "activity",
+        "label": "Target Activity name",
+        "description": "Reported as activityId in the data layer, e.g. XT-HOME-HERO"
+      },
+      {
+        "component": "select",
+        "name": "activity-type",
+        "label": "Activity type",
+        "options": [
+          {
+            "name": "Experience Targeting (XT)",
+            "value": "xt"
+          },
+          {
+            "name": "A/B Test",
+            "value": "ab"
+          },
+          {
+            "name": "Multivariate Test",
+            "value": "mvt"
+          },
+          {
+            "name": "Recommendations",
+            "value": "recs"
+          }
+        ]
+      },
+      {
+        "component": "text",
+        "name": "experience",
+        "label": "Experience name",
+        "description": "e.g. A, B, Returning Visitor Hero"
+      },
+      {
+        "component": "text",
+        "name": "campaign-id",
+        "label": "Campaign ID",
+        "description": "Internal campaign id reported with clicks in this section"
+      }
+    ]
+  },
+  {
+    "id": "accordion-item",
+    "fields": [
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "summary",
+        "label": "Label",
+        "value": ""
+      },
+      {
+        "component": "richtext",
+        "name": "text",
+        "value": "",
+        "label": "Body",
+        "valueType": "string"
       }
     ]
   },
@@ -187,6 +473,66 @@
         "value": "",
         "label": "Variation",
         "valueType": "string"
+      }
+    ]
+  },
+  {
+    "id": "banner",
+    "fields": [
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "image",
+        "label": "Image (optional)",
+        "multi": false
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "imageAlt",
+        "label": "Image alt text",
+        "value": ""
+      },
+      {
+        "component": "richtext",
+        "name": "text",
+        "value": "",
+        "label": "Text",
+        "valueType": "string"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "couponCode",
+        "label": "Coupon code (optional)",
+        "value": ""
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "campaignId",
+        "label": "Campaign ID (analytics)",
+        "value": ""
+      },
+      {
+        "component": "multiselect",
+        "name": "classes",
+        "label": "Style",
+        "valueType": "string",
+        "options": [
+          {
+            "name": "Alert",
+            "value": "alert"
+          },
+          {
+            "name": "Dark",
+            "value": "dark"
+          },
+          {
+            "name": "Dismissible",
+            "value": "dismissible"
+          }
+        ]
       }
     ]
   },
@@ -217,6 +563,73 @@
         "name": "text",
         "value": "",
         "label": "Text",
+        "valueType": "string"
+      }
+    ]
+  },
+  {
+    "id": "carousel",
+    "fields": [
+      {
+        "component": "multiselect",
+        "name": "classes",
+        "label": "Style",
+        "valueType": "string",
+        "options": [
+          {
+            "name": "Product image gallery",
+            "value": "gallery"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "carousel-slide",
+    "fields": [
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "image",
+        "label": "Image",
+        "multi": false
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "imageAlt",
+        "label": "Alt text",
+        "value": ""
+      },
+      {
+        "component": "richtext",
+        "name": "text",
+        "value": "",
+        "label": "Text",
+        "valueType": "string"
+      }
+    ]
+  },
+  {
+    "id": "cart",
+    "fields": [
+      {
+        "component": "richtext",
+        "name": "emptyMessage",
+        "value": "",
+        "label": "Empty cart message",
+        "valueType": "string"
+      }
+    ]
+  },
+  {
+    "id": "checkout",
+    "fields": [
+      {
+        "component": "richtext",
+        "name": "intro",
+        "value": "",
+        "label": "Intro text",
         "valueType": "string"
       }
     ]
@@ -361,6 +774,48 @@
     ]
   },
   {
+    "id": "cta",
+    "fields": [
+      {
+        "component": "richtext",
+        "name": "text",
+        "value": "",
+        "label": "Text (heading, copy and buttons)",
+        "valueType": "string"
+      },
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "image",
+        "label": "Image (optional)",
+        "multi": false
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "imageAlt",
+        "label": "Image alt text",
+        "value": ""
+      },
+      {
+        "component": "multiselect",
+        "name": "classes",
+        "label": "Style",
+        "valueType": "string",
+        "options": [
+          {
+            "name": "Dark",
+            "value": "dark"
+          },
+          {
+            "name": "Accent",
+            "value": "accent"
+          }
+        ]
+      }
+    ]
+  },
+  {
     "id": "dm-scene7-template",
     "fields": [
       {
@@ -476,6 +931,42 @@
             "value": "above-category"
           }
         ]
+      }
+    ]
+  },
+  {
+    "id": "faq",
+    "fields": [
+      {
+        "component": "multiselect",
+        "name": "classes",
+        "label": "Options",
+        "valueType": "string",
+        "options": [
+          {
+            "name": "Searchable",
+            "value": "searchable"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "faq-item",
+    "fields": [
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "question",
+        "label": "Question",
+        "value": ""
+      },
+      {
+        "component": "richtext",
+        "name": "answer",
+        "value": "",
+        "label": "Answer",
+        "valueType": "string"
       }
     ]
   },
@@ -5523,8 +6014,258 @@
     ]
   },
   {
+    "id": "orders",
+    "fields": [
+      {
+        "component": "select",
+        "name": "classes",
+        "label": "View",
+        "valueType": "string",
+        "value": "",
+        "options": [
+          {
+            "name": "Order history",
+            "value": ""
+          },
+          {
+            "name": "Order confirmation",
+            "value": "confirmation"
+          },
+          {
+            "name": "Track order",
+            "value": "tracking"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "product-carousel",
+    "fields": [
+      {
+        "component": "select",
+        "name": "classes",
+        "label": "Source",
+        "valueType": "string",
+        "value": "",
+        "options": [
+          {
+            "name": "Authored products",
+            "value": ""
+          },
+          {
+            "name": "Recommendations (Adobe Target)",
+            "value": "recommendations"
+          },
+          {
+            "name": "Recently viewed (visitor profile)",
+            "value": "recently-viewed"
+          }
+        ]
+      }
+    ]
+  },
+  {
     "id": "product-details",
     "fields": []
+  },
+  {
+    "id": "product-grid",
+    "fields": [
+      {
+        "component": "multiselect",
+        "name": "classes",
+        "label": "Options",
+        "valueType": "string",
+        "options": [
+          {
+            "name": "Show filters, sort and search",
+            "value": "filters"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "product-item",
+    "fields": [
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "image",
+        "label": "Image",
+        "multi": false
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "imageAlt",
+        "label": "Image alt text",
+        "value": ""
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "productName",
+        "label": "Product name",
+        "value": "",
+        "required": true
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "sku",
+        "label": "SKU / product ID (analytics productId)",
+        "value": "",
+        "required": true
+      },
+      {
+        "component": "number",
+        "valueType": "number",
+        "name": "price",
+        "label": "Price (USD)"
+      },
+      {
+        "component": "number",
+        "valueType": "number",
+        "name": "compareAtPrice",
+        "label": "Compare-at price (shows sale)"
+      },
+      {
+        "component": "select",
+        "valueType": "string",
+        "name": "category",
+        "label": "Category",
+        "options": [
+          {
+            "name": "Electronics",
+            "value": "electronics"
+          },
+          {
+            "name": "Fashion",
+            "value": "fashion"
+          },
+          {
+            "name": "Home Appliances",
+            "value": "home-appliances"
+          }
+        ]
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "brand",
+        "label": "Brand",
+        "value": ""
+      },
+      {
+        "component": "number",
+        "valueType": "number",
+        "name": "rating",
+        "label": "Rating (0-5)"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "badge",
+        "label": "Badge (New, Sale, Best Seller)",
+        "value": ""
+      },
+      {
+        "component": "aem-content",
+        "valueType": "string",
+        "name": "link",
+        "label": "Product page"
+      }
+    ]
+  },
+  {
+    "id": "product-info",
+    "fields": [
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "images",
+        "label": "Gallery images",
+        "multi": true
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "productName",
+        "label": "Product name",
+        "required": true
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "sku",
+        "label": "SKU (analytics productId)",
+        "required": true
+      },
+      {
+        "component": "number",
+        "valueType": "number",
+        "name": "price",
+        "label": "Price (USD)"
+      },
+      {
+        "component": "number",
+        "valueType": "number",
+        "name": "compareAtPrice",
+        "label": "Compare-at price"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "brand",
+        "label": "Brand"
+      },
+      {
+        "component": "select",
+        "valueType": "string",
+        "name": "category",
+        "label": "Category",
+        "options": [
+          {
+            "name": "Electronics",
+            "value": "electronics"
+          },
+          {
+            "name": "Fashion",
+            "value": "fashion"
+          },
+          {
+            "name": "Home Appliances",
+            "value": "home-appliances"
+          }
+        ]
+      },
+      {
+        "component": "number",
+        "valueType": "number",
+        "name": "rating",
+        "label": "Rating (0-5)"
+      },
+      {
+        "component": "number",
+        "valueType": "number",
+        "name": "reviewCount",
+        "label": "Review count"
+      },
+      {
+        "component": "richtext",
+        "valueType": "string",
+        "name": "description",
+        "label": "Description"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "options",
+        "label": "Colour options (comma separated)"
+      }
+    ]
   },
   {
     "id": "product-list-page-custom",
@@ -6064,6 +6805,46 @@
     ]
   },
   {
+    "id": "search",
+    "fields": [
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "placeholder",
+        "label": "Placeholder / label",
+        "value": "Search products"
+      },
+      {
+        "component": "select",
+        "valueType": "string",
+        "name": "scope",
+        "label": "Search scope",
+        "value": "products",
+        "options": [
+          {
+            "name": "Products",
+            "value": "products"
+          },
+          {
+            "name": "Page content (cards, FAQ)",
+            "value": "content"
+          },
+          {
+            "name": "Stores",
+            "value": "stores"
+          }
+        ]
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "popular",
+        "label": "Popular search terms (comma separated)",
+        "value": ""
+      }
+    ]
+  },
+  {
     "id": "sticky-cta",
     "fields": [
       {
@@ -6136,6 +6917,25 @@
         "name": "cta",
         "value": "",
         "label": "Search Button Text",
+        "valueType": "string"
+      }
+    ]
+  },
+  {
+    "id": "tab",
+    "fields": [
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "title",
+        "label": "Tab label",
+        "value": ""
+      },
+      {
+        "component": "richtext",
+        "name": "content",
+        "value": "",
+        "label": "Content",
         "valueType": "string"
       }
     ]
@@ -6360,6 +7160,77 @@
     ]
   },
   {
+    "id": "testimonials",
+    "fields": [
+      {
+        "component": "multiselect",
+        "name": "classes",
+        "label": "Layout",
+        "valueType": "string",
+        "options": [
+          {
+            "name": "Horizontal scroll",
+            "value": "scroll"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "testimonial",
+    "fields": [
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "image",
+        "label": "Photo",
+        "multi": false
+      },
+      {
+        "component": "richtext",
+        "name": "quote",
+        "value": "",
+        "label": "Quote",
+        "valueType": "string"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "name",
+        "label": "Name",
+        "value": ""
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "role",
+        "label": "Role / location",
+        "value": ""
+      },
+      {
+        "component": "select",
+        "name": "rating",
+        "label": "Rating",
+        "valueType": "string",
+        "value": "5",
+        "options": [
+          {
+            "name": "5 stars",
+            "value": "5"
+          },
+          {
+            "name": "4 stars",
+            "value": "4"
+          },
+          {
+            "name": "3 stars",
+            "value": "3"
+          }
+        ]
+      }
+    ]
+  },
+  {
     "id": "video",
     "fields": [
       {
@@ -6401,6 +7272,18 @@
             ]
           }
         ]
+      }
+    ]
+  },
+  {
+    "id": "wishlist",
+    "fields": [
+      {
+        "component": "richtext",
+        "name": "emptyMessage",
+        "value": "",
+        "label": "Empty wishlist message",
+        "valueType": "string"
       }
     ]
   }

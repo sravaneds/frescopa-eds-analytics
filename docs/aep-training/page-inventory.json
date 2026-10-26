@@ -1,0 +1,3544 @@
+[
+  {
+    "id": "01",
+    "name": "Home",
+    "path": "/content/aep-training/",
+    "pageType": "home",
+    "purpose": "Primary entry point. Routes visitors into departments and campaigns, and demonstrates visitor-type hero personalization, affinity-based CTAs and campaign banners.",
+    "components": [
+      "Hero",
+      "Banner",
+      "Cards",
+      "Product Carousel",
+      "CTA",
+      "Testimonials",
+      "Columns"
+    ],
+    "authoringFields": {
+      "page": [
+        "title",
+        "description",
+        "template",
+        "page-type",
+        "site-section",
+        "image",
+        "nav",
+        "footer"
+      ],
+      "blocks": {
+        "Hero": [
+          "Image",
+          "Alt",
+          "Text"
+        ],
+        "Banner": [
+          "Image (optional)",
+          "Image alt text",
+          "Text",
+          "Coupon code (optional)",
+          "Campaign ID (analytics)",
+          "Style"
+        ],
+        "Cards": [
+          "Image",
+          "Text"
+        ],
+        "Product Carousel": [
+          "Source",
+          "Image",
+          "Image alt text",
+          "Product name",
+          "SKU / product ID (analytics productId)",
+          "Price (USD)",
+          "Compare-at price (shows sale)",
+          "Category",
+          "Brand",
+          "Rating (0-5)",
+          "Badge (New, Sale, Best Seller)",
+          "Product page"
+        ],
+        "CTA": [
+          "Text (heading, copy and buttons)",
+          "Image (optional)",
+          "Image alt text",
+          "Style"
+        ],
+        "Testimonials": [
+          "Layout",
+          "Photo",
+          "Quote",
+          "Name",
+          "Role / location",
+          "Rating"
+        ],
+        "Columns": [
+          "Columns",
+          "Rows"
+        ]
+      },
+      "sections": [
+        "Target Location",
+        "Audience",
+        "Activity",
+        "Activity Type",
+        "Experience",
+        "Campaign ID",
+        "Style"
+      ]
+    },
+    "analyticsEvents": [
+      "pageView",
+      "scrollDepth",
+      "navClick",
+      "footerClick",
+      "linkClick",
+      "heroClick",
+      "bannerImpression",
+      "bannerClick",
+      "couponCopy",
+      "bannerDismiss",
+      "ctaClick",
+      "productListImpression",
+      "productCarouselClick",
+      "carouselNavigate",
+      "cartAdd",
+      "wishlistAdd",
+      "testimonialImpression",
+      "propositionDisplay"
+    ],
+    "targetActivities": [
+      {
+        "activityId": "XT-HOME-HERO",
+        "type": "XT",
+        "location": "home-hero",
+        "experiences": [
+          {
+            "experience": "Member Hero",
+            "audience": "logged-in-users"
+          },
+          {
+            "experience": "Returning Visitor Hero",
+            "audience": "returning-visitors"
+          },
+          {
+            "experience": "New Visitor Hero",
+            "audience": "new-visitors,default"
+          }
+        ]
+      },
+      {
+        "activityId": "XT-HOME-CART-REMINDER",
+        "type": "XT",
+        "location": "home-cart-reminder",
+        "experiences": [
+          {
+            "experience": "Cart Reminder",
+            "audience": "cart-abandoners"
+          }
+        ]
+      },
+      {
+        "activityId": "AB-HOME-PROMO",
+        "type": "A/B",
+        "location": "home-promo",
+        "experiences": [
+          {
+            "experience": "A",
+            "audience": "(random split)"
+          },
+          {
+            "experience": "B",
+            "audience": "(random split)"
+          }
+        ]
+      },
+      {
+        "activityId": "XT-HOME-CTA",
+        "type": "XT",
+        "location": "home-cta",
+        "experiences": [
+          {
+            "experience": "Electronics CTA",
+            "audience": "electronics-shoppers"
+          },
+          {
+            "experience": "Fashion CTA",
+            "audience": "fashion-shoppers"
+          },
+          {
+            "experience": "Rewards CTA",
+            "audience": "default"
+          }
+        ]
+      }
+    ],
+    "audienceSegments": [
+      "logged-in-users",
+      "returning-visitors",
+      "new-visitors",
+      "cart-abandoners",
+      "electronics-shoppers",
+      "fashion-shoppers"
+    ],
+    "personalizationRules": [
+      "home-hero: logged-in users see the member hero; else returning visitors see \"Welcome back\"; everyone else (new visitors) sees the first-order WELCOME15 hero.",
+      "home-cart-reminder: only cart abandoners see the \"You left something in your cart\" banner with SAVE10.",
+      "home-promo: 50/50 A/B split of two flash-sale banner treatments (sticky per visitor).",
+      "home-cta: electronics shoppers get an electronics CTA, fashion shoppers a fashion CTA, everyone else the Rewards CTA."
+    ],
+    "successMetrics": [
+      "Hero click-through rate by experience",
+      "Banner CTR (A vs B) and lift",
+      "Personalized CTA CTR vs default",
+      "Scroll depth 50/75/100 % reach",
+      "Home -> product view rate",
+      "Revenue per visit by audience"
+    ]
+  },
+  {
+    "id": "02",
+    "name": "Shop",
+    "path": "/content/aep-training/shop",
+    "pageType": "shop",
+    "purpose": "Department hub that funnels traffic into category pages and collections; demonstrates search tracking and an affinity-based featured department.",
+    "components": [
+      "Hero",
+      "Search",
+      "Cards",
+      "Product Carousel",
+      "Columns"
+    ],
+    "authoringFields": {
+      "page": [
+        "title",
+        "description",
+        "template",
+        "page-type",
+        "site-section",
+        "image",
+        "nav",
+        "footer"
+      ],
+      "blocks": {
+        "Hero": [
+          "Image",
+          "Alt",
+          "Text"
+        ],
+        "Search": [
+          "Placeholder / label",
+          "Search scope",
+          "Popular search terms (comma separated)"
+        ],
+        "Cards": [
+          "Image",
+          "Text"
+        ],
+        "Product Carousel": [
+          "Source",
+          "Image",
+          "Image alt text",
+          "Product name",
+          "SKU / product ID (analytics productId)",
+          "Price (USD)",
+          "Compare-at price (shows sale)",
+          "Category",
+          "Brand",
+          "Rating (0-5)",
+          "Badge (New, Sale, Best Seller)",
+          "Product page"
+        ],
+        "Columns": [
+          "Columns",
+          "Rows"
+        ]
+      },
+      "sections": [
+        "Target Location",
+        "Audience",
+        "Activity",
+        "Activity Type",
+        "Experience",
+        "Campaign ID",
+        "Style"
+      ]
+    },
+    "analyticsEvents": [
+      "pageView",
+      "scrollDepth",
+      "navClick",
+      "footerClick",
+      "linkClick",
+      "heroClick",
+      "searchSubmit",
+      "searchNoResults",
+      "searchSuggestionClick",
+      "ctaClick",
+      "productListImpression",
+      "productCarouselClick",
+      "carouselNavigate",
+      "cartAdd",
+      "wishlistAdd",
+      "propositionDisplay"
+    ],
+    "targetActivities": [
+      {
+        "activityId": "XT-SHOP-FEATURED",
+        "type": "XT",
+        "location": "shop-featured",
+        "experiences": [
+          {
+            "experience": "Electronics Feature",
+            "audience": "electronics-shoppers"
+          },
+          {
+            "experience": "Fashion Feature",
+            "audience": "fashion-shoppers"
+          },
+          {
+            "experience": "Home Feature",
+            "audience": "default"
+          }
+        ]
+      }
+    ],
+    "audienceSegments": [
+      "electronics-shoppers",
+      "fashion-shoppers"
+    ],
+    "personalizationRules": [
+      "shop-featured: electronics shoppers see the electronics feature, fashion shoppers the fashion feature, everyone else a home appliances feature."
+    ],
+    "successMetrics": [
+      "Category entry rate from Shop",
+      "Search usage rate and zero-result rate",
+      "Featured department CTR by experience"
+    ]
+  },
+  {
+    "id": "03",
+    "name": "Electronics",
+    "path": "/content/aep-training/electronics",
+    "pageType": "category",
+    "purpose": "Category landing for Electronics. Demonstrates category views, filter/sort usage, in-grid search, product clicks, location-based promotions and audience-specific offers.",
+    "components": [
+      "Hero",
+      "Banner",
+      "Product Grid",
+      "Tabs",
+      "CTA"
+    ],
+    "authoringFields": {
+      "page": [
+        "title",
+        "description",
+        "template",
+        "page-type",
+        "site-section",
+        "category",
+        "image",
+        "nav",
+        "footer"
+      ],
+      "blocks": {
+        "Hero": [
+          "Image",
+          "Alt",
+          "Text"
+        ],
+        "Banner": [
+          "Image (optional)",
+          "Image alt text",
+          "Text",
+          "Coupon code (optional)",
+          "Campaign ID (analytics)",
+          "Style"
+        ],
+        "Product Grid": [
+          "Options",
+          "Image",
+          "Image alt text",
+          "Product name",
+          "SKU / product ID (analytics productId)",
+          "Price (USD)",
+          "Compare-at price (shows sale)",
+          "Category",
+          "Brand",
+          "Rating (0-5)",
+          "Badge (New, Sale, Best Seller)",
+          "Product page"
+        ],
+        "Tabs": [
+          "Tab label",
+          "Content"
+        ],
+        "CTA": [
+          "Text (heading, copy and buttons)",
+          "Image (optional)",
+          "Image alt text",
+          "Style"
+        ]
+      },
+      "sections": [
+        "Target Location",
+        "Audience",
+        "Activity",
+        "Activity Type",
+        "Experience",
+        "Campaign ID",
+        "Style"
+      ]
+    },
+    "analyticsEvents": [
+      "pageView",
+      "scrollDepth",
+      "navClick",
+      "footerClick",
+      "linkClick",
+      "heroClick",
+      "bannerImpression",
+      "bannerClick",
+      "couponCopy",
+      "productListImpression",
+      "productClick",
+      "cartAdd",
+      "wishlistAdd",
+      "filterApply",
+      "sortApply",
+      "filterClear",
+      "searchSubmit",
+      "searchNoResults",
+      "tabClick",
+      "ctaClick",
+      "categoryView",
+      "propositionDisplay"
+    ],
+    "targetActivities": [
+      {
+        "activityId": "XT-GEO-PROMO",
+        "type": "XT",
+        "location": "electronics-geo-promo",
+        "experiences": [
+          {
+            "experience": "geo-us-west Promo",
+            "audience": "geo-us-west"
+          },
+          {
+            "experience": "geo-us-east Promo",
+            "audience": "geo-us-east"
+          },
+          {
+            "experience": "geo-europe Promo",
+            "audience": "geo-europe"
+          },
+          {
+            "experience": "Default Promo",
+            "audience": "default"
+          }
+        ]
+      },
+      {
+        "activityId": "XT-CATEGORY-OFFER",
+        "type": "XT",
+        "location": "electronics-offer",
+        "experiences": [
+          {
+            "experience": "VIP Offer",
+            "audience": "high-value-customers"
+          },
+          {
+            "experience": "Member Offer",
+            "audience": "logged-in-users"
+          },
+          {
+            "experience": "First Order Offer",
+            "audience": "new-visitors"
+          },
+          {
+            "experience": "Default Offer",
+            "audience": "default"
+          }
+        ]
+      }
+    ],
+    "audienceSegments": [
+      "geo-us-west",
+      "geo-us-east",
+      "geo-europe",
+      "high-value-customers",
+      "logged-in-users",
+      "new-visitors"
+    ],
+    "personalizationRules": [
+      "electronics-geo-promo: visitor location (time zone proxy for Target geo attributes) selects the US West, US East or Europe promotion, otherwise the default.",
+      "electronics-offer: first matching audience wins in this order: high-value-customers > logged-in-users > new-visitors > default."
+    ],
+    "successMetrics": [
+      "Category view to product click rate",
+      "Filter usage rate and most used filters",
+      "Search usage and zero results",
+      "Add to cart rate from grid",
+      "Offer coupon copy -> apply rate"
+    ]
+  },
+  {
+    "id": "04",
+    "name": "Fashion",
+    "path": "/content/aep-training/fashion",
+    "pageType": "category",
+    "purpose": "Category landing for Fashion. Demonstrates category views, filter/sort usage, in-grid search, product clicks, location-based promotions and audience-specific offers.",
+    "components": [
+      "Hero",
+      "Banner",
+      "Product Grid",
+      "Tabs",
+      "CTA"
+    ],
+    "authoringFields": {
+      "page": [
+        "title",
+        "description",
+        "template",
+        "page-type",
+        "site-section",
+        "category",
+        "image",
+        "nav",
+        "footer"
+      ],
+      "blocks": {
+        "Hero": [
+          "Image",
+          "Alt",
+          "Text"
+        ],
+        "Banner": [
+          "Image (optional)",
+          "Image alt text",
+          "Text",
+          "Coupon code (optional)",
+          "Campaign ID (analytics)",
+          "Style"
+        ],
+        "Product Grid": [
+          "Options",
+          "Image",
+          "Image alt text",
+          "Product name",
+          "SKU / product ID (analytics productId)",
+          "Price (USD)",
+          "Compare-at price (shows sale)",
+          "Category",
+          "Brand",
+          "Rating (0-5)",
+          "Badge (New, Sale, Best Seller)",
+          "Product page"
+        ],
+        "Tabs": [
+          "Tab label",
+          "Content"
+        ],
+        "CTA": [
+          "Text (heading, copy and buttons)",
+          "Image (optional)",
+          "Image alt text",
+          "Style"
+        ]
+      },
+      "sections": [
+        "Target Location",
+        "Audience",
+        "Activity",
+        "Activity Type",
+        "Experience",
+        "Campaign ID",
+        "Style"
+      ]
+    },
+    "analyticsEvents": [
+      "pageView",
+      "scrollDepth",
+      "navClick",
+      "footerClick",
+      "linkClick",
+      "heroClick",
+      "bannerImpression",
+      "bannerClick",
+      "couponCopy",
+      "productListImpression",
+      "productClick",
+      "cartAdd",
+      "wishlistAdd",
+      "filterApply",
+      "sortApply",
+      "filterClear",
+      "searchSubmit",
+      "searchNoResults",
+      "tabClick",
+      "ctaClick",
+      "categoryView",
+      "propositionDisplay"
+    ],
+    "targetActivities": [
+      {
+        "activityId": "XT-GEO-PROMO",
+        "type": "XT",
+        "location": "fashion-geo-promo",
+        "experiences": [
+          {
+            "experience": "geo-us-west Promo",
+            "audience": "geo-us-west"
+          },
+          {
+            "experience": "geo-us-east Promo",
+            "audience": "geo-us-east"
+          },
+          {
+            "experience": "geo-europe Promo",
+            "audience": "geo-europe"
+          },
+          {
+            "experience": "Default Promo",
+            "audience": "default"
+          }
+        ]
+      },
+      {
+        "activityId": "XT-CATEGORY-OFFER",
+        "type": "XT",
+        "location": "fashion-offer",
+        "experiences": [
+          {
+            "experience": "Style Edit Offer",
+            "audience": "fashion-shoppers"
+          },
+          {
+            "experience": "Member Offer",
+            "audience": "logged-in-users"
+          },
+          {
+            "experience": "First Order Offer",
+            "audience": "new-visitors"
+          },
+          {
+            "experience": "Default Offer",
+            "audience": "default"
+          }
+        ]
+      }
+    ],
+    "audienceSegments": [
+      "geo-us-west",
+      "geo-us-east",
+      "geo-europe",
+      "fashion-shoppers",
+      "logged-in-users",
+      "new-visitors"
+    ],
+    "personalizationRules": [
+      "fashion-geo-promo: visitor location (time zone proxy for Target geo attributes) selects the US West, US East or Europe promotion, otherwise the default.",
+      "fashion-offer: first matching audience wins in this order: fashion-shoppers > logged-in-users > new-visitors > default."
+    ],
+    "successMetrics": [
+      "Category view to product click rate",
+      "Filter usage rate and most used filters",
+      "Search usage and zero results",
+      "Add to cart rate from grid",
+      "Offer coupon copy -> apply rate"
+    ]
+  },
+  {
+    "id": "05",
+    "name": "Home Appliances",
+    "path": "/content/aep-training/home-appliances",
+    "pageType": "category",
+    "purpose": "Category landing for Home Appliances. Demonstrates category views, filter/sort usage, in-grid search, product clicks, location-based promotions and audience-specific offers.",
+    "components": [
+      "Hero",
+      "Banner",
+      "Product Grid",
+      "Tabs",
+      "CTA"
+    ],
+    "authoringFields": {
+      "page": [
+        "title",
+        "description",
+        "template",
+        "page-type",
+        "site-section",
+        "category",
+        "image",
+        "nav",
+        "footer"
+      ],
+      "blocks": {
+        "Hero": [
+          "Image",
+          "Alt",
+          "Text"
+        ],
+        "Banner": [
+          "Image (optional)",
+          "Image alt text",
+          "Text",
+          "Coupon code (optional)",
+          "Campaign ID (analytics)",
+          "Style"
+        ],
+        "Product Grid": [
+          "Options",
+          "Image",
+          "Image alt text",
+          "Product name",
+          "SKU / product ID (analytics productId)",
+          "Price (USD)",
+          "Compare-at price (shows sale)",
+          "Category",
+          "Brand",
+          "Rating (0-5)",
+          "Badge (New, Sale, Best Seller)",
+          "Product page"
+        ],
+        "Tabs": [
+          "Tab label",
+          "Content"
+        ],
+        "CTA": [
+          "Text (heading, copy and buttons)",
+          "Image (optional)",
+          "Image alt text",
+          "Style"
+        ]
+      },
+      "sections": [
+        "Target Location",
+        "Audience",
+        "Activity",
+        "Activity Type",
+        "Experience",
+        "Campaign ID",
+        "Style"
+      ]
+    },
+    "analyticsEvents": [
+      "pageView",
+      "scrollDepth",
+      "navClick",
+      "footerClick",
+      "linkClick",
+      "heroClick",
+      "bannerImpression",
+      "bannerClick",
+      "couponCopy",
+      "productListImpression",
+      "productClick",
+      "cartAdd",
+      "wishlistAdd",
+      "filterApply",
+      "sortApply",
+      "filterClear",
+      "searchSubmit",
+      "searchNoResults",
+      "tabClick",
+      "ctaClick",
+      "categoryView",
+      "propositionDisplay"
+    ],
+    "targetActivities": [
+      {
+        "activityId": "XT-GEO-PROMO",
+        "type": "XT",
+        "location": "home-appliances-geo-promo",
+        "experiences": [
+          {
+            "experience": "geo-us-west Promo",
+            "audience": "geo-us-west"
+          },
+          {
+            "experience": "geo-us-east Promo",
+            "audience": "geo-us-east"
+          },
+          {
+            "experience": "geo-europe Promo",
+            "audience": "geo-europe"
+          },
+          {
+            "experience": "Default Promo",
+            "audience": "default"
+          }
+        ]
+      },
+      {
+        "activityId": "XT-CATEGORY-OFFER",
+        "type": "XT",
+        "location": "home-appliances-offer",
+        "experiences": [
+          {
+            "experience": "VIP Offer",
+            "audience": "high-value-customers"
+          },
+          {
+            "experience": "Loyalty Offer",
+            "audience": "frequent-buyers"
+          },
+          {
+            "experience": "Default Offer",
+            "audience": "default"
+          }
+        ]
+      }
+    ],
+    "audienceSegments": [
+      "geo-us-west",
+      "geo-us-east",
+      "geo-europe",
+      "high-value-customers",
+      "frequent-buyers"
+    ],
+    "personalizationRules": [
+      "home-appliances-geo-promo: visitor location (time zone proxy for Target geo attributes) selects the US West, US East or Europe promotion, otherwise the default.",
+      "home-appliances-offer: first matching audience wins in this order: high-value-customers > frequent-buyers > default."
+    ],
+    "successMetrics": [
+      "Category view to product click rate",
+      "Filter usage rate and most used filters",
+      "Search usage and zero results",
+      "Add to cart rate from grid",
+      "Offer coupon copy -> apply rate"
+    ]
+  },
+  {
+    "id": "06",
+    "name": "Product Listing",
+    "path": "/content/aep-training/products",
+    "pageType": "product-listing",
+    "purpose": "Search results and full catalogue listing. Receives header/search block queries (?q=) and demonstrates search, filter, sort and product impression tracking.",
+    "components": [
+      "Banner",
+      "Product Grid"
+    ],
+    "authoringFields": {
+      "page": [
+        "title",
+        "description",
+        "template",
+        "page-type",
+        "site-section",
+        "category",
+        "image",
+        "nav",
+        "footer"
+      ],
+      "blocks": {
+        "Banner": [
+          "Image (optional)",
+          "Image alt text",
+          "Text",
+          "Coupon code (optional)",
+          "Campaign ID (analytics)",
+          "Style"
+        ],
+        "Product Grid": [
+          "Options",
+          "Image",
+          "Image alt text",
+          "Product name",
+          "SKU / product ID (analytics productId)",
+          "Price (USD)",
+          "Compare-at price (shows sale)",
+          "Category",
+          "Brand",
+          "Rating (0-5)",
+          "Badge (New, Sale, Best Seller)",
+          "Product page"
+        ]
+      },
+      "sections": [
+        "Target Location",
+        "Audience",
+        "Activity",
+        "Activity Type",
+        "Experience",
+        "Campaign ID",
+        "Style"
+      ]
+    },
+    "analyticsEvents": [
+      "pageView",
+      "scrollDepth",
+      "navClick",
+      "footerClick",
+      "linkClick",
+      "bannerImpression",
+      "bannerClick",
+      "couponCopy",
+      "productListImpression",
+      "productClick",
+      "cartAdd",
+      "wishlistAdd",
+      "filterApply",
+      "sortApply",
+      "filterClear",
+      "searchSubmit",
+      "searchNoResults",
+      "searchResultsView",
+      "categoryView",
+      "propositionDisplay"
+    ],
+    "targetActivities": [
+      {
+        "activityId": "XT-PLP-OFFER",
+        "type": "XT",
+        "location": "plp-offer",
+        "experiences": [
+          {
+            "experience": "Cart Recovery",
+            "audience": "cart-abandoners"
+          },
+          {
+            "experience": "Welcome Offer",
+            "audience": "new-visitors"
+          },
+          {
+            "experience": "Free Shipping",
+            "audience": "default"
+          }
+        ]
+      }
+    ],
+    "audienceSegments": [
+      "cart-abandoners",
+      "new-visitors"
+    ],
+    "personalizationRules": [
+      "plp-offer: cart abandoners see a \"finish your order\" banner, new visitors the WELCOME15 banner, everyone else a free shipping message."
+    ],
+    "successMetrics": [
+      "Search exit rate",
+      "Null search rate (searchNoResults / searchSubmit)",
+      "Filter and sort usage",
+      "Product click-through rate by position"
+    ]
+  },
+  {
+    "id": "07",
+    "name": "Product Details",
+    "path": "/content/aep-training/products/nova-pro-wireless-headphones",
+    "pageType": "product",
+    "purpose": "Product detail page (PDP). Demonstrates product views, image gallery usage, tab clicks, add to cart, wishlist adds, review clicks and Target Recommendations (similar, cross-sell, recently viewed).",
+    "components": [
+      "Product Info (PDP)",
+      "Columns",
+      "Tabs",
+      "Product Carousel",
+      "Testimonials"
+    ],
+    "authoringFields": {
+      "page": [
+        "title",
+        "description",
+        "template",
+        "page-type",
+        "site-section",
+        "category",
+        "image",
+        "nav",
+        "footer",
+        "product-id",
+        "product-name",
+        "product-brand",
+        "product-price"
+      ],
+      "blocks": {
+        "Product Info (PDP)": [
+          "Gallery images",
+          "Product name",
+          "SKU (analytics productId)",
+          "Price (USD)",
+          "Compare-at price",
+          "Brand",
+          "Category",
+          "Rating (0-5)",
+          "Review count",
+          "Description",
+          "Colour options (comma separated)"
+        ],
+        "Columns": [
+          "Columns",
+          "Rows"
+        ],
+        "Tabs": [
+          "Tab label",
+          "Content"
+        ],
+        "Product Carousel": [
+          "Source",
+          "Image",
+          "Image alt text",
+          "Product name",
+          "SKU / product ID (analytics productId)",
+          "Price (USD)",
+          "Compare-at price (shows sale)",
+          "Category",
+          "Brand",
+          "Rating (0-5)",
+          "Badge (New, Sale, Best Seller)",
+          "Product page"
+        ],
+        "Testimonials": [
+          "Layout",
+          "Photo",
+          "Quote",
+          "Name",
+          "Role / location",
+          "Rating"
+        ]
+      },
+      "sections": [
+        "Target Location",
+        "Audience",
+        "Activity",
+        "Activity Type",
+        "Experience",
+        "Campaign ID",
+        "Style"
+      ]
+    },
+    "analyticsEvents": [
+      "pageView",
+      "scrollDepth",
+      "navClick",
+      "footerClick",
+      "linkClick",
+      "productView",
+      "galleryInteraction",
+      "productOptionSelect",
+      "cartAdd",
+      "wishlistAdd",
+      "reviewsClick",
+      "ctaClick",
+      "tabClick",
+      "productListImpression",
+      "productCarouselClick",
+      "carouselNavigate",
+      "recommendationImpression",
+      "recommendationClick",
+      "testimonialImpression",
+      "propositionDisplay"
+    ],
+    "targetActivities": [
+      {
+        "activityId": "AB-PDP-TRUST",
+        "type": "A/B",
+        "location": "pdp-trust",
+        "experiences": [
+          {
+            "experience": "A",
+            "audience": "(random split)"
+          },
+          {
+            "experience": "B",
+            "audience": "(random split)"
+          }
+        ]
+      },
+      {
+        "activityId": "RECS-PDP-CROSS-SELL",
+        "type": "Recommendations",
+        "location": "pdp-cross-sell",
+        "experiences": [
+          {
+            "experience": "Frequently Bought Together",
+            "audience": "default"
+          }
+        ]
+      },
+      {
+        "activityId": "RECS-PDP-SIMILAR",
+        "type": "Recommendations",
+        "location": "pdp-recommendations",
+        "experiences": [
+          {
+            "experience": "Similar Products",
+            "audience": "default"
+          }
+        ]
+      },
+      {
+        "activityId": "RECS-RECENTLY-VIEWED",
+        "type": "Recommendations",
+        "location": "pdp-recently-viewed",
+        "experiences": [
+          {
+            "experience": "Recently Viewed",
+            "audience": "default"
+          }
+        ]
+      }
+    ],
+    "audienceSegments": [],
+    "personalizationRules": [
+      "pdp-recommendations: Target Recommendations \"people who viewed this also viewed\" (entity.id = productId); simulator shows same-category products.",
+      "pdp-cross-sell: \"frequently bought together\" accessories for the category.",
+      "pdp-recently-viewed: products from the visitor profile (hidden on first product view).",
+      "pdp-trust: A/B test of free-returns messaging vs. rating social proof."
+    ],
+    "successMetrics": [
+      "Product view -> add to cart rate",
+      "Gallery interaction rate",
+      "Reviews click rate",
+      "Recommendation CTR and influenced revenue",
+      "Wishlist add rate"
+    ]
+  },
+  {
+    "id": "08",
+    "name": "Best Sellers",
+    "path": "/content/aep-training/best-sellers",
+    "pageType": "merchandising",
+    "purpose": "Merchandising collection driven by social proof. Shows frequent buyers a loyalty perk.",
+    "components": [
+      "Hero",
+      "Banner",
+      "Testimonials",
+      "Product Grid",
+      "CTA"
+    ],
+    "authoringFields": {
+      "page": [
+        "title",
+        "description",
+        "template",
+        "page-type",
+        "site-section",
+        "category",
+        "image",
+        "nav",
+        "footer"
+      ],
+      "blocks": {
+        "Hero": [
+          "Image",
+          "Alt",
+          "Text"
+        ],
+        "Banner": [
+          "Image (optional)",
+          "Image alt text",
+          "Text",
+          "Coupon code (optional)",
+          "Campaign ID (analytics)",
+          "Style"
+        ],
+        "Testimonials": [
+          "Layout",
+          "Photo",
+          "Quote",
+          "Name",
+          "Role / location",
+          "Rating"
+        ],
+        "Product Grid": [
+          "Options",
+          "Image",
+          "Image alt text",
+          "Product name",
+          "SKU / product ID (analytics productId)",
+          "Price (USD)",
+          "Compare-at price (shows sale)",
+          "Category",
+          "Brand",
+          "Rating (0-5)",
+          "Badge (New, Sale, Best Seller)",
+          "Product page"
+        ],
+        "CTA": [
+          "Text (heading, copy and buttons)",
+          "Image (optional)",
+          "Image alt text",
+          "Style"
+        ]
+      },
+      "sections": [
+        "Target Location",
+        "Audience",
+        "Activity",
+        "Activity Type",
+        "Experience",
+        "Campaign ID",
+        "Style"
+      ]
+    },
+    "analyticsEvents": [
+      "pageView",
+      "scrollDepth",
+      "navClick",
+      "footerClick",
+      "linkClick",
+      "heroClick",
+      "bannerImpression",
+      "bannerClick",
+      "couponCopy",
+      "testimonialImpression",
+      "productListImpression",
+      "productClick",
+      "cartAdd",
+      "wishlistAdd",
+      "filterApply",
+      "sortApply",
+      "filterClear",
+      "searchSubmit",
+      "searchNoResults",
+      "ctaClick",
+      "propositionDisplay"
+    ],
+    "targetActivities": [
+      {
+        "activityId": "XT-BESTSELLERS",
+        "type": "XT",
+        "location": "bestsellers-offer",
+        "experiences": [
+          {
+            "experience": "Frequent Buyer Perk",
+            "audience": "frequent-buyers"
+          },
+          {
+            "experience": "Social Proof",
+            "audience": "default"
+          }
+        ]
+      }
+    ],
+    "audienceSegments": [
+      "frequent-buyers"
+    ],
+    "personalizationRules": [
+      "bestsellers-offer: frequent buyers (3+ orders) get free express shipping; everyone else sees review highlights."
+    ],
+    "successMetrics": [
+      "Collection add to cart rate",
+      "Perk banner CTR for frequent buyers",
+      "Revenue per visit"
+    ]
+  },
+  {
+    "id": "09",
+    "name": "New Arrivals",
+    "path": "/content/aep-training/new-arrivals",
+    "pageType": "merchandising",
+    "purpose": "Freshness-driven collection. Features a new product matched to the visitor's category affinity.",
+    "components": [
+      "Hero",
+      "CTA",
+      "Product Grid"
+    ],
+    "authoringFields": {
+      "page": [
+        "title",
+        "description",
+        "template",
+        "page-type",
+        "site-section",
+        "category",
+        "image",
+        "nav",
+        "footer"
+      ],
+      "blocks": {
+        "Hero": [
+          "Image",
+          "Alt",
+          "Text"
+        ],
+        "CTA": [
+          "Text (heading, copy and buttons)",
+          "Image (optional)",
+          "Image alt text",
+          "Style"
+        ],
+        "Product Grid": [
+          "Options",
+          "Image",
+          "Image alt text",
+          "Product name",
+          "SKU / product ID (analytics productId)",
+          "Price (USD)",
+          "Compare-at price (shows sale)",
+          "Category",
+          "Brand",
+          "Rating (0-5)",
+          "Badge (New, Sale, Best Seller)",
+          "Product page"
+        ]
+      },
+      "sections": [
+        "Target Location",
+        "Audience",
+        "Activity",
+        "Activity Type",
+        "Experience",
+        "Campaign ID",
+        "Style"
+      ]
+    },
+    "analyticsEvents": [
+      "pageView",
+      "scrollDepth",
+      "navClick",
+      "footerClick",
+      "linkClick",
+      "heroClick",
+      "ctaClick",
+      "productListImpression",
+      "productClick",
+      "cartAdd",
+      "wishlistAdd",
+      "filterApply",
+      "sortApply",
+      "filterClear",
+      "searchSubmit",
+      "searchNoResults",
+      "propositionDisplay"
+    ],
+    "targetActivities": [
+      {
+        "activityId": "XT-NEW-ARRIVALS",
+        "type": "XT",
+        "location": "new-arrivals-feature",
+        "experiences": [
+          {
+            "experience": "Electronics Feature",
+            "audience": "electronics-shoppers"
+          },
+          {
+            "experience": "Fashion Feature",
+            "audience": "fashion-shoppers"
+          },
+          {
+            "experience": "Home Feature",
+            "audience": "default"
+          }
+        ]
+      }
+    ],
+    "audienceSegments": [
+      "electronics-shoppers",
+      "fashion-shoppers"
+    ],
+    "personalizationRules": [
+      "new-arrivals-feature: electronics shoppers see the Lumen Book laptop, fashion shoppers the Riviera dress, others the Barista Touch espresso machine."
+    ],
+    "successMetrics": [
+      "New product view rate",
+      "Feature CTA CTR by affinity",
+      "Add to cart rate"
+    ]
+  },
+  {
+    "id": "10",
+    "name": "Deals",
+    "path": "/content/aep-training/deals",
+    "pageType": "merchandising",
+    "purpose": "Promotional hub and the multivariate test page: two headlines x two banners are combined independently (full factorial MVT).",
+    "components": [
+      "Hero",
+      "Banner",
+      "Product Grid",
+      "FAQ"
+    ],
+    "authoringFields": {
+      "page": [
+        "title",
+        "description",
+        "template",
+        "page-type",
+        "site-section",
+        "category",
+        "campaign-id",
+        "image",
+        "nav",
+        "footer"
+      ],
+      "blocks": {
+        "Hero": [
+          "Image",
+          "Alt",
+          "Text"
+        ],
+        "Banner": [
+          "Image (optional)",
+          "Image alt text",
+          "Text",
+          "Coupon code (optional)",
+          "Campaign ID (analytics)",
+          "Style"
+        ],
+        "Product Grid": [
+          "Options",
+          "Image",
+          "Image alt text",
+          "Product name",
+          "SKU / product ID (analytics productId)",
+          "Price (USD)",
+          "Compare-at price (shows sale)",
+          "Category",
+          "Brand",
+          "Rating (0-5)",
+          "Badge (New, Sale, Best Seller)",
+          "Product page"
+        ],
+        "FAQ": [
+          "Options",
+          "Question",
+          "Answer"
+        ]
+      },
+      "sections": [
+        "Target Location",
+        "Audience",
+        "Activity",
+        "Activity Type",
+        "Experience",
+        "Campaign ID",
+        "Style"
+      ]
+    },
+    "analyticsEvents": [
+      "pageView",
+      "scrollDepth",
+      "navClick",
+      "footerClick",
+      "linkClick",
+      "heroClick",
+      "bannerImpression",
+      "bannerClick",
+      "couponCopy",
+      "productListImpression",
+      "productClick",
+      "cartAdd",
+      "wishlistAdd",
+      "filterApply",
+      "sortApply",
+      "filterClear",
+      "searchSubmit",
+      "searchNoResults",
+      "faqToggle",
+      "faqFeedback",
+      "propositionDisplay"
+    ],
+    "targetActivities": [
+      {
+        "activityId": "MVT-DEALS",
+        "type": "MVT",
+        "location": "deals-headline",
+        "experiences": [
+          {
+            "experience": "A",
+            "audience": "(random split)"
+          },
+          {
+            "experience": "B",
+            "audience": "(random split)"
+          }
+        ]
+      },
+      {
+        "activityId": "MVT-DEALS",
+        "type": "MVT",
+        "location": "deals-banner",
+        "experiences": [
+          {
+            "experience": "A",
+            "audience": "(random split)"
+          },
+          {
+            "experience": "B",
+            "audience": "(random split)"
+          }
+        ]
+      }
+    ],
+    "audienceSegments": [],
+    "personalizationRules": [
+      "MVT-DEALS: deals-headline (A/B) and deals-banner (A/B) are assigned independently per visitor, producing 4 combinations; Target MVT reports element contribution."
+    ],
+    "successMetrics": [
+      "Revenue per visit by combination",
+      "Element contribution (headline vs banner)",
+      "Coupon copy and apply rate"
+    ]
+  },
+  {
+    "id": "11",
+    "name": "Seasonal Offers",
+    "path": "/content/aep-training/seasonal-offers",
+    "pageType": "merchandising",
+    "purpose": "Seasonal campaign landing with location-aware hero and a collection carousel.",
+    "components": [
+      "Hero",
+      "Carousel",
+      "Product Grid",
+      "CTA"
+    ],
+    "authoringFields": {
+      "page": [
+        "title",
+        "description",
+        "template",
+        "page-type",
+        "site-section",
+        "category",
+        "campaign-id",
+        "image",
+        "nav",
+        "footer"
+      ],
+      "blocks": {
+        "Hero": [
+          "Image",
+          "Alt",
+          "Text"
+        ],
+        "Carousel": [
+          "Style",
+          "Image",
+          "Alt text",
+          "Text"
+        ],
+        "Product Grid": [
+          "Options",
+          "Image",
+          "Image alt text",
+          "Product name",
+          "SKU / product ID (analytics productId)",
+          "Price (USD)",
+          "Compare-at price (shows sale)",
+          "Category",
+          "Brand",
+          "Rating (0-5)",
+          "Badge (New, Sale, Best Seller)",
+          "Product page"
+        ],
+        "CTA": [
+          "Text (heading, copy and buttons)",
+          "Image (optional)",
+          "Image alt text",
+          "Style"
+        ]
+      },
+      "sections": [
+        "Target Location",
+        "Audience",
+        "Activity",
+        "Activity Type",
+        "Experience",
+        "Campaign ID",
+        "Style"
+      ]
+    },
+    "analyticsEvents": [
+      "pageView",
+      "scrollDepth",
+      "navClick",
+      "footerClick",
+      "linkClick",
+      "heroClick",
+      "carouselClick",
+      "carouselNavigate",
+      "productListImpression",
+      "productClick",
+      "cartAdd",
+      "wishlistAdd",
+      "filterApply",
+      "sortApply",
+      "filterClear",
+      "searchSubmit",
+      "searchNoResults",
+      "ctaClick",
+      "propositionDisplay"
+    ],
+    "targetActivities": [
+      {
+        "activityId": "XT-SEASONAL-HERO",
+        "type": "XT",
+        "location": "seasonal-hero",
+        "experiences": [
+          {
+            "experience": "Europe Hero",
+            "audience": "geo-europe"
+          },
+          {
+            "experience": "US West Hero",
+            "audience": "geo-us-west"
+          },
+          {
+            "experience": "Default Hero",
+            "audience": "default"
+          }
+        ]
+      }
+    ],
+    "audienceSegments": [
+      "geo-europe",
+      "geo-us-west"
+    ],
+    "personalizationRules": [
+      "seasonal-hero: European visitors see the \"Autumn in Europe\" hero (EU shipping), US West visitors a mild-weather edit, others the default fall hero."
+    ],
+    "successMetrics": [
+      "Campaign landing CTR",
+      "Carousel interaction rate",
+      "Seasonal collection revenue"
+    ]
+  },
+  {
+    "id": "12",
+    "name": "Wishlist",
+    "path": "/content/aep-training/wishlist",
+    "pageType": "wishlist",
+    "purpose": "Saved products. Demonstrates wishlist views/removals, move to cart and a sign-in prompt for anonymous users.",
+    "components": [
+      "Banner",
+      "Wishlist",
+      "Product Carousel"
+    ],
+    "authoringFields": {
+      "page": [
+        "title",
+        "description",
+        "template",
+        "page-type",
+        "site-section",
+        "robots",
+        "nav",
+        "footer"
+      ],
+      "blocks": {
+        "Banner": [
+          "Image (optional)",
+          "Image alt text",
+          "Text",
+          "Coupon code (optional)",
+          "Campaign ID (analytics)",
+          "Style"
+        ],
+        "Wishlist": [
+          "Empty wishlist message"
+        ],
+        "Product Carousel": [
+          "Source",
+          "Image",
+          "Image alt text",
+          "Product name",
+          "SKU / product ID (analytics productId)",
+          "Price (USD)",
+          "Compare-at price (shows sale)",
+          "Category",
+          "Brand",
+          "Rating (0-5)",
+          "Badge (New, Sale, Best Seller)",
+          "Product page"
+        ]
+      },
+      "sections": [
+        "Target Location",
+        "Audience",
+        "Activity",
+        "Activity Type",
+        "Experience",
+        "Campaign ID",
+        "Style"
+      ]
+    },
+    "analyticsEvents": [
+      "pageView",
+      "scrollDepth",
+      "navClick",
+      "footerClick",
+      "linkClick",
+      "bannerImpression",
+      "bannerClick",
+      "couponCopy",
+      "wishlistView",
+      "wishlistRemove",
+      "cartAdd",
+      "productListImpression",
+      "productCarouselClick",
+      "carouselNavigate",
+      "wishlistAdd",
+      "recommendationImpression",
+      "recommendationClick",
+      "propositionDisplay",
+      "loginComplete"
+    ],
+    "targetActivities": [
+      {
+        "activityId": "XT-WISHLIST",
+        "type": "XT",
+        "location": "wishlist-offer",
+        "experiences": [
+          {
+            "experience": "Price Alerts",
+            "audience": "logged-in-users"
+          },
+          {
+            "experience": "Sign-in Prompt",
+            "audience": "default"
+          }
+        ]
+      }
+    ],
+    "audienceSegments": [
+      "logged-in-users"
+    ],
+    "personalizationRules": [
+      "wishlist-offer: logged-in users see price-drop alert messaging; anonymous users are prompted to sign in to sync their wishlist."
+    ],
+    "successMetrics": [
+      "Wishlist to cart conversion",
+      "Sign-in rate from prompt",
+      "Wishlist size per visitor"
+    ]
+  },
+  {
+    "id": "13",
+    "name": "Cart",
+    "path": "/content/aep-training/cart",
+    "pageType": "cart",
+    "purpose": "Cart review. Demonstrates cart views, quantity changes, removals, coupon usage, a high cart value discount banner and a personalized coupon.",
+    "components": [
+      "Banner",
+      "Cart",
+      "Product Carousel"
+    ],
+    "authoringFields": {
+      "page": [
+        "title",
+        "description",
+        "template",
+        "page-type",
+        "site-section",
+        "robots",
+        "nav",
+        "footer"
+      ],
+      "blocks": {
+        "Banner": [
+          "Image (optional)",
+          "Image alt text",
+          "Text",
+          "Coupon code (optional)",
+          "Campaign ID (analytics)",
+          "Style"
+        ],
+        "Cart": [
+          "Empty cart message"
+        ],
+        "Product Carousel": [
+          "Source",
+          "Image",
+          "Image alt text",
+          "Product name",
+          "SKU / product ID (analytics productId)",
+          "Price (USD)",
+          "Compare-at price (shows sale)",
+          "Category",
+          "Brand",
+          "Rating (0-5)",
+          "Badge (New, Sale, Best Seller)",
+          "Product page"
+        ]
+      },
+      "sections": [
+        "Target Location",
+        "Audience",
+        "Activity",
+        "Activity Type",
+        "Experience",
+        "Campaign ID",
+        "Style"
+      ]
+    },
+    "analyticsEvents": [
+      "pageView",
+      "scrollDepth",
+      "navClick",
+      "footerClick",
+      "linkClick",
+      "bannerImpression",
+      "bannerClick",
+      "couponCopy",
+      "cartView",
+      "cartAdd",
+      "cartRemove",
+      "couponApply",
+      "couponRemove",
+      "productListImpression",
+      "productCarouselClick",
+      "carouselNavigate",
+      "wishlistAdd",
+      "recommendationImpression",
+      "recommendationClick",
+      "propositionDisplay"
+    ],
+    "targetActivities": [
+      {
+        "activityId": "XT-CART-HIGH-VALUE",
+        "type": "XT",
+        "location": "cart-offer",
+        "experiences": [
+          {
+            "experience": "VIP Discount",
+            "audience": "high-cart-value"
+          },
+          {
+            "experience": "Spend More Incentive",
+            "audience": "default"
+          }
+        ]
+      },
+      {
+        "activityId": "XT-CART-COUPON",
+        "type": "XT",
+        "location": "cart-coupon",
+        "experiences": [
+          {
+            "experience": "Welcome Back Coupon",
+            "audience": "cart-abandoners"
+          },
+          {
+            "experience": "First Order Coupon",
+            "audience": "new-visitors"
+          }
+        ]
+      },
+      {
+        "activityId": "RECS-CART-CROSS-SELL",
+        "type": "Recommendations",
+        "location": "cart-cross-sell",
+        "experiences": [
+          {
+            "experience": "Cart Cross-sell",
+            "audience": "default"
+          }
+        ]
+      }
+    ],
+    "audienceSegments": [
+      "high-cart-value",
+      "cart-abandoners",
+      "new-visitors"
+    ],
+    "personalizationRules": [
+      "cart-offer: cart subtotal >= $300 (high-cart-value condition) unlocks the VIP20 banner, otherwise an incentive to reach $300 is shown. Evaluated on page load.",
+      "cart-coupon: cart abandoners get SAVE10, new visitors WELCOME15; others see no coupon (no default experience)."
+    ],
+    "successMetrics": [
+      "Cart to checkout rate",
+      "Cart removal rate",
+      "Coupon apply success rate",
+      "AOV for high cart value audience",
+      "Cross-sell add rate"
+    ]
+  },
+  {
+    "id": "14",
+    "name": "Checkout",
+    "path": "/content/aep-training/checkout",
+    "pageType": "checkout",
+    "purpose": "Single-page checkout. Demonstrates checkout start, step tracking, shipping and payment selection and checkout completion (purchase).",
+    "components": [
+      "Checkout"
+    ],
+    "authoringFields": {
+      "page": [
+        "title",
+        "description",
+        "template",
+        "page-type",
+        "site-section",
+        "robots",
+        "nav",
+        "footer"
+      ],
+      "blocks": {
+        "Checkout": [
+          "Intro text"
+        ]
+      },
+      "sections": [
+        "Target Location",
+        "Audience",
+        "Activity",
+        "Activity Type",
+        "Experience",
+        "Campaign ID",
+        "Style"
+      ]
+    },
+    "analyticsEvents": [
+      "pageView",
+      "scrollDepth",
+      "navClick",
+      "footerClick",
+      "linkClick",
+      "checkoutStart",
+      "checkoutStep",
+      "shippingSelect",
+      "paymentSelect",
+      "checkoutError",
+      "checkoutComplete",
+      "propositionDisplay",
+      "loginComplete"
+    ],
+    "targetActivities": [
+      {
+        "activityId": "AB-CHECKOUT-TRUST",
+        "type": "A/B",
+        "location": "checkout-trust",
+        "experiences": [
+          {
+            "experience": "A",
+            "audience": "(random split)"
+          },
+          {
+            "experience": "B",
+            "audience": "(random split)"
+          }
+        ]
+      }
+    ],
+    "audienceSegments": [],
+    "personalizationRules": [
+      "checkout-trust: A/B test of security badges (A) vs. social proof (B) above the form."
+    ],
+    "successMetrics": [
+      "Checkout start -> completion rate",
+      "Step drop-off",
+      "Shipping method mix",
+      "Payment method mix",
+      "Validation error rate"
+    ]
+  },
+  {
+    "id": "15",
+    "name": "Order Confirmation",
+    "path": "/content/aep-training/order-confirmation",
+    "pageType": "order-confirmation",
+    "purpose": "Post-purchase page. Shows the order summary and a next-best-action (membership upsell for first-time buyers).",
+    "components": [
+      "Orders",
+      "CTA",
+      "Product Carousel"
+    ],
+    "authoringFields": {
+      "page": [
+        "title",
+        "description",
+        "template",
+        "page-type",
+        "site-section",
+        "robots",
+        "nav",
+        "footer"
+      ],
+      "blocks": {
+        "Orders": [
+          "View"
+        ],
+        "CTA": [
+          "Text (heading, copy and buttons)",
+          "Image (optional)",
+          "Image alt text",
+          "Style"
+        ],
+        "Product Carousel": [
+          "Source",
+          "Image",
+          "Image alt text",
+          "Product name",
+          "SKU / product ID (analytics productId)",
+          "Price (USD)",
+          "Compare-at price (shows sale)",
+          "Category",
+          "Brand",
+          "Rating (0-5)",
+          "Badge (New, Sale, Best Seller)",
+          "Product page"
+        ]
+      },
+      "sections": [
+        "Target Location",
+        "Audience",
+        "Activity",
+        "Activity Type",
+        "Experience",
+        "Campaign ID",
+        "Style"
+      ]
+    },
+    "analyticsEvents": [
+      "pageView",
+      "scrollDepth",
+      "navClick",
+      "footerClick",
+      "linkClick",
+      "orderHistoryView",
+      "orderTrackClick",
+      "orderConfirmationView",
+      "ctaClick",
+      "productListImpression",
+      "productCarouselClick",
+      "carouselNavigate",
+      "cartAdd",
+      "wishlistAdd",
+      "recommendationImpression",
+      "recommendationClick",
+      "propositionDisplay",
+      "membershipEnroll"
+    ],
+    "targetActivities": [
+      {
+        "activityId": "XT-CONFIRMATION-NEXT",
+        "type": "XT",
+        "location": "confirmation-next",
+        "experiences": [
+          {
+            "experience": "Join Rewards",
+            "audience": "first-time-buyers"
+          },
+          {
+            "experience": "VIP Thank You",
+            "audience": "frequent-buyers"
+          },
+          {
+            "experience": "Continue Shopping",
+            "audience": "default"
+          }
+        ]
+      }
+    ],
+    "audienceSegments": [
+      "first-time-buyers",
+      "frequent-buyers"
+    ],
+    "personalizationRules": [
+      "confirmation-next: first-time buyers are invited to join Rewards, frequent buyers get a VIP thank-you, everyone else continues shopping."
+    ],
+    "successMetrics": [
+      "Post-purchase enrollment rate",
+      "Repeat visit within 7 days",
+      "Recommendation CTR after purchase"
+    ]
+  },
+  {
+    "id": "16",
+    "name": "My Account",
+    "path": "/content/aep-training/account",
+    "pageType": "account",
+    "purpose": "Account dashboard. Demo sign-in/sign-out switches the authState used by Logged-In Users and Anonymous Users audiences.",
+    "components": [
+      "Cards",
+      "CTA",
+      "Accordion"
+    ],
+    "authoringFields": {
+      "page": [
+        "title",
+        "description",
+        "template",
+        "page-type",
+        "site-section",
+        "robots",
+        "nav",
+        "footer"
+      ],
+      "blocks": {
+        "Cards": [
+          "Image",
+          "Text"
+        ],
+        "CTA": [
+          "Text (heading, copy and buttons)",
+          "Image (optional)",
+          "Image alt text",
+          "Style"
+        ],
+        "Accordion": [
+          "Label",
+          "Body"
+        ]
+      },
+      "sections": [
+        "Target Location",
+        "Audience",
+        "Activity",
+        "Activity Type",
+        "Experience",
+        "Campaign ID",
+        "Style"
+      ]
+    },
+    "analyticsEvents": [
+      "pageView",
+      "scrollDepth",
+      "navClick",
+      "footerClick",
+      "linkClick",
+      "ctaClick",
+      "accordionToggle",
+      "loginComplete",
+      "logout",
+      "propositionDisplay"
+    ],
+    "targetActivities": [
+      {
+        "activityId": "XT-ACCOUNT",
+        "type": "XT",
+        "location": "account-hero",
+        "experiences": [
+          {
+            "experience": "Dashboard",
+            "audience": "logged-in-users"
+          },
+          {
+            "experience": "Sign-in Prompt",
+            "audience": "default"
+          }
+        ]
+      }
+    ],
+    "audienceSegments": [
+      "logged-in-users"
+    ],
+    "personalizationRules": [
+      "account-hero: logged-in users see their dashboard; anonymous users see the sign-in prompt with member benefits."
+    ],
+    "successMetrics": [
+      "Login rate",
+      "Dashboard link CTR",
+      "Membership enrollment from account"
+    ]
+  },
+  {
+    "id": "17",
+    "name": "Order History",
+    "path": "/content/aep-training/account/orders",
+    "pageType": "order-history",
+    "purpose": "Order history for signed-in customers (sample orders are seeded on sign-in).",
+    "components": [
+      "Orders",
+      "Product Carousel",
+      "CTA"
+    ],
+    "authoringFields": {
+      "page": [
+        "title",
+        "description",
+        "template",
+        "page-type",
+        "site-section",
+        "robots",
+        "nav",
+        "footer"
+      ],
+      "blocks": {
+        "Orders": [
+          "View"
+        ],
+        "Product Carousel": [
+          "Source",
+          "Image",
+          "Image alt text",
+          "Product name",
+          "SKU / product ID (analytics productId)",
+          "Price (USD)",
+          "Compare-at price (shows sale)",
+          "Category",
+          "Brand",
+          "Rating (0-5)",
+          "Badge (New, Sale, Best Seller)",
+          "Product page"
+        ],
+        "CTA": [
+          "Text (heading, copy and buttons)",
+          "Image (optional)",
+          "Image alt text",
+          "Style"
+        ]
+      },
+      "sections": [
+        "Target Location",
+        "Audience",
+        "Activity",
+        "Activity Type",
+        "Experience",
+        "Campaign ID",
+        "Style"
+      ]
+    },
+    "analyticsEvents": [
+      "pageView",
+      "scrollDepth",
+      "navClick",
+      "footerClick",
+      "linkClick",
+      "orderHistoryView",
+      "orderTrackClick",
+      "productListImpression",
+      "productCarouselClick",
+      "carouselNavigate",
+      "cartAdd",
+      "wishlistAdd",
+      "recommendationImpression",
+      "recommendationClick",
+      "ctaClick",
+      "propositionDisplay"
+    ],
+    "targetActivities": [
+      {
+        "activityId": "XT-ORDERS-REORDER",
+        "type": "XT",
+        "location": "orders-reorder",
+        "experiences": [
+          {
+            "experience": "Buy It Again",
+            "audience": "frequent-buyers"
+          },
+          {
+            "experience": "Rewards Reminder",
+            "audience": "default"
+          }
+        ]
+      }
+    ],
+    "audienceSegments": [
+      "frequent-buyers"
+    ],
+    "personalizationRules": [
+      "orders-reorder: frequent buyers see a \"buy it again\" carousel, everyone else a Rewards reminder."
+    ],
+    "successMetrics": [
+      "Reorder rate",
+      "Track click rate",
+      "Login rate from orders page"
+    ]
+  },
+  {
+    "id": "18",
+    "name": "Track Orders",
+    "path": "/content/aep-training/account/track-order",
+    "pageType": "order-tracking",
+    "purpose": "Self-service order tracking by order number. Demonstrates form-based events with success/failure attributes.",
+    "components": [
+      "Orders",
+      "Banner",
+      "FAQ"
+    ],
+    "authoringFields": {
+      "page": [
+        "title",
+        "description",
+        "template",
+        "page-type",
+        "site-section",
+        "nav",
+        "footer"
+      ],
+      "blocks": {
+        "Orders": [
+          "View"
+        ],
+        "Banner": [
+          "Image (optional)",
+          "Image alt text",
+          "Text",
+          "Coupon code (optional)",
+          "Campaign ID (analytics)",
+          "Style"
+        ],
+        "FAQ": [
+          "Options",
+          "Question",
+          "Answer"
+        ]
+      },
+      "sections": [
+        "Target Location",
+        "Audience",
+        "Activity",
+        "Activity Type",
+        "Experience",
+        "Campaign ID",
+        "Style"
+      ]
+    },
+    "analyticsEvents": [
+      "pageView",
+      "scrollDepth",
+      "navClick",
+      "footerClick",
+      "linkClick",
+      "orderHistoryView",
+      "orderTrackClick",
+      "orderTrack",
+      "bannerImpression",
+      "bannerClick",
+      "couponCopy",
+      "faqToggle",
+      "faqFeedback",
+      "propositionDisplay",
+      "loginComplete"
+    ],
+    "targetActivities": [
+      {
+        "activityId": "XT-TRACKING-HELP",
+        "type": "XT",
+        "location": "tracking-help",
+        "experiences": [
+          {
+            "experience": "Signed-in Help",
+            "audience": "logged-in-users"
+          },
+          {
+            "experience": "Anonymous Help",
+            "audience": "default"
+          }
+        ]
+      }
+    ],
+    "audienceSegments": [
+      "logged-in-users"
+    ],
+    "personalizationRules": [
+      "tracking-help: logged-in users are pointed to their order list; anonymous users are told where to find the order number."
+    ],
+    "successMetrics": [
+      "Tracking success rate (orderFound)",
+      "Support contact rate after tracking"
+    ]
+  },
+  {
+    "id": "19",
+    "name": "Customer Support",
+    "path": "/content/aep-training/support",
+    "pageType": "support",
+    "purpose": "Help centre. Demonstrates on-page content search, FAQ engagement and priority support messaging for high-value customers.",
+    "components": [
+      "Hero",
+      "Search",
+      "Banner",
+      "Cards",
+      "FAQ"
+    ],
+    "authoringFields": {
+      "page": [
+        "title",
+        "description",
+        "template",
+        "page-type",
+        "site-section",
+        "image",
+        "nav",
+        "footer"
+      ],
+      "blocks": {
+        "Hero": [
+          "Image",
+          "Alt",
+          "Text"
+        ],
+        "Search": [
+          "Placeholder / label",
+          "Search scope",
+          "Popular search terms (comma separated)"
+        ],
+        "Banner": [
+          "Image (optional)",
+          "Image alt text",
+          "Text",
+          "Coupon code (optional)",
+          "Campaign ID (analytics)",
+          "Style"
+        ],
+        "Cards": [
+          "Image",
+          "Text"
+        ],
+        "FAQ": [
+          "Options",
+          "Question",
+          "Answer"
+        ]
+      },
+      "sections": [
+        "Target Location",
+        "Audience",
+        "Activity",
+        "Activity Type",
+        "Experience",
+        "Campaign ID",
+        "Style"
+      ]
+    },
+    "analyticsEvents": [
+      "pageView",
+      "scrollDepth",
+      "navClick",
+      "footerClick",
+      "linkClick",
+      "heroClick",
+      "searchSubmit",
+      "searchNoResults",
+      "searchSuggestionClick",
+      "bannerImpression",
+      "bannerClick",
+      "couponCopy",
+      "ctaClick",
+      "faqToggle",
+      "faqFeedback",
+      "propositionDisplay"
+    ],
+    "targetActivities": [
+      {
+        "activityId": "XT-SUPPORT-PRIORITY",
+        "type": "XT",
+        "location": "support-priority",
+        "experiences": [
+          {
+            "experience": "Priority Line",
+            "audience": "high-value-customers"
+          },
+          {
+            "experience": "Member Chat",
+            "audience": "logged-in-users"
+          },
+          {
+            "experience": "Self Service",
+            "audience": "default"
+          }
+        ]
+      }
+    ],
+    "audienceSegments": [
+      "high-value-customers",
+      "logged-in-users"
+    ],
+    "personalizationRules": [
+      "support-priority: high-value customers see the priority phone line; logged-in users live chat; everyone else self-service links."
+    ],
+    "successMetrics": [
+      "Self-service rate (FAQ helpful = yes)",
+      "Help search zero-result rate",
+      "Contact rate"
+    ]
+  },
+  {
+    "id": "20",
+    "name": "Contact Us",
+    "path": "/content/aep-training/contact",
+    "pageType": "contact",
+    "purpose": "Contact channels with tracked channel CTAs; cart abandoners get cart-specific help.",
+    "components": [
+      "Columns",
+      "CTA",
+      "Accordion"
+    ],
+    "authoringFields": {
+      "page": [
+        "title",
+        "description",
+        "template",
+        "page-type",
+        "site-section",
+        "nav",
+        "footer"
+      ],
+      "blocks": {
+        "Columns": [
+          "Columns",
+          "Rows"
+        ],
+        "CTA": [
+          "Text (heading, copy and buttons)",
+          "Image (optional)",
+          "Image alt text",
+          "Style"
+        ],
+        "Accordion": [
+          "Label",
+          "Body"
+        ]
+      },
+      "sections": [
+        "Target Location",
+        "Audience",
+        "Activity",
+        "Activity Type",
+        "Experience",
+        "Campaign ID",
+        "Style"
+      ]
+    },
+    "analyticsEvents": [
+      "pageView",
+      "scrollDepth",
+      "navClick",
+      "footerClick",
+      "linkClick",
+      "ctaClick",
+      "accordionToggle",
+      "propositionDisplay"
+    ],
+    "targetActivities": [
+      {
+        "activityId": "XT-CONTACT",
+        "type": "XT",
+        "location": "contact-cta",
+        "experiences": [
+          {
+            "experience": "Cart Help",
+            "audience": "cart-abandoners"
+          },
+          {
+            "experience": "General Help",
+            "audience": "default"
+          }
+        ]
+      }
+    ],
+    "audienceSegments": [
+      "cart-abandoners"
+    ],
+    "personalizationRules": [
+      "contact-cta: cart abandoners are offered help completing their order; others see general support hours."
+    ],
+    "successMetrics": [
+      "Contact channel mix (CTAName)",
+      "Cart recovery from contact page"
+    ]
+  },
+  {
+    "id": "21",
+    "name": "About Us",
+    "path": "/content/aep-training/about",
+    "pageType": "content",
+    "purpose": "Brand story page with an A/B test on the closing CTA copy.",
+    "components": [
+      "Hero",
+      "Columns",
+      "Cards",
+      "Testimonials",
+      "CTA"
+    ],
+    "authoringFields": {
+      "page": [
+        "title",
+        "description",
+        "template",
+        "page-type",
+        "site-section",
+        "image",
+        "nav",
+        "footer"
+      ],
+      "blocks": {
+        "Hero": [
+          "Image",
+          "Alt",
+          "Text"
+        ],
+        "Columns": [
+          "Columns",
+          "Rows"
+        ],
+        "Cards": [
+          "Image",
+          "Text"
+        ],
+        "Testimonials": [
+          "Layout",
+          "Photo",
+          "Quote",
+          "Name",
+          "Role / location",
+          "Rating"
+        ],
+        "CTA": [
+          "Text (heading, copy and buttons)",
+          "Image (optional)",
+          "Image alt text",
+          "Style"
+        ]
+      },
+      "sections": [
+        "Target Location",
+        "Audience",
+        "Activity",
+        "Activity Type",
+        "Experience",
+        "Campaign ID",
+        "Style"
+      ]
+    },
+    "analyticsEvents": [
+      "pageView",
+      "scrollDepth",
+      "navClick",
+      "footerClick",
+      "linkClick",
+      "heroClick",
+      "ctaClick",
+      "testimonialImpression",
+      "propositionDisplay"
+    ],
+    "targetActivities": [
+      {
+        "activityId": "AB-ABOUT-CTA",
+        "type": "A/B",
+        "location": "about-cta",
+        "experiences": [
+          {
+            "experience": "A",
+            "audience": "(random split)"
+          },
+          {
+            "experience": "B",
+            "audience": "(random split)"
+          }
+        ]
+      }
+    ],
+    "audienceSegments": [],
+    "personalizationRules": [
+      "about-cta: A/B test, \"Explore NovaMart\" (A) vs \"Start shopping\" (B)."
+    ],
+    "successMetrics": [
+      "CTA CTR A vs B",
+      "Scroll depth",
+      "Shop entry from About"
+    ]
+  },
+  {
+    "id": "22",
+    "name": "Blog Landing",
+    "path": "/content/aep-training/blog",
+    "pageType": "blog",
+    "purpose": "Content hub that drives article views; blog readers (2+ articles) are invited to the newsletter.",
+    "components": [
+      "Hero",
+      "Cards",
+      "CTA",
+      "Tabs"
+    ],
+    "authoringFields": {
+      "page": [
+        "title",
+        "description",
+        "template",
+        "page-type",
+        "site-section",
+        "image",
+        "nav",
+        "footer"
+      ],
+      "blocks": {
+        "Hero": [
+          "Image",
+          "Alt",
+          "Text"
+        ],
+        "Cards": [
+          "Image",
+          "Text"
+        ],
+        "CTA": [
+          "Text (heading, copy and buttons)",
+          "Image (optional)",
+          "Image alt text",
+          "Style"
+        ],
+        "Tabs": [
+          "Tab label",
+          "Content"
+        ]
+      },
+      "sections": [
+        "Target Location",
+        "Audience",
+        "Activity",
+        "Activity Type",
+        "Experience",
+        "Campaign ID",
+        "Style"
+      ]
+    },
+    "analyticsEvents": [
+      "pageView",
+      "scrollDepth",
+      "navClick",
+      "footerClick",
+      "linkClick",
+      "heroClick",
+      "ctaClick",
+      "tabClick",
+      "propositionDisplay"
+    ],
+    "targetActivities": [
+      {
+        "activityId": "XT-BLOG-NEWSLETTER",
+        "type": "XT",
+        "location": "blog-newsletter",
+        "experiences": [
+          {
+            "experience": "Newsletter Invite",
+            "audience": "blog-readers"
+          },
+          {
+            "experience": "Popular Guide",
+            "audience": "default"
+          }
+        ]
+      }
+    ],
+    "audienceSegments": [
+      "blog-readers"
+    ],
+    "personalizationRules": [
+      "blog-newsletter: blog readers see a newsletter sign-up CTA; others see the most popular guide."
+    ],
+    "successMetrics": [
+      "Article click-through rate",
+      "Newsletter CTA CTR for blog readers",
+      "Content-assisted conversions"
+    ]
+  },
+  {
+    "id": "23",
+    "name": "Blog Details",
+    "path": "/content/aep-training/blog/how-to-choose-noise-cancelling-headphones",
+    "pageType": "article",
+    "purpose": "Article detail. Demonstrates article views, reading time milestones, CTA interactions and an A/B test on the article CTA; reading 2+ articles qualifies the Blog Readers audience.",
+    "components": [
+      "CTA",
+      "Product Carousel",
+      "Cards"
+    ],
+    "authoringFields": {
+      "page": [
+        "title",
+        "description",
+        "template",
+        "page-type",
+        "site-section",
+        "category",
+        "image",
+        "nav",
+        "footer",
+        "author",
+        "published-date",
+        "content-type"
+      ],
+      "blocks": {
+        "CTA": [
+          "Text (heading, copy and buttons)",
+          "Image (optional)",
+          "Image alt text",
+          "Style"
+        ],
+        "Product Carousel": [
+          "Source",
+          "Image",
+          "Image alt text",
+          "Product name",
+          "SKU / product ID (analytics productId)",
+          "Price (USD)",
+          "Compare-at price (shows sale)",
+          "Category",
+          "Brand",
+          "Rating (0-5)",
+          "Badge (New, Sale, Best Seller)",
+          "Product page"
+        ],
+        "Cards": [
+          "Image",
+          "Text"
+        ]
+      },
+      "sections": [
+        "Target Location",
+        "Audience",
+        "Activity",
+        "Activity Type",
+        "Experience",
+        "Campaign ID",
+        "Style"
+      ]
+    },
+    "analyticsEvents": [
+      "pageView",
+      "scrollDepth",
+      "navClick",
+      "footerClick",
+      "linkClick",
+      "ctaClick",
+      "productListImpression",
+      "productCarouselClick",
+      "carouselNavigate",
+      "cartAdd",
+      "wishlistAdd",
+      "articleView",
+      "readingTime",
+      "propositionDisplay"
+    ],
+    "targetActivities": [
+      {
+        "activityId": "AB-BLOG-CTA",
+        "type": "A/B",
+        "location": "blog-cta",
+        "experiences": [
+          {
+            "experience": "A",
+            "audience": "(random split)"
+          },
+          {
+            "experience": "B",
+            "audience": "(random split)"
+          }
+        ]
+      }
+    ],
+    "audienceSegments": [],
+    "personalizationRules": [
+      "blog-cta: A/B test, product CTA (A) vs comparison CTA (B)."
+    ],
+    "successMetrics": [
+      "Average reading time and % read",
+      "Article CTA CTR (A vs B)",
+      "Article -> product view rate"
+    ]
+  },
+  {
+    "id": "24",
+    "name": "Store Locator",
+    "path": "/content/aep-training/stores",
+    "pageType": "store-locator",
+    "purpose": "Store finder. Demonstrates store search (searchType=store), directions clicks and location-based promotions.",
+    "components": [
+      "Search",
+      "Banner",
+      "Cards",
+      "Columns"
+    ],
+    "authoringFields": {
+      "page": [
+        "title",
+        "description",
+        "template",
+        "page-type",
+        "site-section",
+        "image",
+        "nav",
+        "footer"
+      ],
+      "blocks": {
+        "Search": [
+          "Placeholder / label",
+          "Search scope",
+          "Popular search terms (comma separated)"
+        ],
+        "Banner": [
+          "Image (optional)",
+          "Image alt text",
+          "Text",
+          "Coupon code (optional)",
+          "Campaign ID (analytics)",
+          "Style"
+        ],
+        "Cards": [
+          "Image",
+          "Text"
+        ],
+        "Columns": [
+          "Columns",
+          "Rows"
+        ]
+      },
+      "sections": [
+        "Target Location",
+        "Audience",
+        "Activity",
+        "Activity Type",
+        "Experience",
+        "Campaign ID",
+        "Style"
+      ]
+    },
+    "analyticsEvents": [
+      "pageView",
+      "scrollDepth",
+      "navClick",
+      "footerClick",
+      "linkClick",
+      "searchSubmit",
+      "searchNoResults",
+      "searchSuggestionClick",
+      "bannerImpression",
+      "bannerClick",
+      "couponCopy",
+      "ctaClick",
+      "propositionDisplay"
+    ],
+    "targetActivities": [
+      {
+        "activityId": "XT-STORES",
+        "type": "XT",
+        "location": "stores-promo",
+        "experiences": [
+          {
+            "experience": "US West Event",
+            "audience": "geo-us-west"
+          },
+          {
+            "experience": "US East Event",
+            "audience": "geo-us-east"
+          },
+          {
+            "experience": "Europe Event",
+            "audience": "geo-europe"
+          },
+          {
+            "experience": "Default Promo",
+            "audience": "default"
+          }
+        ]
+      }
+    ],
+    "audienceSegments": [
+      "geo-us-west",
+      "geo-us-east",
+      "geo-europe"
+    ],
+    "personalizationRules": [
+      "stores-promo: visitors are shown the event at their nearest region (US West, US East, Europe) or a generic in-store pickup message."
+    ],
+    "successMetrics": [
+      "Store search usage",
+      "Directions click rate",
+      "Click and collect adoption"
+    ]
+  },
+  {
+    "id": "25",
+    "name": "Membership Program",
+    "path": "/content/aep-training/membership",
+    "pageType": "membership",
+    "purpose": "Loyalty programme page. Demonstrates premium user messaging for members and an enrollment banner for new users; #aep:enroll records membershipEnroll.",
+    "components": [
+      "Hero",
+      "Banner",
+      "Columns",
+      "FAQ"
+    ],
+    "authoringFields": {
+      "page": [
+        "title",
+        "description",
+        "template",
+        "page-type",
+        "site-section",
+        "image",
+        "nav",
+        "footer"
+      ],
+      "blocks": {
+        "Hero": [
+          "Image",
+          "Alt",
+          "Text"
+        ],
+        "Banner": [
+          "Image (optional)",
+          "Image alt text",
+          "Text",
+          "Coupon code (optional)",
+          "Campaign ID (analytics)",
+          "Style"
+        ],
+        "Columns": [
+          "Columns",
+          "Rows"
+        ],
+        "FAQ": [
+          "Options",
+          "Question",
+          "Answer"
+        ]
+      },
+      "sections": [
+        "Target Location",
+        "Audience",
+        "Activity",
+        "Activity Type",
+        "Experience",
+        "Campaign ID",
+        "Style"
+      ]
+    },
+    "analyticsEvents": [
+      "pageView",
+      "scrollDepth",
+      "navClick",
+      "footerClick",
+      "linkClick",
+      "heroClick",
+      "bannerImpression",
+      "bannerClick",
+      "couponCopy",
+      "ctaClick",
+      "faqToggle",
+      "faqFeedback",
+      "membershipEnroll",
+      "propositionDisplay"
+    ],
+    "targetActivities": [
+      {
+        "activityId": "XT-MEMBERSHIP-HERO",
+        "type": "XT",
+        "location": "membership-hero",
+        "experiences": [
+          {
+            "experience": "Premium Messaging",
+            "audience": "premium-members"
+          },
+          {
+            "experience": "Join Hero",
+            "audience": "default"
+          }
+        ]
+      },
+      {
+        "activityId": "XT-MEMBERSHIP-ENROLL",
+        "type": "XT",
+        "location": "membership-enroll",
+        "experiences": [
+          {
+            "experience": "New User Enrollment",
+            "audience": "new-visitors"
+          },
+          {
+            "experience": "Returning Non-member",
+            "audience": "non-members"
+          }
+        ]
+      }
+    ],
+    "audienceSegments": [
+      "premium-members",
+      "new-visitors",
+      "non-members"
+    ],
+    "personalizationRules": [
+      "membership-hero: premium members (gold/platinum) see their benefits hero; everyone else the join hero.",
+      "membership-enroll: new visitors see the 500 bonus points enrollment banner; returning non-members a \"join today\" banner; members see nothing."
+    ],
+    "successMetrics": [
+      "Enrollment rate (membershipEnroll / pageView)",
+      "Enrollment banner CTR",
+      "Member engagement with premium hero"
+    ]
+  },
+  {
+    "id": "26",
+    "name": "FAQ",
+    "path": "/content/aep-training/faq",
+    "pageType": "faq",
+    "purpose": "Searchable FAQ with FAQPage structured data, question toggles and helpfulness feedback.",
+    "components": [
+      "FAQ",
+      "CTA"
+    ],
+    "authoringFields": {
+      "page": [
+        "title",
+        "description",
+        "template",
+        "page-type",
+        "site-section",
+        "nav",
+        "footer"
+      ],
+      "blocks": {
+        "FAQ": [
+          "Options",
+          "Question",
+          "Answer"
+        ],
+        "CTA": [
+          "Text (heading, copy and buttons)",
+          "Image (optional)",
+          "Image alt text",
+          "Style"
+        ]
+      },
+      "sections": [
+        "Target Location",
+        "Audience",
+        "Activity",
+        "Activity Type",
+        "Experience",
+        "Campaign ID",
+        "Style"
+      ]
+    },
+    "analyticsEvents": [
+      "pageView",
+      "scrollDepth",
+      "navClick",
+      "footerClick",
+      "linkClick",
+      "faqToggle",
+      "faqFeedback",
+      "searchSubmit",
+      "ctaClick",
+      "propositionDisplay"
+    ],
+    "targetActivities": [
+      {
+        "activityId": "XT-FAQ-HELP",
+        "type": "XT",
+        "location": "faq-help",
+        "experiences": [
+          {
+            "experience": "Cart Help",
+            "audience": "cart-abandoners"
+          },
+          {
+            "experience": "General Help",
+            "audience": "default"
+          }
+        ]
+      }
+    ],
+    "audienceSegments": [
+      "cart-abandoners"
+    ],
+    "personalizationRules": [
+      "faq-help: cart abandoners get a \"need help finishing your order?\" CTA; others the general help CTA."
+    ],
+    "successMetrics": [
+      "Most opened questions",
+      "Helpful rate",
+      "FAQ search zero-result rate"
+    ]
+  },
+  {
+    "id": "27",
+    "name": "Privacy Policy",
+    "path": "/content/aep-training/privacy-policy",
+    "pageType": "legal",
+    "purpose": "Legal content. Also documents (for trainees) which analytics and personalization data the training site collects.",
+    "components": [
+      "Banner"
+    ],
+    "authoringFields": {
+      "page": [
+        "title",
+        "description",
+        "template",
+        "page-type",
+        "site-section",
+        "nav",
+        "footer"
+      ],
+      "blocks": {
+        "Banner": [
+          "Image (optional)",
+          "Image alt text",
+          "Text",
+          "Coupon code (optional)",
+          "Campaign ID (analytics)",
+          "Style"
+        ]
+      },
+      "sections": [
+        "Target Location",
+        "Audience",
+        "Activity",
+        "Activity Type",
+        "Experience",
+        "Campaign ID",
+        "Style"
+      ]
+    },
+    "analyticsEvents": [
+      "pageView",
+      "scrollDepth",
+      "navClick",
+      "footerClick",
+      "linkClick",
+      "bannerImpression",
+      "bannerClick",
+      "couponCopy",
+      "propositionDisplay"
+    ],
+    "targetActivities": [
+      {
+        "activityId": "XT-LEGAL",
+        "type": "XT",
+        "location": "privacy-preferences",
+        "experiences": [
+          {
+            "experience": "Preference Centre",
+            "audience": "logged-in-users"
+          },
+          {
+            "experience": "Contact Privacy Team",
+            "audience": "default"
+          }
+        ]
+      }
+    ],
+    "audienceSegments": [
+      "logged-in-users"
+    ],
+    "personalizationRules": [
+      "privacy-preferences: logged-in users are pointed to the preference centre; others to the privacy team."
+    ],
+    "successMetrics": [
+      "Preference centre visits",
+      "Scroll depth (policy read-through)"
+    ]
+  },
+  {
+    "id": "28",
+    "name": "Terms and Conditions",
+    "path": "/content/aep-training/terms",
+    "pageType": "legal",
+    "purpose": "Legal content page; mirrors the privacy page personalization to show XT reuse across pages.",
+    "components": [
+      "Banner"
+    ],
+    "authoringFields": {
+      "page": [
+        "title",
+        "description",
+        "template",
+        "page-type",
+        "site-section",
+        "nav",
+        "footer"
+      ],
+      "blocks": {
+        "Banner": [
+          "Image (optional)",
+          "Image alt text",
+          "Text",
+          "Coupon code (optional)",
+          "Campaign ID (analytics)",
+          "Style"
+        ]
+      },
+      "sections": [
+        "Target Location",
+        "Audience",
+        "Activity",
+        "Activity Type",
+        "Experience",
+        "Campaign ID",
+        "Style"
+      ]
+    },
+    "analyticsEvents": [
+      "pageView",
+      "scrollDepth",
+      "navClick",
+      "footerClick",
+      "linkClick",
+      "bannerImpression",
+      "bannerClick",
+      "couponCopy",
+      "propositionDisplay"
+    ],
+    "targetActivities": [
+      {
+        "activityId": "XT-LEGAL",
+        "type": "XT",
+        "location": "terms-preferences",
+        "experiences": [
+          {
+            "experience": "Preference Centre",
+            "audience": "logged-in-users"
+          },
+          {
+            "experience": "Contact Privacy Team",
+            "audience": "default"
+          }
+        ]
+      }
+    ],
+    "audienceSegments": [
+      "logged-in-users"
+    ],
+    "personalizationRules": [
+      "terms-preferences: same XT-LEGAL activity as the privacy page, separate location."
+    ],
+    "successMetrics": [
+      "Scroll depth",
+      "Exit rate"
+    ]
+  },
+  {
+    "id": "29",
+    "name": "Personalized Recommendations",
+    "path": "/content/aep-training/recommendations",
+    "pageType": "recommendations",
+    "purpose": "Recommendations showcase: user-affinity recommendations, category affinity XT and recently viewed items in one page.",
+    "components": [
+      "Hero",
+      "Product Carousel",
+      "Product Grid"
+    ],
+    "authoringFields": {
+      "page": [
+        "title",
+        "description",
+        "template",
+        "page-type",
+        "site-section",
+        "image",
+        "nav",
+        "footer"
+      ],
+      "blocks": {
+        "Hero": [
+          "Image",
+          "Alt",
+          "Text"
+        ],
+        "Product Carousel": [
+          "Source",
+          "Image",
+          "Image alt text",
+          "Product name",
+          "SKU / product ID (analytics productId)",
+          "Price (USD)",
+          "Compare-at price (shows sale)",
+          "Category",
+          "Brand",
+          "Rating (0-5)",
+          "Badge (New, Sale, Best Seller)",
+          "Product page"
+        ],
+        "Product Grid": [
+          "Options",
+          "Image",
+          "Image alt text",
+          "Product name",
+          "SKU / product ID (analytics productId)",
+          "Price (USD)",
+          "Compare-at price (shows sale)",
+          "Category",
+          "Brand",
+          "Rating (0-5)",
+          "Badge (New, Sale, Best Seller)",
+          "Product page"
+        ]
+      },
+      "sections": [
+        "Target Location",
+        "Audience",
+        "Activity",
+        "Activity Type",
+        "Experience",
+        "Campaign ID",
+        "Style"
+      ]
+    },
+    "analyticsEvents": [
+      "pageView",
+      "scrollDepth",
+      "navClick",
+      "footerClick",
+      "linkClick",
+      "heroClick",
+      "productListImpression",
+      "productCarouselClick",
+      "carouselNavigate",
+      "cartAdd",
+      "wishlistAdd",
+      "recommendationImpression",
+      "recommendationClick",
+      "productClick",
+      "propositionDisplay"
+    ],
+    "targetActivities": [
+      {
+        "activityId": "RECS-USER-AFFINITY",
+        "type": "Recommendations",
+        "location": "recs-top-picks",
+        "experiences": [
+          {
+            "experience": "Top Picks",
+            "audience": "default"
+          }
+        ]
+      },
+      {
+        "activityId": "RECS-RECENTLY-VIEWED",
+        "type": "Recommendations",
+        "location": "recs-recently-viewed",
+        "experiences": [
+          {
+            "experience": "Recently Viewed",
+            "audience": "default"
+          }
+        ]
+      },
+      {
+        "activityId": "XT-RECS-AFFINITY",
+        "type": "XT",
+        "location": "recs-affinity",
+        "experiences": [
+          {
+            "experience": "Electronics Affinity",
+            "audience": "electronics-shoppers"
+          },
+          {
+            "experience": "Fashion Affinity",
+            "audience": "fashion-shoppers"
+          },
+          {
+            "experience": "Home Affinity",
+            "audience": "default"
+          }
+        ]
+      }
+    ],
+    "audienceSegments": [
+      "electronics-shoppers",
+      "fashion-shoppers"
+    ],
+    "personalizationRules": [
+      "recs-top-picks: Target Recommendations with \"user favourite category\" criteria (simulator: best sellers).",
+      "recs-affinity: electronics or fashion shoppers see a grid of their top category; others a home appliances grid.",
+      "recs-recently-viewed: profile based, hidden until the visitor has viewed a product."
+    ],
+    "successMetrics": [
+      "Recommendation CTR",
+      "Recommendation-influenced revenue",
+      "Affinity grid add to cart rate"
+    ]
+  },
+  {
+    "id": "30",
+    "name": "404 Page",
+    "path": "/content/aep-training/404",
+    "pageType": "error",
+    "purpose": "Error recovery page. Tracks errorPageView with the requested URL and recovers visitors with search and affinity-based recommendations.",
+    "components": [
+      "Search",
+      "Cards",
+      "Product Carousel"
+    ],
+    "authoringFields": {
+      "page": [
+        "title",
+        "description",
+        "template",
+        "page-type",
+        "site-section",
+        "robots",
+        "nav",
+        "footer"
+      ],
+      "blocks": {
+        "Search": [
+          "Placeholder / label",
+          "Search scope",
+          "Popular search terms (comma separated)"
+        ],
+        "Cards": [
+          "Image",
+          "Text"
+        ],
+        "Product Carousel": [
+          "Source",
+          "Image",
+          "Image alt text",
+          "Product name",
+          "SKU / product ID (analytics productId)",
+          "Price (USD)",
+          "Compare-at price (shows sale)",
+          "Category",
+          "Brand",
+          "Rating (0-5)",
+          "Badge (New, Sale, Best Seller)",
+          "Product page"
+        ]
+      },
+      "sections": [
+        "Target Location",
+        "Audience",
+        "Activity",
+        "Activity Type",
+        "Experience",
+        "Campaign ID",
+        "Style"
+      ]
+    },
+    "analyticsEvents": [
+      "pageView",
+      "scrollDepth",
+      "navClick",
+      "footerClick",
+      "linkClick",
+      "searchSubmit",
+      "searchNoResults",
+      "searchSuggestionClick",
+      "ctaClick",
+      "productListImpression",
+      "productCarouselClick",
+      "carouselNavigate",
+      "cartAdd",
+      "wishlistAdd",
+      "recommendationImpression",
+      "recommendationClick",
+      "errorPageView",
+      "propositionDisplay"
+    ],
+    "targetActivities": [
+      {
+        "activityId": "XT-404-RECOVERY",
+        "type": "XT",
+        "location": "error-recovery",
+        "experiences": [
+          {
+            "experience": "Electronics Recovery",
+            "audience": "electronics-shoppers"
+          },
+          {
+            "experience": "Fashion Recovery",
+            "audience": "fashion-shoppers"
+          },
+          {
+            "experience": "Best Sellers Recovery",
+            "audience": "default"
+          }
+        ]
+      }
+    ],
+    "audienceSegments": [
+      "electronics-shoppers",
+      "fashion-shoppers"
+    ],
+    "personalizationRules": [
+      "error-recovery: electronics or fashion shoppers see products from their category; others see best sellers."
+    ],
+    "successMetrics": [
+      "404 volume by referrer",
+      "Recovery rate (search or product click after 404)"
+    ]
+  }
+]

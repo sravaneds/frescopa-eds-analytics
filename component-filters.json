@@ -36,13 +36,40 @@
       "reward-sticky",
       "sticky-cta",
       "quiz",
-      "insights"
+      "insights",
+      "tabs",
+      "carousel",
+      "accordion",
+      "cta",
+      "faq",
+      "banner",
+      "product-grid",
+      "product-carousel",
+      "testimonials",
+      "search",
+      "product-info",
+      "cart",
+      "checkout",
+      "wishlist",
+      "orders"
+    ]
+  },
+  {
+    "id": "accordion",
+    "components": [
+      "accordion-item"
     ]
   },
   {
     "id": "cards",
     "components": [
       "card"
+    ]
+  },
+  {
+    "id": "carousel",
+    "components": [
+      "carousel-slide"
     ]
   },
   {
@@ -58,6 +85,12 @@
       "image",
       "button",
       "title"
+    ]
+  },
+  {
+    "id": "faq",
+    "components": [
+      "faq-item"
     ]
   },
   {
@@ -88,6 +121,30 @@
       "text-input",
       "tnc",
       "wizard"
+    ]
+  },
+  {
+    "id": "product-carousel",
+    "components": [
+      "product-item"
+    ]
+  },
+  {
+    "id": "product-grid",
+    "components": [
+      "product-item"
+    ]
+  },
+  {
+    "id": "tabs",
+    "components": [
+      "tab"
+    ]
+  },
+  {
+    "id": "testimonials",
+    "components": [
+      "testimonial"
     ]
   },
   {

@@ -1,0 +1,379 @@
+/* stylelint-disable no-descending-specificity */
+
+/* NovaMart (AEP training) design tokens and base styles, scoped to the template */
+body.aep-training {
+  --nm-color-primary: #1d4ed8;
+  --nm-color-primary-dark: #1e3a8a;
+  --nm-color-accent: #c2410c;
+  --nm-color-accent-light: #ffedd5;
+  --nm-color-text: #0f172a;
+  --nm-color-muted: #475569;
+  --nm-color-border: #e2e8f0;
+  --nm-color-surface: #f8fafc;
+  --nm-color-surface-alt: #eef2ff;
+  --nm-color-dark: #0f172a;
+  --nm-color-success: #15803d;
+  --nm-color-error: #b91c1c;
+  --nm-radius: 12px;
+  --nm-radius-small: 6px;
+  --nm-shadow: 0 4px 20px rgb(15 23 42 / 8%);
+  --nm-max-width: 1240px;
+  --nm-font: system-ui, -apple-system, 'Segoe UI', roboto, 'Helvetica Neue', arial, sans-serif;
+  --nm-gutter: 16px;
+  --nav-height: 64px;
+
+  font: 400 16px/1.6 var(--nm-font);
+  color: var(--nm-color-text);
+  background: #fff;
+}
+
+/* the commerce boilerplate sets html to 62.5 %; the training site uses the browser default */
+html:has(body.aep-training) {
+  font-size: 100%;
+}
+
+/* neutralise the global "li" rule from footer.css */
+body.aep-training li {
+  margin: 0;
+  color: inherit;
+  font-size: inherit;
+}
+
+body.aep-training main .default-content-wrapper li,
+body.aep-training main .tabs-panel li,
+body.aep-training main .columns li {
+  margin-bottom: 6px;
+}
+
+body.aep-training h1,
+body.aep-training h2,
+body.aep-training h3,
+body.aep-training h4,
+body.aep-training h5,
+body.aep-training h6 {
+  font-family: var(--nm-font);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: inherit;
+  line-height: 1.2;
+}
+
+body.aep-training h1 { font-size: 2.25rem; }
+body.aep-training h2 { font-size: 1.75rem; }
+body.aep-training h3 { font-size: 1.25rem; }
+body.aep-training h4 { font-size: 1.125rem; }
+
+body.aep-training h5,
+body.aep-training h6 { font-size: 1rem; }
+
+body.aep-training p,
+body.aep-training li {
+  font: inherit;
+}
+
+body.aep-training a:any-link {
+  color: var(--nm-color-primary);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+}
+
+body.aep-training a:any-link:hover {
+  color: var(--nm-color-primary-dark);
+}
+
+body.aep-training :focus-visible {
+  outline: 3px solid var(--nm-color-accent);
+  outline-offset: 2px;
+}
+
+/* buttons */
+body.aep-training main a.button:any-link,
+body.aep-training button.button {
+  display: inline-block;
+  margin: 8px 8px 8px 0;
+  padding: 12px 22px;
+  border: 2px solid var(--nm-color-primary);
+  border-radius: 999px;
+  background: var(--nm-color-primary);
+  color: #fff;
+  font: 600 1rem/1.25 var(--nm-font);
+  letter-spacing: 0;
+  text-decoration: none;
+  white-space: normal;
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+body.aep-training main a.button:hover,
+body.aep-training main a.button:focus-visible,
+body.aep-training button.button:hover,
+body.aep-training button.button:focus-visible {
+  background: var(--nm-color-primary-dark);
+  border-color: var(--nm-color-primary-dark);
+  color: #fff;
+}
+
+body.aep-training main a.button.secondary:any-link,
+body.aep-training button.button.secondary {
+  background: transparent;
+  color: var(--nm-color-primary);
+}
+
+body.aep-training main a.button.secondary:hover,
+body.aep-training button.button.secondary:hover {
+  background: var(--nm-color-surface-alt);
+  color: var(--nm-color-primary-dark);
+}
+
+body.aep-training main .button-container {
+  margin: 16px 0;
+}
+
+/* sections */
+body.aep-training main > .section {
+  margin: 0;
+  padding: 20px var(--nm-gutter);
+}
+
+body.aep-training main > .section > div {
+  max-width: var(--nm-max-width);
+  margin: 0 auto;
+}
+
+body.aep-training main > .section > div + div {
+  margin-top: 24px;
+}
+
+body.aep-training main > .section:first-child {
+  padding-top: 0;
+}
+
+body.aep-training main > .section.highlight {
+  background: var(--nm-color-surface);
+  padding-top: 32px;
+  padding-bottom: 32px;
+}
+
+body.aep-training main > .section.accent {
+  background: var(--nm-color-accent-light);
+}
+
+body.aep-training main > .section.dark {
+  background: var(--nm-color-dark);
+  color: #fff;
+}
+
+body.aep-training main > .section.dark a:any-link:not(.button) {
+  color: #bfdbfe;
+}
+
+body.aep-training main > .section.centered .default-content-wrapper {
+  text-align: center;
+}
+
+body.aep-training main > .section.narrow > div {
+  max-width: 760px;
+}
+
+body.aep-training main > .section.full-width {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+body.aep-training main > .section.full-width > div {
+  max-width: none;
+}
+
+body.aep-training main .default-content-wrapper > p:first-child:has(> picture) {
+  margin-top: 0;
+}
+
+body.aep-training main img {
+  max-width: 100%;
+  height: auto;
+}
+
+body.aep-training main table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+body.aep-training main th,
+body.aep-training main td {
+  border: 1px solid var(--nm-color-border);
+  padding: 8px 12px;
+  text-align: left;
+}
+
+/* article (blog details) */
+body.aep-training main > .section.article > div {
+  max-width: 760px;
+}
+
+body.aep-training main > .section.article p,
+body.aep-training main > .section.article li {
+  font-size: 1.0625rem;
+  line-height: 1.75;
+}
+
+/* hero */
+body.aep-training main > .section.hero-container {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+body.aep-training .hero-container .hero-wrapper {
+  margin: 0 auto;
+  padding: 0;
+}
+
+body.aep-training .hero {
+  min-height: 380px;
+  border-radius: 0 0 var(--nm-radius) var(--nm-radius);
+}
+
+body.aep-training .hero h1 {
+  max-width: 18ch;
+  color: #fff;
+}
+
+/* footer */
+body.aep-training footer {
+  background: var(--nm-color-dark);
+  color: #e2e8f0;
+}
+
+body.aep-training footer .footer > div {
+  max-width: var(--nm-max-width);
+  padding: 40px var(--nm-gutter) 24px;
+}
+
+body.aep-training footer .section {
+  display: block;
+  margin: 0;
+}
+
+body.aep-training footer h2 {
+  margin: 0 0 12px;
+  color: #fff;
+  font-size: 1rem;
+}
+
+body.aep-training footer ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+body.aep-training footer li,
+body.aep-training footer p {
+  margin: 0 0 8px;
+  color: #cbd5e1;
+  font-size: 0.875rem;
+}
+
+body.aep-training footer a:any-link {
+  color: #e2e8f0;
+  text-decoration: none;
+}
+
+body.aep-training footer a:any-link:hover {
+  color: #fff;
+  text-decoration: underline;
+}
+
+body.aep-training footer .columns > div {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+
+body.aep-training footer .section + .section {
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid #334155;
+}
+
+/* utilities */
+body.aep-training .visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+body.aep-training .skip-link {
+  position: absolute;
+  left: 8px;
+  top: -48px;
+  z-index: 100;
+  padding: 8px 16px;
+  background: #fff;
+  border-radius: var(--nm-radius-small);
+}
+
+body.aep-training .skip-link:focus {
+  top: 8px;
+}
+
+/* personalization variants are all visible while authoring in Universal Editor */
+body.aep-training main > .section.aep-variant {
+  position: relative;
+  outline: 2px dashed var(--nm-color-accent);
+  outline-offset: -4px;
+}
+
+body.aep-training main > .section.aep-variant::before {
+  content: 'Target: ' attr(data-target-location) ' / ' attr(data-aep-experience);
+  position: absolute;
+  top: 4px;
+  right: 8px;
+  z-index: 2;
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: var(--nm-color-accent);
+  color: #fff;
+  font-size: 12px;
+}
+
+@media (width >= 600px) {
+  body.aep-training {
+    --nm-gutter: 24px;
+  }
+}
+
+@media (width >= 900px) {
+  body.aep-training {
+    --nm-gutter: 32px;
+    --nav-height: 72px;
+  }
+
+  body.aep-training h1 { font-size: 3rem; }
+  body.aep-training h2 { font-size: 2rem; }
+
+  body.aep-training main > .section {
+    padding-top: 28px;
+    padding-bottom: 28px;
+  }
+
+  body.aep-training main > .section.highlight,
+  body.aep-training main > .section.dark,
+  body.aep-training main > .section.accent {
+    padding-top: 48px;
+    padding-bottom: 48px;
+  }
+
+  body.aep-training .hero {
+    min-height: 520px;
+  }
+
+  body.aep-training footer .columns > div {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}

@@ -66,5 +66,9 @@ if (map) {
   loadScript('/blocks/store-locator/location-init.js', { defer: true });
 }
 
+if (document.body.classList.contains('aep-training')) {
+  import('./aep/index.js').then(({ initDelayed }) => initDelayed(document.querySelector('main')));
+}
+
 document.dispatchEvent(new Event('delayed-phase'));
 Window.DELAYED_PHASE = true;

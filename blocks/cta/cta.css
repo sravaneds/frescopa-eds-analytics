@@ -1,0 +1,75 @@
+.cta {
+  display: grid;
+  gap: 24px;
+  padding: 32px 24px;
+  border-radius: var(--nm-radius, 12px);
+  background: var(--nm-color-surface-alt, #eef2ff);
+  text-align: center;
+}
+
+.cta .cta-content > :first-child {
+  margin-top: 0;
+}
+
+.cta .cta-content > :last-child {
+  margin-bottom: 0;
+}
+
+.cta .cta-content p {
+  max-width: 60ch;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.cta .cta-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+
+.cta .cta-buttons .button-container {
+  margin: 0;
+}
+
+.cta .cta-image img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: var(--nm-radius-small, 6px);
+}
+
+.cta.dark {
+  background: var(--nm-color-dark, #0f172a);
+  color: #fff;
+}
+
+.cta.dark a.button.secondary:any-link {
+  color: #fff;
+  border-color: #fff;
+}
+
+.cta.accent {
+  background: var(--nm-color-accent-light, #ffedd5);
+}
+
+@media (width >= 900px) {
+  .cta {
+    padding: 48px;
+  }
+
+  .cta.split.cta-has-image,
+  .cta.cta-has-image {
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    text-align: left;
+  }
+
+  .cta.cta-has-image .cta-content p {
+    margin-left: 0;
+  }
+
+  .cta.cta-has-image .cta-buttons {
+    justify-content: flex-start;
+  }
+}

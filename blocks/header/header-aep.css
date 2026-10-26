@@ -1,0 +1,275 @@
+/* stylelint-disable no-descending-specificity */
+
+/* Header for the AEP training site (body.aep-training) */
+body.aep-training header {
+  height: auto;
+  min-height: var(--nav-height);
+}
+
+body.aep-training header .nm-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: #fff;
+  border-bottom: 1px solid var(--nm-color-border, #e2e8f0);
+}
+
+body.aep-training header .nm-header nav.nm-nav {
+  display: grid;
+  grid-template: 'hamburger brand tools' var(--nav-height) / auto 1fr auto;
+  align-items: center;
+  gap: 0 12px;
+  max-width: var(--nm-max-width, 1240px);
+  height: auto;
+  margin: 0 auto;
+  padding: 0 var(--nm-gutter, 16px);
+  font-family: var(--nm-font);
+}
+
+body.aep-training header .nm-brand {
+  grid-area: brand;
+}
+
+body.aep-training header .nm-brand a:any-link {
+  color: var(--nm-color-text, #0f172a);
+  font-size: 1.375rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  text-decoration: none;
+}
+
+body.aep-training header .nm-hamburger {
+  grid-area: hamburger;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+body.aep-training header .nm-hamburger span,
+body.aep-training header .nm-hamburger span::before,
+body.aep-training header .nm-hamburger span::after {
+  display: block;
+  position: relative;
+  width: 22px;
+  height: 2px;
+  margin: auto;
+  background: currentcolor;
+}
+
+body.aep-training header .nm-hamburger span::before,
+body.aep-training header .nm-hamburger span::after {
+  content: '';
+  position: absolute;
+  left: 0;
+}
+
+body.aep-training header .nm-hamburger span::before {
+  top: -7px;
+}
+
+body.aep-training header .nm-hamburger span::after {
+  top: 7px;
+}
+
+body.aep-training header .nm-hamburger[aria-expanded='true'] span {
+  background: transparent;
+}
+
+body.aep-training header .nm-hamburger[aria-expanded='true'] span::before {
+  top: 0;
+  transform: rotate(45deg);
+}
+
+body.aep-training header .nm-hamburger[aria-expanded='true'] span::after {
+  top: 0;
+  transform: rotate(-45deg);
+}
+
+body.aep-training header .nm-menu {
+  display: none;
+  grid-column: 1 / -1;
+  padding: 8px 0 24px;
+}
+
+body.aep-training header .nm-nav.nm-open .nm-menu {
+  display: block;
+  max-height: calc(100dvh - var(--nav-height));
+  overflow-y: auto;
+}
+
+body.aep-training header .nm-sections,
+body.aep-training header .nm-submenu,
+body.aep-training header .nm-tools {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+body.aep-training header .nm-sections > li > a:any-link,
+body.aep-training header .nm-section-toggle {
+  display: block;
+  width: 100%;
+  padding: 12px 0;
+  border: 0;
+  background: none;
+  color: var(--nm-color-text, #0f172a);
+  font: inherit;
+  font-weight: 600;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+body.aep-training header .nm-section-toggle::after {
+  content: '';
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  margin-left: 8px;
+  border-right: 2px solid currentcolor;
+  border-bottom: 2px solid currentcolor;
+  transform: translateY(-3px) rotate(45deg);
+}
+
+body.aep-training header .nm-submenu {
+  display: none;
+  padding-left: 16px;
+}
+
+body.aep-training header .nm-section-toggle[aria-expanded='true'] + .nm-submenu {
+  display: block;
+}
+
+body.aep-training header .nm-submenu a:any-link {
+  display: block;
+  padding: 8px 0;
+  color: var(--nm-color-text, #0f172a);
+  text-decoration: none;
+}
+
+body.aep-training header a[aria-current='page'] {
+  color: var(--nm-color-primary, #1d4ed8) !important;
+}
+
+body.aep-training header .nm-search {
+  display: flex;
+  margin-top: 12px;
+}
+
+body.aep-training header .nm-search input {
+  flex: 1;
+  min-width: 0;
+  min-height: 40px;
+  padding: 6px 14px;
+  border: 1px solid var(--nm-color-border, #e2e8f0);
+  border-radius: 999px 0 0 999px;
+  font-size: 0.9375rem;
+}
+
+body.aep-training header .nm-search button {
+  width: 44px;
+  border: 1px solid var(--nm-color-primary, #1d4ed8);
+  border-radius: 0 999px 999px 0;
+  background: var(--nm-color-primary, #1d4ed8) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2.5'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='m20 20-3.5-3.5'/%3E%3C/svg%3E") center / 18px no-repeat;
+  cursor: pointer;
+}
+
+body.aep-training header .nm-tools {
+  grid-area: tools;
+  display: flex;
+  gap: 12px;
+}
+
+body.aep-training header .nm-tools a:any-link {
+  position: relative;
+  display: inline-block;
+  padding: 8px 4px;
+  color: var(--nm-color-text, #0f172a);
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+body.aep-training header .nm-badge {
+  display: inline-grid;
+  place-items: center;
+  min-width: 18px;
+  height: 18px;
+  margin-left: 4px;
+  padding: 0 4px;
+  box-sizing: border-box;
+  border-radius: 999px;
+  background: var(--nm-color-accent, #c2410c);
+  color: #fff;
+  font-size: 0.6875rem;
+}
+
+body.aep-training header .nm-tools li:first-child {
+  display: none;
+}
+
+@media (width >= 600px) {
+  body.aep-training header .nm-tools li:first-child {
+    display: block;
+  }
+}
+
+@media (width >= 900px) {
+  body.aep-training header .nm-header nav.nm-nav {
+    grid-template: 'brand menu tools' var(--nav-height) / auto 1fr auto;
+    gap: 0 24px;
+  }
+
+  body.aep-training header .nm-hamburger {
+    display: none;
+  }
+
+  body.aep-training header .nm-menu,
+  body.aep-training header .nm-nav.nm-open .nm-menu {
+    grid-area: menu;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    padding: 0;
+    max-height: none;
+    overflow: visible;
+  }
+
+  body.aep-training header .nm-sections {
+    display: flex;
+    gap: 20px;
+  }
+
+  body.aep-training header .nm-sections > li {
+    position: relative;
+  }
+
+  body.aep-training header .nm-sections > li > a:any-link,
+  body.aep-training header .nm-section-toggle {
+    padding: 8px 0;
+    font-size: 0.9375rem;
+    white-space: nowrap;
+  }
+
+  body.aep-training header .nm-submenu {
+    position: absolute;
+    top: 100%;
+    left: -16px;
+    min-width: 220px;
+    padding: 8px 16px;
+    border: 1px solid var(--nm-color-border, #e2e8f0);
+    border-radius: var(--nm-radius, 12px);
+    background: #fff;
+    box-shadow: var(--nm-shadow);
+  }
+
+  body.aep-training header .nm-search {
+    flex: 1;
+    max-width: 320px;
+    margin: 0 0 0 auto;
+  }
+}
