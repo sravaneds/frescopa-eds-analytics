@@ -106,6 +106,9 @@ All events are pushed to `window.adobeDataLayer` as `{ event, eventInfo, ...stat
 | `sortApply` | Sort order changed | product-grid | filterValue, resultCount | event25, eVar42 sort | _novamart.search.sort |
 | `filterClear` | Clear filters | product-grid | resultCount, listName | event26 | _novamart.search.filters |
 | `searchSubmit` | Search submitted (header, Search block, grid keyword, FAQ, stores) | header-aep, search, product-grid, faq | SearchTerm, searchType, resultCount, trigger | event20 searches, eVar40/prop40 SearchTerm, eVar43 searchType, prop41 resultCount | siteSearch.query, siteSearch.numberOfResults |
+| `searchInitiate` | Header search submitted (navigates to the Search Results page) | header-aep | SearchTerm, searchType | event19 search initiated (searchSubmit on the results page counts the search) | siteSearch.query |
+| `searchResultClick` | Result clicked on the Search Results page | search (site scope) + tracking.js | CTAName, linkUrl, searchTerm, position, resultType, productId | event70 search result click, eVar40 SearchTerm, eVar13 position | web.webInteraction, siteSearch |
+| `searchError` | Query index could not be loaded | search (site scope) | SearchTerm, errorMessage | event71 | _novamart.search.error |
 | `searchNoResults` | Search returned zero results | search, product-grid | SearchTerm, searchType | event27 null search, eVar40 SearchTerm | siteSearch.numberOfResults = 0 |
 | `searchResultsView` | Product listing opened with ?q= | product-grid | SearchTerm, resultCount, listName | prop41 resultCount | siteSearch |
 | `searchSuggestionClick` | Popular search chip clicked | search | SearchTerm, searchType | event28, eVar44 "suggestion" | siteSearch.query |

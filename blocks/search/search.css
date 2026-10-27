@@ -53,3 +53,55 @@ main .faq-item[hidden],
 main .accordion-item[hidden] {
   display: none;
 }
+
+.search .search-results {
+  margin-top: 24px;
+}
+
+.search .search-results-list {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.search .search-result {
+  padding: 16px 20px;
+  border: 1px solid var(--nm-color-border, #e2e8f0);
+  border-radius: var(--nm-radius, 12px);
+  background: #fff;
+}
+
+.search .search-result a:any-link {
+  text-decoration: none;
+}
+
+.search .search-result h3 {
+  margin: 0 0 4px;
+  font-size: 1.125rem;
+}
+
+.search .search-result a:any-link:hover h3 {
+  text-decoration: underline;
+}
+
+.search .search-result-meta {
+  margin: 0 0 6px;
+  color: var(--nm-color-accent, #c2410c);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.search .search-result-description {
+  margin: 0;
+  color: var(--nm-color-muted, #475569);
+  font-size: 0.9375rem;
+}
+
+.search .search-results-empty {
+  padding: 24px;
+  border-radius: var(--nm-radius, 12px);
+  background: var(--nm-color-surface, #f8fafc);
+}

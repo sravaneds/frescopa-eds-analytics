@@ -219,6 +219,10 @@
     {
       "path": "blog/smart-kitchen-appliances-guide",
       "title": "The Smart Kitchen: Which Appliances Are Worth It?"
+    },
+    {
+      "path": "search",
+      "title": "Search"
     }
   ],
   "fragments": [

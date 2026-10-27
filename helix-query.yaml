@@ -35,6 +35,81 @@ indices:
         select: head > meta[name="category"]
         value: |
           attribute(el, 'content')
+  query-index:
+    # site search (NovaMart training site): every published page except fragments
+    target: /query-index.json
+    exclude:
+      - 'drafts/**'
+      - 'enrichment/**'
+      - 'fragments/**'
+      - 'nav'
+      - 'footer'
+      - '**/nav'
+      - '**/footer'
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: |
+          attribute(el, 'content')
+      heading:
+        selectFirst: main h1
+        value: |
+          textContent(el)
+      description:
+        select: head > meta[name="description"]
+        value: |
+          attribute(el, 'content')
+      image:
+        select: head > meta[property="og:image"]
+        value: |
+          attribute(el, 'content')
+      template:
+        select: head > meta[name="template"]
+        value: |
+          attribute(el, 'content')
+      pageType:
+        select: head > meta[name="page-type"]
+        value: |
+          attribute(el, 'content')
+      siteSection:
+        select: head > meta[name="site-section"]
+        value: |
+          attribute(el, 'content')
+      category:
+        select: head > meta[name="category"]
+        value: |
+          attribute(el, 'content')
+      productId:
+        select: head > meta[name="product-id"]
+        value: |
+          attribute(el, 'content')
+      productName:
+        select: head > meta[name="product-name"]
+        value: |
+          attribute(el, 'content')
+      productBrand:
+        select: head > meta[name="product-brand"]
+        value: |
+          attribute(el, 'content')
+      productPrice:
+        select: head > meta[name="product-price"]
+        value: |
+          attribute(el, 'content')
+      author:
+        select: head > meta[name="author"]
+        value: |
+          attribute(el, 'content')
+      publishedDate:
+        select: head > meta[name="published-date"]
+        value: |
+          attribute(el, 'content')
+      robots:
+        select: head > meta[name="robots"]
+        value: |
+          attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers["last-modified"], "ddd, DD MMM YYYY hh:mm:ss GMT")
   enrichment:
     target: /enrichment/enrichment.json
     include:

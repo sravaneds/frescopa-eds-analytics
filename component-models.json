@@ -6829,6 +6829,10 @@
         "value": "products",
         "options": [
           {
+            "name": "Whole site (query index)",
+            "value": "site"
+          },
+          {
             "name": "Products",
             "value": "products"
           },

@@ -13,7 +13,7 @@ import { mkdirSync, writeFileSync, readFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import pagesA, { productPage } from './pages-a.mjs';
-import pagesB, { ARTICLES, articlePage } from './pages-b.mjs';
+import pagesB, { ARTICLES, articlePage, searchPage } from './pages-b.mjs';
 import { PRODUCTS, CATEGORIES } from './catalog.mjs';
 import {
   SCENES, ACTIVITIES, AVATARS,
@@ -44,7 +44,8 @@ const instances = [
   ...PRODUCTS.filter((product) => product.sku !== 'EL-1001').map((product) => ({ ...productPage(product), instanceOf: '07' })),
   ...ARTICLES.slice(1).map((article) => ({ ...articlePage(article), instanceOf: '23' })),
 ];
-const allPages = [...corePages, ...instances];
+const utilityPages = [searchPage];
+const allPages = [...corePages, ...instances, ...utilityPages];
 
 function metadataFor(page) {
   return {
@@ -204,6 +205,37 @@ const footerHtml = [
   section('<p>© 2026 NovaMart (fictional training store). Built on AEM Edge Delivery Services for Adobe Analytics, Adobe Target and AEP Web SDK training.</p><p><a href="#aep:reset-profile">Reset demo profile</a></p>'),
 ].join('\n');
 write(join(SITE_DIR, 'footer.plain.html'), `${footerHtml}\n`);
+
+// local stand-in for the published query index (helix-query.yaml "query-index")
+const firstHeading = (page) => {
+  const m = page.sections.join('').match(/<h1[^>]*>(.*?)<\/h1>/);
+  return m ? m[1].replace(/<[^>]+>/g, '').replace(/&amp;/g, '&') : '';
+};
+const indexRows = allPages.map((page) => {
+  const meta = metadataFor(page);
+  return {
+    path: page.path ? `${ROOT}/${page.path}` : `${ROOT}/`,
+    title: meta.title,
+    heading: firstHeading(page),
+    description: meta.description || '',
+    image: meta.image || '',
+    template: meta.template,
+    pageType: meta['page-type'],
+    siteSection: meta['site-section'] || '',
+    category: meta.category || '',
+    productId: meta['product-id'] || '',
+    productName: meta['product-name'] || '',
+    productBrand: meta['product-brand'] || '',
+    productPrice: meta['product-price'] || '',
+    author: meta.author || '',
+    publishedDate: meta['published-date'] || '',
+    robots: meta.robots || '',
+    lastModified: '',
+  };
+});
+write(join(SITE_DIR, 'query-index.json'), `${JSON.stringify({
+  total: indexRows.length, offset: 0, limit: indexRows.length, data: indexRows, ':type': 'sheet',
+}, null, 2)}\n`);
 
 // page list used by build-package.mjs (AEM content package)
 write(join(REPO, 'tools/aep-training/manifest.json'), `${JSON.stringify({
@@ -412,7 +444,7 @@ ${table(['Activity ID', 'Type', 'Name', 'Page', 'Location', 'Experiences (audien
 
 /* ---------- report ---------- */
 
-console.info(`Generated ${allPages.length} pages (${corePages.length} core + ${instances.length} instances), nav, footer, assets and docs.`);
+console.info(`Generated ${allPages.length} pages (${corePages.length} core + ${instances.length} instances + ${utilityPages.length} utility), nav, footer, query index, assets and docs.`);
 if (problems.length) {
   console.error(`Validation problems:\n- ${problems.join('\n- ')}`);
   process.exitCode = 1;

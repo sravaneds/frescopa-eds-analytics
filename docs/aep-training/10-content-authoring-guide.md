@@ -69,7 +69,7 @@ Each visitor gets a sticky experience.
 | FAQ | Question + answer; option Searchable | generates FAQPage structured data |
 | Carousel | Image, alt, text per slide; style Product image gallery | keep slides <= 6 |
 | Testimonials | Photo, quote, name, role, rating | social proof |
-| Search | Placeholder, scope (Products, Page content, Stores), popular terms | Products scope opens the product listing with `?q=` |
+| Search | Placeholder, scope (Whole site, Products, Page content, Stores), popular terms | Whole site searches every published page through `/query-index.json` (used on the Search Results page `/search`); Products scope opens the product listing with `?q=` |
 | Product Grid | Product items (image, name, **SKU**, price, compare-at price, category, brand, rating, badge, product page); option filters | SKU = analytics productId, never change it |
 | Product Carousel | Product items; source Authored / Recommendations / Recently viewed | recently viewed ignores authored items when the visitor has history |
 | Product Info (PDP) | Gallery images, name, SKU, price, compare-at, brand, category, rating, review count, description, colour options | must match the page properties product fields |
@@ -103,7 +103,7 @@ Each visitor gets a sticky experience.
 ## 7. Installing the site in AEM
 
 The whole site is available as a content package:
-`packages/aep-training-content/aep-training-content-1.0.2.zip`. Install it with Package Manager on
+`packages/aep-training-content/aep-training-content-1.0.3.zip`. Install it with Package Manager on
 the author instance. It replaces `/content/aep-training` and `/content/dam/aep-training`. Then check the
 root page's cloud configuration, reprocess the images and preview the site. Full steps are in
 `packages/aep-training-content/README.md`.

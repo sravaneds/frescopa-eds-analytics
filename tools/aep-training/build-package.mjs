@@ -25,7 +25,7 @@ const arg = (name, fallback) => {
   return i >= 0 ? args[i + 1] : fallback;
 };
 const CONF = arg('conf', '/conf/aep-training');
-const VERSION = arg('version', '1.0.2');
+const VERSION = arg('version', '1.0.3');
 const PKG_NAME = 'aep-training-content';
 const SITE = '/content/aep-training';
 const DAM = '/content/dam/aep-training/images';

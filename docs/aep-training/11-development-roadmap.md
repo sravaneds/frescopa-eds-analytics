@@ -16,13 +16,16 @@
 
 ## Phase 1 - Platform setup (week 1)
 
-1. Install the content package `packages/aep-training-content/aep-training-content-1.0.2.zip`
+1. Install the content package `packages/aep-training-content/aep-training-content-1.0.3.zip`
    (pages under `/content/aep-training`, images under `/content/dam/aep-training/images`), then
    check the site's cloud configuration and reprocess the assets. See
    `packages/aep-training-content/README.md`.
 2. Push the code branch, verify `https://<branch>--frescopa-eds-analytics--sravaneds.aem.page/` (the site is published at the root).
 3. Bulk metadata: `template = aep-training`, `nav`, `footer`, `launch-url` for `/aep-training/**`.
-4. Run PageSpeed Insights on home, category, PDP (target 100) and fix regressions.
+4. Publish the site to live so `/query-index.json` is built (search only finds published pages). If the
+   site uses the configuration service, add the `query-index` definition from `helix-query.yaml` with
+   the Index Admin tool.
+5. Run PageSpeed Insights on home, category, PDP (target 100) and fix regressions.
 
 ## Phase 2 - Adobe Experience Platform & Web SDK (week 2)
 

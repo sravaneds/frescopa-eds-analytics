@@ -582,6 +582,27 @@ const notFound = {
   ],
 };
 
+/* ---------- Search Results (utility page, not one of the 30 core pages) ---------- */
+export const searchPage = {
+  id: 'U1',
+  name: 'Search Results',
+  path: 'search',
+  title: 'Search | NovaMart',
+  description: 'Search NovaMart products, guides and help articles.',
+  pageType: 'search',
+  siteSection: 'search',
+  robots: 'noindex, follow',
+  utility: true,
+  purpose: 'Site-wide search over the query index (/query-index.json). Target of the header search (?q=).',
+  extraEvents: ['searchSubmit', 'searchNoResults', 'searchResultClick', 'searchError'],
+  rules: [],
+  metrics: ['Search exit rate', 'Null search rate', 'Search result click-through rate by position'],
+  sections: [
+    section([h(1, 'Search'), search('Search products, guides and help', 'site', ['headphones', 'jacket', 'espresso', 'returns', 'rewards'])]),
+    section([h(2, 'Or browse by department'), categoryCards()], { style: 'highlight' }),
+  ],
+};
+
 export default [
   account, orders, track, support, contact, about, blog,
   articlePage(ARTICLES[0]),

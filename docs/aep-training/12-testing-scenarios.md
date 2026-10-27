@@ -32,7 +32,9 @@ In production, verify beacons with Adobe Experience Platform Debugger and Assura
 | C2 | Filter usage | Change Brand, Price, On sale, Sort, Clear | `filterApply` (filterType/filterValue/resultCount), `sortApply`, `filterClear` |
 | C3 | Search usage | Type "pro" in the grid search | `searchSubmit` SearchTerm `pro`, resultCount > 0 |
 | C4 | Null search | Search "zzz" | `searchNoResults`, empty-state message announced |
-| C5 | Header search | Search "jacket" in header | `searchSubmit` (searchType header) then product listing with `searchResultsView` |
+| C5 | Header search | Search "jacket" in header | `searchInitiate` (searchType header), then the Search Results page `/search?q=jacket` with `searchSubmit` (searchType site, resultCount) |
+| C5b | Site search results | On `/search`, search "headphones", click the first result | results ranked product first; `searchResultClick` with position 1, searchTerm, resultType product |
+| C5c | Site search empty / unavailable | Search "zzz"; then test before any page is published | `searchNoResults`; without a published index the page shows "Search is not available" and `searchError` |
 | C6 | Product click | Click a product card | `productClick` with productId, productName, listName, position |
 
 ## D. Product detail page
