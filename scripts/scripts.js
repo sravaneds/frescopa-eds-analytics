@@ -540,6 +540,8 @@ export async function loadPage() {
   await initializeConfig();
   await loadEager(document);
   await loadLazy(document);
+  // Adobe Tags: run "Page Bottom" rules once the page content is rendered
+  if (window._satellite?.pageBottom) window._satellite.pageBottom();
   loadDelayed();
 }
 
