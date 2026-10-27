@@ -1,6 +1,7 @@
 import { loadCSS } from '../../scripts/aem.js';
 import { pushEvent } from '../../scripts/aep/datalayer.js';
 import { parseProductRow, renderProductCard, getListName } from '../../scripts/aep/product-card.js';
+import { normalizeText } from '../../scripts/aep/site-index.js';
 
 const PRICE_RANGES = [
   {
@@ -92,9 +93,13 @@ export default async function decorate(block) {
   };
 
   const apply = () => {
-    const term = state.q.toLowerCase();
+    const words = normalizeText(state.q).split(' ').filter(Boolean);
     const range = PRICE_RANGES.find((r) => r.id === state.price);
-    const visible = cards.filter(({ product: p }) => (!term || `${p.productName} ${p.brand} ${p.category}`.toLowerCase().includes(term))
+    const matches = (p) => {
+      const text = normalizeText(`${p.productName} ${p.brand} ${p.category} ${p.productId}`);
+      return words.every((word) => text.includes(word));
+    };
+    const visible = cards.filter(({ product: p }) => (!words.length || matches(p))
       && (!state.category || p.category === state.category)
       && (!state.brand || p.brand === state.brand)
       && (!range || (p.price >= range.min && p.price < range.max))

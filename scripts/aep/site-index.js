@@ -52,7 +52,15 @@ const clean = (value) => {
   if (parts[0] === 'NovaMart' && parts.length > 1) return `NovaMart: ${parts.slice(1).join(' | ')}`;
   return parts[0] || '';
 };
-const normalize = (value) => String(value || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+/**
+ * Lower case, no accents, punctuation (hyphens, slashes, quotes) as spaces:
+ * "AirLite Wireless-Earbuds" and "airlite-wireless-earbuds" both become "airlite wireless earbuds".
+ */
+export const normalizeText = (value) => String(value || '').toLowerCase().normalize('NFD')
+  .replace(/[\u0300-\u036f]/g, '')
+  .replace(/[^a-z0-9]+/g, ' ')
+  .trim();
+const normalize = normalizeText;
 
 /**
  * Scores rows for a search term: all words must match; title/product name matches rank highest.

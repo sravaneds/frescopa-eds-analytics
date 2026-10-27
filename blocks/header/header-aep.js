@@ -6,6 +6,21 @@ import { getCart, getWishlist } from '../../scripts/aep/store.js';
 
 const isDesktop = window.matchMedia('(min-width: 900px)');
 
+/**
+ * Search Results page if it exists, otherwise the product listing (which filters by ?q=),
+ * so the header search never lands on a 404.
+ */
+async function searchUrl(term) {
+  const q = encodeURIComponent(term);
+  try {
+    const resp = await fetch(`${SITE_ROOT}/search`, { method: 'HEAD' });
+    if (resp.ok) return `${SITE_ROOT}/search?q=${q}`;
+  } catch (e) {
+    // network error: fall back to the product listing
+  }
+  return `${SITE_ROOT}/products?q=${q}`;
+}
+
 function closeSubmenus(nav, except) {
   nav.querySelectorAll('.nm-sections button[aria-expanded="true"]').forEach((b) => {
     if (b !== except) b.setAttribute('aria-expanded', 'false');
@@ -118,13 +133,13 @@ export default async function decorate(block, navPath) {
   search.className = 'nm-search';
   search.setAttribute('role', 'search');
   search.innerHTML = '<label for="nm-search-input" class="visually-hidden">Search NovaMart</label><input id="nm-search-input" type="search" name="q" placeholder="Search NovaMart" autocomplete="off"><button type="submit" aria-label="Submit search"></button>';
-  search.addEventListener('submit', (e) => {
+  search.addEventListener('submit', async (e) => {
     e.preventDefault();
     const term = search.elements.q.value.trim();
     if (!term) return;
     // the results page reports searchSubmit with the result count
     pushEvent('searchInitiate', { SearchTerm: term, searchType: 'header', component: 'header' });
-    window.location.href = `${SITE_ROOT}/search?q=${encodeURIComponent(term)}`;
+    window.location.href = await searchUrl(term);
   });
   menu.append(search);
 
