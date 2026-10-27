@@ -12,7 +12,7 @@ In production, verify beacons with Adobe Experience Platform Debugger and Assura
 | A2 | State objects present | Console: `adobeDataLayer.getState()` | `page`, `user`, `product`, `cart`, `campaign`, `personalization` exist |
 | A3 | Campaign capture | Open `/?cid=EM-FALL-2026&utm_source=newsletter&utm_medium=email` | `campaign.campaignId = EM-FALL-2026`, `source = newsletter` |
 | A4 | Scroll depth | Scroll home to the footer | `scrollDepth` 25, 50, 75, 90, 100 once each |
-| A5 | 404 | Open `/aep-training/unknown` and `/aep-training/404` | `errorPageView` with `requestedUrl` |
+| A5 | 404 | Open `/unknown-page` and `/404` | `errorPageView` with `requestedUrl` |
 | A6 | SEO | View source / Rich Results test on home, PDP, FAQ, article | Organization+WebSite, Product, FAQPage, BlogPosting, BreadcrumbList JSON-LD |
 
 ## B. Home page

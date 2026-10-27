@@ -2,7 +2,7 @@
 
 # 1. Sitemap
 
-NovaMart training site, AEM site path `/content/aep-training` (published as `/aep-training/...` via `paths.json`).
+NovaMart training site, AEM site path `/content/aep-training` (published at the domain root: `/content/aep-training/about` -> `/about`).
 30 core pages plus 25 template instances (23 additional product detail pages, 2 additional articles).
 
 ```

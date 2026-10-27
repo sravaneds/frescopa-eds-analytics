@@ -23,7 +23,7 @@
     "/content/frescopa/configs:/configs.json",
     "/content/frescopa/configs-dev:/configs-dev.json",
     "/content/frescopa/configs-stage:/configs-stage.json",
-    "/content/aep-training/:/aep-training/"
+    "/content/aep-training/:/"
   ],
   "includes": [
     "/content/frescopa/",

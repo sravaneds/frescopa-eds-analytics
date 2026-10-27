@@ -25,7 +25,7 @@ const arg = (name, fallback) => {
   return i >= 0 ? args[i + 1] : fallback;
 };
 const CONF = arg('conf', '/conf/aep-training');
-const VERSION = arg('version', '1.0.1');
+const VERSION = arg('version', '1.0.2');
 const PKG_NAME = 'aep-training-content';
 const SITE = '/content/aep-training';
 const DAM = '/content/dam/aep-training/images';
@@ -211,9 +211,9 @@ function convertBlock(el) {
       'sling:resourceType': resourceType('columns'),
       columns: String(rows[0]?.length || 1),
       rows: String(rows.length),
-    }, rows.map((cells, r) => node(`row${r ? `_${r}` : ''}`, {
+    }, rows.map((cells, r) => node(`row${r + 1}`, {
       'sling:resourceType': `${resourceType('columns')}/row`,
-    }, cells.map((cell, c) => node(`column${c ? `_${c}` : ''}`, {
+    }, cells.map((cell, c) => node(`col${c + 1}`, {
       'sling:resourceType': `${resourceType('columns')}/row/column`,
     }, defaultContent(kids(cell)))))));
   }

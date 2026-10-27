@@ -1,6 +1,6 @@
 # AEP training content package
 
-`aep-training-content-1.0.1.zip` is an AEM content package (FileVault) with the NovaMart training site
+`aep-training-content-1.0.2.zip` is an AEM content package (FileVault) with the NovaMart training site
 for Universal Editor / Edge Delivery Services:
 
 | Path | Content |
@@ -29,14 +29,15 @@ page type, category, product fields and so on). Section properties hold the Targ
    trigger asset processing, so thumbnails and renditions are created only after this step.
 5. Open `/content/aep-training` in Universal Editor and check a few pages. Then use **Publish >
    Preview** (or Quick Publish) for the site, so it is available at
-   `https://<branch>--frescopa-eds-analytics--sravaneds.aem.page/aep-training/`.
+   `https://main--frescopa-eds-analytics--sravaneds.aem.page/` (the site configuration publishes
+   `/content/aep-training` at the domain root: `/content/aep-training/about` -> `/about`).
 
 ## Things to verify after the first install
 
 These parts of the mapping are based on the standard XWalk structure and haven't been tested
 against your author instance yet:
 
-- **Columns** use `columns/v1/columns > row > column` child nodes (footer, trust badges, contact, tiers).
+- **Columns** use `columns/v1/columns > row1 > col1, col2 ...` child nodes (footer, trust badges, contact, tiers).
 - **Product Info gallery** stores several images in one multi-value `images` property.
 - **In-page anchors** (`#customer-reviews`, `#all-deals`, `#shop-the-season`) rely on the generated
   heading IDs.
@@ -46,7 +47,7 @@ against your author instance yet:
 ```sh
 node tools/aep-training/generate.mjs        # regenerate the preview pages + manifest
 node tools/aep-training/build-package.mjs   # build this zip
-node tools/aep-training/build-package.mjs --conf /conf/my-site --version 1.0.2
+node tools/aep-training/build-package.mjs --conf /conf/my-site --version 1.0.3
 ```
 
 The builder reads `content/aep-training/**/*.plain.html` (via `tools/aep-training/manifest.json`)

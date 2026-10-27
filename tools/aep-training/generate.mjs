@@ -253,7 +253,7 @@ const walk = (node, depth) => Object.keys(node).filter((k) => k !== '__page').so
 walk(tree, 1);
 write(join(DOCS, '01-sitemap.md'), `${GEN}# 1. Sitemap
 
-NovaMart training site, AEM site path \`/content/aep-training\` (published as \`/aep-training/...\` via \`paths.json\`).
+NovaMart training site, AEM site path \`/content/aep-training\` (published at the domain root: \`/content/aep-training/about\` -> \`/about\`).
 ${corePages.length} core pages plus ${instances.length} template instances (${PRODUCTS.length - 1} additional product detail pages, ${ARTICLES.length - 1} additional articles).
 
 \`\`\`
