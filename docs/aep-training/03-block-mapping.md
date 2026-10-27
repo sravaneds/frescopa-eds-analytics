@@ -19,7 +19,7 @@
 | Product Carousel | `blocks/product-carousel` | recommendations, recently-viewed | Source, Image, Image alt text, Product name, SKU / product ID (analytics productId), Price (USD), Compare-at price (shows sale), Category, Brand, Rating (0-5), Badge (New, Sale, Best Seller), Product page | productListImpression, productCarouselClick, carouselNavigate, cartAdd, wishlistAdd, recommendationImpression, recommendationClick | 01, 02, 07, 12, 13, 15, 17, 23, 29, 30 |
 | Teaser | `blocks/teaser` | available, not used | see block model | ctaClick | - |
 | Testimonials | `blocks/testimonials` | default | Layout, Photo, Quote, Name, Role / location, Rating | testimonialImpression | 01, 07, 08, 21 |
-| Search | `blocks/search` | default | Placeholder / label, Search scope, Popular search terms (comma separated) | searchSubmit, searchNoResults, searchSuggestionClick | 02, 19, 24, 30 |
+| Search | `blocks/search` | default | Placeholder / label, Search scope, Popular search terms (comma separated) | searchSubmit, searchNoResults, searchSuggestionClick, searchResultClick, searchError | 02, 19, 24, 30 |
 | Product Info (PDP) | `blocks/product-info` | default | Gallery images, Product name, SKU (analytics productId), Price (USD), Compare-at price, Brand, Category, Rating (0-5), Review count, Description, Colour options (comma separated) | productView, galleryInteraction, productOptionSelect, cartAdd, wishlistAdd, reviewsClick | 07 |
 | Cart | `blocks/cart` | default | Empty cart message | cartView, cartAdd, cartRemove, couponApply, couponRemove | 13 |
 | Checkout | `blocks/checkout` | default | Intro text | checkoutStart, checkoutStep, shippingSelect, paymentSelect, checkoutError, checkoutComplete | 14 |

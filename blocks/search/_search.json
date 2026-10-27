@@ -34,9 +34,22 @@
           "label": "Search scope",
           "value": "products",
           "options": [
-            { "name": "Products", "value": "products" },
-            { "name": "Page content (cards, FAQ)", "value": "content" },
-            { "name": "Stores", "value": "stores" }
+            {
+              "name": "Whole site (query index)",
+              "value": "site"
+            },
+            {
+              "name": "Products",
+              "value": "products"
+            },
+            {
+              "name": "Page content (cards, FAQ)",
+              "value": "content"
+            },
+            {
+              "name": "Stores",
+              "value": "stores"
+            }
           ]
         },
         {

@@ -117,15 +117,14 @@ export default async function decorate(block, navPath) {
   const search = document.createElement('form');
   search.className = 'nm-search';
   search.setAttribute('role', 'search');
-  search.innerHTML = '<label for="nm-search-input" class="visually-hidden">Search products</label><input id="nm-search-input" type="search" name="q" placeholder="Search products" autocomplete="off"><button type="submit" aria-label="Submit search"></button>';
+  search.innerHTML = '<label for="nm-search-input" class="visually-hidden">Search NovaMart</label><input id="nm-search-input" type="search" name="q" placeholder="Search NovaMart" autocomplete="off"><button type="submit" aria-label="Submit search"></button>';
   search.addEventListener('submit', (e) => {
     e.preventDefault();
     const term = search.elements.q.value.trim();
     if (!term) return;
-    pushEvent('searchSubmit', {
-      SearchTerm: term, searchType: 'header', component: 'header', resultCount: -1,
-    });
-    window.location.href = `${SITE_ROOT}/products?q=${encodeURIComponent(term)}`;
+    // the results page reports searchSubmit with the result count
+    pushEvent('searchInitiate', { SearchTerm: term, searchType: 'header', component: 'header' });
+    window.location.href = `${SITE_ROOT}/search?q=${encodeURIComponent(term)}`;
   });
   menu.append(search);
 

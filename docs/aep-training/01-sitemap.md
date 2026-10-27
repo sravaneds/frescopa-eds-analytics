@@ -55,6 +55,7 @@ NovaMart training site, AEM site path `/content/aep-training` (published at the 
     ├── vortex-pro-blender  (instance of 07)
     ├── weekender-canvas-tote  (instance of 07)
   ├── recommendations  (29 Personalized Recommendations)
+  ├── search  (U1 Search Results)
   ├── seasonal-offers  (11 Seasonal Offers)
   ├── shop  (02 Shop)
   ├── stores  (24 Store Locator)

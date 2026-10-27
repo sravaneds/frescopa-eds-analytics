@@ -61,6 +61,15 @@ export const EVENTS = {
   searchSubmit: {
     trigger: 'Search submitted (header, Search block, grid keyword, FAQ, stores)', source: 'header-aep, search, product-grid, faq', attributes: ['SearchTerm', 'searchType', 'resultCount', 'trigger'], aa: 'event20 searches, eVar40/prop40 SearchTerm, eVar43 searchType, prop41 resultCount', xdm: 'siteSearch.query, siteSearch.numberOfResults',
   },
+  searchInitiate: {
+    trigger: 'Header search submitted (navigates to the Search Results page)', source: 'header-aep', attributes: ['SearchTerm', 'searchType'], aa: 'event19 search initiated (searchSubmit on the results page counts the search)', xdm: 'siteSearch.query',
+  },
+  searchResultClick: {
+    trigger: 'Result clicked on the Search Results page', source: 'search (site scope) + tracking.js', attributes: ['CTAName', 'linkUrl', 'searchTerm', 'position', 'resultType', 'productId'], aa: 'event70 search result click, eVar40 SearchTerm, eVar13 position', xdm: 'web.webInteraction, siteSearch',
+  },
+  searchError: {
+    trigger: 'Query index could not be loaded', source: 'search (site scope)', attributes: ['SearchTerm', 'errorMessage'], aa: 'event71', xdm: '_novamart.search.error',
+  },
   searchNoResults: {
     trigger: 'Search returned zero results', source: 'search, product-grid', attributes: ['SearchTerm', 'searchType'], aa: 'event27 null search, eVar40 SearchTerm', xdm: 'siteSearch.numberOfResults = 0',
   },
@@ -212,6 +221,7 @@ export const BLOCK_EVENTS = {
   'faq.searchable': ['searchSubmit'],
   testimonials: ['testimonialImpression'],
   search: ['searchSubmit', 'searchNoResults', 'searchSuggestionClick'],
+  'search.site': ['searchResultClick', 'searchError'],
   'product-info': ['productView', 'galleryInteraction', 'productOptionSelect', 'cartAdd', 'wishlistAdd', 'reviewsClick'],
   cart: ['cartView', 'cartAdd', 'cartRemove', 'couponApply', 'couponRemove'],
   checkout: ['checkoutStart', 'checkoutStep', 'shippingSelect', 'paymentSelect', 'checkoutError', 'checkoutComplete'],
