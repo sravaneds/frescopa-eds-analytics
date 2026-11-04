@@ -1,6 +1,5 @@
 import { pushEvent, SITE_ROOT, CURRENCY } from '../../scripts/aep/datalayer.js';
 import { loadIndex, searchIndex } from '../../scripts/aep/site-index.js';
-import { pushSearch, trackSearchResults } from '../../scripts/analytics/search.js';
 
 let searchCount = 0;
 
@@ -114,11 +113,35 @@ export default function decorate(block) {
   const results = document.createElement('div');
   results.className = 'search-results';
 
-  // analytics (searchInteraction): shared attributes of this search block
-  const analytics = { location: 'search-block', scope };
-  trackSearchResults(results, analytics, () => input.value);
+  // Adobe Client Data Layer: search engagement (searchInteraction)
+  window.adobeDataLayer = window.adobeDataLayer || [];
+
+  // search result clicked (site scope result list)
+  results.addEventListener('click', (e) => {
+    const link = e.target.closest('a[href]');
+    if (!link) return;
+    window.adobeDataLayer.push({
+      event: 'searchInteraction',
+      component: {
+        type: 'search',
+        location: 'search-block',
+        scope,
+        searchTerm: input.value.trim().toLowerCase()
+          .replace(/[^\s@]+@[^\s@]+\.[^\s@]+/g, '[email]')
+          .replace(/\d[\d\s-]{5,}\d/g, '[number]')
+          .slice(0, 100),
+        resultText: (link.dataset.ctaName || link.textContent || '').trim(),
+        resultUrl: link.href,
+        resultPosition: [...results.querySelectorAll('a[href]')].indexOf(link) + 1,
+        action: 'result-click',
+      },
+    });
+  });
 
   const runSite = async (term, trigger) => {
+    // search term for analytics: lower case, email addresses and long numbers redacted
+    const searchTerm = term.toLowerCase().replace(/[^\s@]+@[^\s@]+\.[^\s@]+/g, '[email]')
+      .replace(/\d[\d\s-]{5,}\d/g, '[number]').slice(0, 100);
     const url = new URL(window.location.href);
     if (term) url.searchParams.set('q', term);
     else url.searchParams.delete('q');
@@ -126,7 +149,15 @@ export default function decorate(block) {
     if (!term) {
       status.textContent = '';
       results.textContent = '';
-      if (trigger === 'clear') pushSearch('clear', analytics);
+      // search input cleared
+      if (trigger === 'clear') {
+        window.adobeDataLayer.push({
+          event: 'searchInteraction',
+          component: {
+            type: 'search', location: 'search-block', scope, trigger, action: 'clear',
+          },
+        });
+      }
       return;
     }
     status.textContent = 'Searching…';
@@ -138,8 +169,18 @@ export default function decorate(block) {
       pushEvent(found.length ? 'searchSubmit' : 'searchNoResults', {
         SearchTerm: term, searchType, trigger, component: 'search', resultCount: found.length,
       });
-      pushSearch('submit', {
-        ...analytics, trigger, searchTerm: term, resultCount: found.length,
+      // site search run, with the number of results (0 = no results)
+      window.adobeDataLayer.push({
+        event: 'searchInteraction',
+        component: {
+          type: 'search',
+          location: 'search-block',
+          scope,
+          searchTerm,
+          resultCount: found.length,
+          trigger,
+          action: 'search',
+        },
       });
     } catch (e) {
       status.textContent = 'Search is not available right now. Please try again later.';
@@ -147,7 +188,13 @@ export default function decorate(block) {
       pushEvent('searchError', {
         SearchTerm: term, searchType, trigger, component: 'search', errorMessage: e.message,
       });
-      pushSearch('error', { ...analytics, trigger, searchTerm: term });
+      // site search failed: the search index could not be loaded
+      window.adobeDataLayer.push({
+        event: 'searchInteraction',
+        component: {
+          type: 'search', location: 'search-block', scope, searchTerm, trigger, action: 'error',
+        },
+      });
     }
   };
 
@@ -156,6 +203,9 @@ export default function decorate(block) {
       runSite(term, trigger);
       return;
     }
+    // search term for analytics: lower case, email addresses and long numbers redacted
+    const searchTerm = term.toLowerCase().replace(/[^\s@]+@[^\s@]+\.[^\s@]+/g, '[email]')
+      .replace(/\d[\d\s-]{5,}\d/g, '[number]').slice(0, 100);
     if (scope === 'products') {
       const detail = { term, resultCount: null };
       document.dispatchEvent(new CustomEvent('aep:product-search', { detail }));
@@ -163,9 +213,18 @@ export default function decorate(block) {
         pushEvent('searchSubmit', {
           SearchTerm: term, searchType, trigger, component: 'search', resultCount: -1,
         });
-        // results are counted on the product listing page (results-view)
-        pushSearch('submit', {
-          ...analytics, trigger, searchTerm: term, resultCount: -1,
+        // product search run; results are shown (and counted) on the product listing page
+        window.adobeDataLayer.push({
+          event: 'searchInteraction',
+          component: {
+            type: 'search',
+            location: 'search-block',
+            scope,
+            searchTerm,
+            resultCount: -1,
+            trigger,
+            action: 'search',
+          },
         });
         window.location.href = `${SITE_ROOT}/products?q=${encodeURIComponent(term)}`;
         return;
@@ -174,13 +233,19 @@ export default function decorate(block) {
       pushEvent(detail.resultCount ? 'searchSubmit' : 'searchNoResults', {
         SearchTerm: term, searchType, trigger, component: 'search', resultCount: detail.resultCount,
       });
-      if (term) {
-        pushSearch('submit', {
-          ...analytics, trigger, searchTerm: term, resultCount: detail.resultCount,
-        });
-      } else if (trigger === 'clear') {
-        pushSearch('clear', analytics);
-      }
+      // product search run on this page's product grid (empty term = search cleared)
+      window.adobeDataLayer.push({
+        event: 'searchInteraction',
+        component: {
+          type: 'search',
+          location: 'search-block',
+          scope,
+          searchTerm,
+          resultCount: detail.resultCount,
+          trigger,
+          action: term ? 'search' : 'clear',
+        },
+      });
       return;
     }
     const resultCount = filterPage(term, block);
@@ -189,11 +254,21 @@ export default function decorate(block) {
       pushEvent(resultCount ? 'searchSubmit' : 'searchNoResults', {
         SearchTerm: term, searchType, trigger, component: 'search', resultCount,
       });
-      pushSearch('submit', {
-        ...analytics, trigger, searchTerm: term, resultCount,
+    }
+    // content / store search run on the cards, FAQ and accordion items of this page
+    if (term || trigger === 'clear') {
+      window.adobeDataLayer.push({
+        event: 'searchInteraction',
+        component: {
+          type: 'search',
+          location: 'search-block',
+          scope,
+          searchTerm,
+          resultCount,
+          trigger,
+          action: term ? 'search' : 'clear',
+        },
       });
-    } else if (trigger === 'clear') {
-      pushSearch('clear', analytics);
     }
   };
 
@@ -225,7 +300,18 @@ export default function decorate(block) {
       chip.addEventListener('click', () => {
         input.value = term;
         pushEvent('searchSuggestionClick', { SearchTerm: term, searchType, component: 'search' });
-        pushSearch('suggestion-click', { ...analytics, searchTerm: term, suggestionText: term });
+        // popular search term clicked (the search it runs is tracked as well)
+        window.adobeDataLayer.push({
+          event: 'searchInteraction',
+          component: {
+            type: 'search',
+            location: 'search-block',
+            scope,
+            searchTerm: term.toLowerCase(),
+            suggestionText: term,
+            action: 'suggestion-click',
+          },
+        });
         run(term, 'suggestion');
       });
       chips.append(chip);

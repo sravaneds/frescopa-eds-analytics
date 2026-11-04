@@ -435,8 +435,6 @@ async function loadLazy(doc) {
   }
 
   trackHistory();
-  // engagement analytics (scroll depth, engagement time, signup links, login results)
-  import('./analytics/index.js').then(({ default: initAnalytics }) => initAnalytics());
   if (doc.body.classList.contains('aep-training')) {
     import('./aep/index.js').then(({ initLazy }) => initLazy(main));
   }

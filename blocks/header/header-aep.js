@@ -3,8 +3,6 @@ import { loadFragment } from '../fragment/fragment.js';
 import { pushEvent, SITE_ROOT } from '../../scripts/aep/datalayer.js';
 import { getProfile } from '../../scripts/aep/profile.js';
 import { getCart, getWishlist } from '../../scripts/aep/store.js';
-import trackTopNav from '../../scripts/analytics/navigation.js';
-import { trackHeaderSearch } from '../../scripts/analytics/search.js';
 
 const isDesktop = window.matchMedia('(min-width: 900px)');
 
@@ -141,10 +139,23 @@ export default async function decorate(block, navPath) {
     if (!term) return;
     // the results page reports searchSubmit with the result count
     pushEvent('searchInitiate', { SearchTerm: term, searchType: 'header', component: 'header' });
+    // Adobe Client Data Layer: header search submitted. The results (and their count) are on
+    // the next page, which reports a "results-view". Email addresses and long numbers are
+    // redacted from the term.
+    window.adobeDataLayer = window.adobeDataLayer || [];
+    window.adobeDataLayer.push({
+      event: 'searchInteraction',
+      component: {
+        type: 'search',
+        location: 'header',
+        searchTerm: term.toLowerCase().replace(/[^\s@]+@[^\s@]+\.[^\s@]+/g, '[email]')
+          .replace(/\d[\d\s-]{5,}\d/g, '[number]').slice(0, 100),
+        resultCount: -1,
+        action: 'search',
+      },
+    });
     window.location.href = await searchUrl(term);
   });
-  // analytics (searchInteraction): header search submit
-  trackHeaderSearch(search, { scope: 'site' });
   menu.append(search);
 
   const tools = document.createElement('ul');
@@ -173,6 +184,14 @@ export default async function decorate(block, navPath) {
     const open = hamburger.getAttribute('aria-expanded') !== 'true';
     setMenu(open);
     pushEvent('navToggle', { component: 'header', action: open ? 'open' : 'close' });
+    // Adobe Client Data Layer: mobile menu opened or closed
+    window.adobeDataLayer = window.adobeDataLayer || [];
+    window.adobeDataLayer.push({
+      event: 'topNavInteraction',
+      component: {
+        type: 'navigation', menuItem: 'menu', area: 'menu', action: open ? 'menu-open' : 'menu-close',
+      },
+    });
   });
   nav.querySelectorAll('.nm-section-toggle').forEach((button) => {
     button.addEventListener('click', () => {
@@ -180,6 +199,18 @@ export default async function decorate(block, navPath) {
       closeSubmenus(nav, button);
       button.setAttribute('aria-expanded', open);
       if (open) pushEvent('navClick', { component: 'header', CTAName: button.textContent, action: 'expand' });
+      // Adobe Client Data Layer: top navigation submenu opened or closed
+      window.adobeDataLayer = window.adobeDataLayer || [];
+      window.adobeDataLayer.push({
+        event: 'topNavInteraction',
+        component: {
+          type: 'navigation',
+          menuItem: button.textContent.trim(),
+          area: 'sections',
+          level: 1,
+          action: open ? 'expand' : 'collapse',
+        },
+      });
     });
   });
   document.addEventListener('keydown', (e) => {
@@ -198,8 +229,31 @@ export default async function decorate(block, navPath) {
   });
   isDesktop.addEventListener('change', () => setMenu(false));
 
-  // analytics (topNavInteraction): links, submenus, hamburger and header tools
-  trackTopNav(nav, { navType: 'header' });
+  // Adobe Client Data Layer: top navigation link clicked (brand, section, submenu or tool link).
+  // The header search form is tracked separately as searchInteraction.
+  nav.addEventListener('click', (e) => {
+    const link = e.target.closest('a[href]');
+    if (!link || link.closest('form')) return;
+    const submenu = link.closest('.nm-submenu');
+    let area = 'sections';
+    if (link.closest('.nm-brand')) area = 'brand';
+    else if (link.closest('.nm-tools')) area = 'tools';
+    window.adobeDataLayer = window.adobeDataLayer || [];
+    window.adobeDataLayer.push({
+      event: 'topNavInteraction',
+      component: {
+        type: 'navigation',
+        // tool links can carry a count badge or a greeting, so the authored label is used
+        menuItem: (link.dataset.label || link.firstChild?.textContent || link.textContent
+          || link.getAttribute('aria-label') || '').trim(),
+        menuUrl: link.href,
+        area,
+        level: submenu ? 2 : 1,
+        parentItem: submenu ? submenu.previousElementSibling?.textContent.trim() || '' : '',
+        action: 'click',
+      },
+    });
+  });
 
   // highlight current page
   nav.querySelectorAll('a').forEach((a) => {

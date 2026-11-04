@@ -1,13 +1,19 @@
 # Engagement analytics: Adobe Client Data Layer events
 
-This document lists the engagement events that the site pushes to the Adobe Client Data Layer (ACDL). For each event it gives the trigger, the payload and how to report on it in Adobe Analytics.
+This document lists the engagement events that the site pushes to the Adobe Client Data Layer (ACDL). For each event it gives where the code is, the trigger, the payload and how to report on it in Adobe Analytics.
 
-| Item | Location |
+Every event is pushed **inline, in the block where the interaction happens**, with `window.adobeDataLayer.push()`. There is no shared analytics module or helper function: each block is self-contained and can be changed or removed on its own.
+
+| Event | Pushed from |
 | --- | --- |
-| Reusable utility | `scripts/analytics/adobe-data-layer.js` |
-| Component trackers | `scripts/analytics/{hero-banner,auth,department,navigation,search,page-engagement}.js` |
-| Page-level start-up | `scripts/analytics/index.js`, loaded in the lazy phase from `scripts/scripts.js → loadLazy()` |
-| Block hooks | `blocks/hero`, `blocks/login-form`, `blocks/commerce-login`, `blocks/commerce-create-account`, `blocks/cards`, `blocks/product-grid`, `blocks/search`, `blocks/header` (`header.js`, `header-aep.js`, `renderAuthDropdown.js`), `scripts/aep/tracking.js` (demo sign-in and Rewards enrollment links) |
+| `heroBannerInteraction` | `blocks/hero/hero.js` |
+| `loginInteraction` | `blocks/login-form/login-form.js`, `blocks/header/renderCugUser.js` (CUG login success), `blocks/commerce-login/commerce-login.js`, `blocks/header/renderAuthDropdown.js`, `scripts/aep/tracking.js` (demo sign-in link) |
+| `signupInteraction` | `blocks/commerce-create-account/commerce-create-account.js`, `scripts/aep/tracking.js` (Rewards enrollment link) |
+| `departmentInteraction`, `departmentCardClick` | `blocks/cards/cards.js`, `blocks/product-grid/product-grid.js` |
+| `departmentFilterInteraction` | `blocks/product-grid/product-grid.js` |
+| `topNavInteraction` | `blocks/header/header.js` (storefront header), `blocks/header/header-aep.js` (training site header) |
+| `searchInteraction` | `blocks/search/search.js`, `blocks/header/header.js`, `blocks/header/header-aep.js`, `blocks/product-grid/product-grid.js` |
+| `pageScrollDepth`, `pageEngagementTime` | `scripts/delayed.js` (page level, not a block) |
 
 These events are **added** to the existing data layer. The training-site events (`heroClick`, `ctaClick`, `navClick`, `searchSubmit`, `filterApply`, `scrollDepth`, `loginComplete` and the others in `docs/aep-training/04-analytics-tracking-matrix.md`) and the Commerce drop-in events keep firing unchanged. See [section 7](#7-relationship-to-the-existing-events) to avoid double counting.
 
@@ -18,19 +24,15 @@ These events are **added** to the existing data layer. The training-site events 
 ### Payload shape
 
 ```js
+window.adobeDataLayer = window.adobeDataLayer || [];
 window.adobeDataLayer.push({
   event: 'heroBannerInteraction',          // name the Tags rule listens for
-  component: {                             // data object (merged into the ACDL computed state)
+  component: {                             // event data
     type: 'hero-banner',
     title: 'Shop all departments',
     variation: 'default',
     ctaText: 'Browse all products',
     action: 'click',
-    // ...event specific attributes
-  },
-  eventInfo: {                             // event metadata, not kept in the computed state
-    componentId: 'hero-1',
-    timestamp: '2026-11-04T10:15:00.000Z',
   },
 });
 ```
@@ -38,51 +40,65 @@ window.adobeDataLayer.push({
 - **Component events** use the `component` object: hero, login, signup, department, navigation and search.
 - **Page events** use the `engagement` object: scroll depth and engagement time.
 - `component.type` always names the component and `component.action` always names the interaction. A Tags rule can therefore listen to one event and branch on `action`.
+- Each block starts with `window.adobeDataLayer = window.adobeDataLayer || [];`, so it can push before the ACDL library loads (lazy phase). Queued pushes are processed in order.
 
-### Rules the utility enforces
+### How the blocks avoid duplicate and unwanted events
 
-| Rule | How |
+| Rule | How it is done in each block |
 | --- | --- |
-| Always `window.adobeDataLayer.push()` | `pushDataLayerEvent()` creates the array if needed. Pushes made before the ACDL library loads (lazy phase) are queued and processed in order. |
-| No values left over in the computed state | ACDL deep-merges each push into its state. When a key from the previous `component` / `engagement` push is missing from the new one, the utility sends it as `null`, and ACDL deletes null keys. `adobeDataLayer.getState('component')` therefore always equals the latest payload. This is why some payloads contain `null` attributes. |
-| Impressions once per component instance | `trackImpression()` uses a shared `IntersectionObserver`. It fires when 50 % of the component is visible, or when it covers 50 % of the viewport (for components taller than the screen). The element is then unobserved and marked `data-analytics-impression="tracked"`. Components hidden by personalization never fire. |
-| No duplicate events | One push per DOM event and event name, even when several listeners see the same click. Identical pushes within 500 ms are dropped (double clicks). Success and completion events are guarded per attempt or per block instance. |
-| Prerendered pages | Impressions and timers start only when a page prerendered by speculation rules is actually shown (`prerenderingchange`). |
-| No personal data | Form values and credentials are never read. Search terms are lower-cased, and anything that looks like an email address or a long number is replaced with `[email]` / `[number]`. Text values are limited to 100 characters. |
-| Never breaks the page | Every push and handler is wrapped in `try/catch`. Listeners are passive and never call `preventDefault()`. |
+| Impressions once per component instance | Each block creates its own `IntersectionObserver` and calls `disconnect()` after the first time 50 % of the block is visible (25 % for the tall product grid). Components hidden by personalization never fire. The hero and department cards also wait for activation when the page was prerendered by speculation rules. |
+| One event per interaction | One listener per interaction. Results are guarded by a flag: one login success or failure per attempt, one signup completion per block, and a product grid keyword is not counted twice when Enter follows the typing pause. |
+| CUG login result counted once | The login form stores a short-lived `sessionStorage` flag (`acdl:login-pending`) on submit. A failure is reported only when the flag exists, so reloading the error page does not count again. Success is reported by the header (`renderCugUser.js`) once `/auth/me` confirms the session. |
+| No personal data | Form values and credentials are never read. Search terms are lower-cased, and email addresses and long numbers are replaced with `[email]` / `[number]`. In the training header, account links report their authored label ("Account") instead of the "Hi, <name>" greeting. |
+| Existing behaviour unchanged | Listeners never call `preventDefault()`. Drop-in callbacks keep returning the same redirect URLs. |
+
+**Computed state.** ACDL also merges each `component` object into its computed state (`adobeDataLayer.getState()`), and attributes that one event sends but a later one doesn't stay in that state. In Tags, read the values from the pushed message (`%event.message.component.*%`), not from "Computed State" data elements.
+
+### Adding tracking to a new block
+
+Follow the same inline pattern inside the block's `decorate()`:
+
+```js
+// Adobe Client Data Layer: teaser engagement (teaserInteraction)
+window.adobeDataLayer = window.adobeDataLayer || [];
+const title = (block.querySelector('h2')?.textContent || '').trim();
+
+// impression: the teaser is 50 % visible, reported once
+const observer = new IntersectionObserver((entries) => {
+  if (!entries.some((entry) => entry.isIntersecting)) return;
+  observer.disconnect();
+  window.adobeDataLayer.push({
+    event: 'teaserInteraction',
+    component: { type: 'teaser', title, action: 'impression' },
+  });
+}, { threshold: 0.5 });
+observer.observe(block);
+
+// click: a link in the teaser
+block.addEventListener('click', (e) => {
+  const link = e.target.closest('a[href]');
+  if (!link) return;
+  window.adobeDataLayer.push({
+    event: 'teaserInteraction',
+    component: { type: 'teaser', title, ctaText: link.textContent.trim(), action: 'click' },
+  });
+});
+```
 
 ### Debugging
 
-Run `sessionStorage.setItem('acdl:debug', 'true')` in the browser console and reload the page. Every push is then logged with `console.debug('[acdl]', …)`. This is the same key the existing ACDL validator uses. `window.adobeDataLayer` lists all pushes, and `adobeDataLayer.getState()` shows the computed state.
-
-### Reusing the utility in a new block
-
-```js
-import {
-  pushDataLayerEvent, trackImpression, trackClicks, getComponentId, getBlockVariation, cleanText,
-} from '../../scripts/analytics/adobe-data-layer.js';
-
-export default function decorate(block) {
-  // ...decorate the block first...
-  const componentId = getComponentId(block, 'teaser');
-  const base = { type: 'teaser', title: cleanText(block.querySelector('h2')?.textContent), variation: getBlockVariation(block) };
-  trackImpression(block, () => pushDataLayerEvent('teaserInteraction', { component: { ...base, action: 'impression' } }, { componentId }));
-  trackClicks(block, 'a[href], button', (el, e) => pushDataLayerEvent('teaserInteraction', {
-    component: { ...base, ctaText: cleanText(el.textContent), action: 'click' },
-  }, { componentId, domEvent: e }));
-}
-```
+Type `window.adobeDataLayer` in the browser console to list every push, or `adobeDataLayer.getState()` for the computed state. The Adobe Experience Platform Debugger shows the same data, plus the Tags rules that fired.
 
 ---
 
 ## 2. Event reference
 
-### 2.1 `heroBannerInteraction` (Hero block)
+### 2.1 `heroBannerInteraction` (`blocks/hero/hero.js`)
 
 | action | Trigger |
 | --- | --- |
-| `impression` | The hero becomes 50 % visible. Fires once per hero instance per page view. |
-| `click` | Click on a link or button in the hero. `ctaType` is `primary` (bold link, `.button.primary`), `secondary` (italic link, `.button.secondary`), `tertiary` (third button) or `link` (inline text link). |
+| `impression` | The hero becomes 50 % visible. Once per hero per page view. |
+| `click` | Click on a link in the hero. `ctaType` is `primary` (bold link, `.button.primary`, or the first button), `secondary` (italic link, `.button.secondary`, or the second button) or `link` (inline text link). |
 
 ```js
 {
@@ -91,26 +107,22 @@ export default function decorate(block) {
     type: 'hero-banner',
     title: 'Shop all departments',      // first heading of the hero
     variation: 'default',               // block variant classes, e.g. "dark centered"
-    experience: '',                     // section personalization experience, if any
-    ctaText: 'Browse all products',     // impression: primary CTA; click: clicked CTA
-    ctaType: 'primary',                 // click only
+    ctaText: 'Browse all products',     // impression: first CTA; click: clicked CTA
+    ctaType: 'primary',                 // click only: primary | secondary | link
     ctaUrl: 'https://…/products',       // click only
     action: 'impression' | 'click'
-  },
-  eventInfo: { componentId: 'hero-1', timestamp }
+  }
 }
 ```
 
-The tracking module is loaded with a dynamic `import()`, so it does not delay the hero, which is usually the LCP element.
-
-### 2.2 `loginInteraction` (Login blocks)
+### 2.2 `loginInteraction` (login blocks)
 
 | action | Trigger |
 | --- | --- |
-| `impression` | The login block (`login-form`, `commerce-login`) is 50 % visible. Once per instance. |
-| `click` | The sign-in form is submitted, by clicking **Sign in** or pressing Enter. One per attempt. The CUG form uses native validation, so only complete forms count. Also fires for the training-site demo sign-in link `#aep:sign-in`. |
-| `success` | **Commerce drop-in** (`commerce-login`, header dropdown): when the drop-in calls `routeRedirectOnSignIn` / `onSuccessCallback`, which it only does after a successful sign-in. **CUG** (`login-form`): on the first page view after the form was posted, when the server has redirected to the target page. **Demo link**: right after the demo sign-in. |
-| `failure` | **Drop-in**: `onErrorCallback`, i.e. invalid credentials or an API error. **CUG**: the server redirects back to the login page with `?error=`. This only counts when the form was posted from this browser session, so reloading the error page does not count again. |
+| `impression` | The login block (`login-form`, `commerce-login`) is 50 % visible. Once per page view. |
+| `click` | The sign-in form is submitted, by clicking **Sign in** or pressing Enter. One per attempt. The CUG form uses native validation, so only complete forms count. Also fires for the header sign-in dropdown and the training-site demo sign-in link (`#aep:sign-in`). |
+| `success` | **Commerce drop-in** (`commerce-login`): inside `routeRedirectOnSignIn`, which the drop-in calls only after a successful sign-in. **Header dropdown**: inside `onSuccessCallback`. **CUG** (`login-form`): on the next page, when `renderCugUser.js` gets an authenticated `/auth/me` response within 5 minutes of the submit. **Demo link**: right after the demo sign-in. |
+| `failure` | **Drop-in and header dropdown**: inside `onErrorCallback` (credentials rejected or request failed). **CUG**: the server redirects back to the login page with `?error=`; `reason` carries the error code. |
 
 ```js
 {
@@ -119,21 +131,21 @@ The tracking module is loaded with a dynamic `import()`, so it does not delay th
     type: 'login',
     location: 'login-form' | 'commerce-login' | 'header-dropdown' | 'link',
     method: 'demo',                     // demo sign-in link only
+    ctaText: 'Sign in',                 // click only
+    reason: 'invalid',                  // CUG failure only
     action: 'impression' | 'click' | 'success' | 'failure'
   }
 }
 ```
 
-The CUG result uses a short-lived `sessionStorage` flag (`acdl:login-pending`, 5 minutes). If the visitor comes back to the login form without an error, the result is unknown and is not counted.
-
-### 2.3 `signupInteraction` (Signup block)
+### 2.3 `signupInteraction` (signup block)
 
 | action | Trigger |
 | --- | --- |
-| `impression` | The `commerce-create-account` block is 50 % visible. Once per instance. |
-| `start` | The visitor types in the first form field. Once per instance; autofocus does not count. |
-| `click` | Signup CTA. Either the **Create account** submit button in the block (`location: signup-form`), or a click anywhere on the site on a link to an account-creation page (`/customer/create`, `/create-account`, `/signup`, `/register`) or to Rewards enrollment (`#aep:enroll`) (`location: link`). |
-| `complete` | The drop-in calls `onSuccessCallback` / `routeRedirectOnSignIn`, which happens only after the account was created. Also fires after a Rewards enrollment (`#aep:enroll`, `method: membership`). Once per instance. |
+| `impression` | The `commerce-create-account` block is 50 % visible. Once per page view. |
+| `start` | The visitor types in the first form field. Once per block; autofocus does not count. `field` is the field name; the value is never read. |
+| `click` | The **Create account** CTA is clicked (or Enter pressed). Also fires for the Rewards **Join** link (`#aep:enroll`, `method: membership`). |
+| `complete` | Inside `routeRedirectOnSignIn` (account created and the customer signed in automatically) or `onSuccessCallback` (account created, e.g. email confirmation required). Once per block. Also fires after a Rewards enrollment. |
 
 ```js
 {
@@ -141,9 +153,9 @@ The CUG result uses a short-lived `sessionStorage` flag (`acdl:login-pending`, 5
   component: {
     type: 'signup',
     location: 'signup-form' | 'link',
-    method: 'account' | 'membership',   // link clicks and enrollment
+    method: 'membership',               // Rewards enrollment only
+    field: 'firstName',                 // start only
     ctaText: 'Create account',          // click only
-    ctaUrl: 'https://…/customer/create',// link clicks only
     action: 'impression' | 'click' | 'start' | 'complete'
   }
 }
@@ -153,22 +165,22 @@ The CUG result uses a short-lived `sessionStorage` flag (`acdl:login-pending`, 5
 
 **Department-related blocks:**
 
-1. A **Cards** block that lists departments. It qualifies when any of these is true:
+1. **Cards** (`blocks/cards/cards.js`) that list departments. A Cards block qualifies when any of these is true:
    - it has the block variant `Cards (departments)`
    - it has the section metadata `Analytics Component: department`
    - the section heading above it mentions "department" (for example **Departments** on `/shop`)
 
-   Each card is one department.
-2. A **Product Grid** on a department page, i.e. a page with page metadata `page-type: category` (department from `category`) or with a `department` metadata value. Each product card belongs to that department.
+   Each card is one department. Other Cards blocks (for example **Collections**) send no department events.
+2. **Product Grid** (`blocks/product-grid/product-grid.js`) on a department page, i.e. a page with page metadata `page-type: category`. The department comes from the page's `category` metadata, and each product card belongs to that department.
 
 `departmentName` is always a slug (`electronics`, `fashion`, `home-appliances`), so department cards and department pages report the same values.
 
 | Event / action | Trigger |
 | --- | --- |
-| `departmentInteraction` / `impression` | The department block is 50 % visible. Once per block instance. `departmentName` lists the departments shown, comma separated. |
-| `departmentInteraction` / `card-click` | Click on a plain link in a card: image or title link, product link. |
-| `departmentInteraction` / `cta-click` | Click on a CTA in a card: a button-styled link (`.button`, e.g. "Shop electronics") or a button (e.g. "Add to cart"). |
-| `departmentCardClick` | Fires together with every `card-click` and `cta-click`. Dedicated KPI counter for "Department card clicks". `clickType` is `card` or `cta`. |
+| `departmentInteraction` / `impression` | The department block is visible (cards 50 %, product grid 25 %). Once per block. On the Shop page, `departmentName` lists the departments shown, comma separated. |
+| `departmentInteraction` / `card-click` | Click on a plain link in a card: image or title link, or the product link in a department grid. |
+| `departmentInteraction` / `cta-click` | Click on a CTA in a card: a button-styled link ("Shop electronics") or a product card button ("Add to cart", wishlist). |
+| `departmentCardClick` | Pushed right after every `card-click` and `cta-click`, as the dedicated KPI counter for "Department card clicks". `clickType` is `card` or `cta`. |
 
 ```js
 {
@@ -179,9 +191,8 @@ The CUG result uses a short-lived `sessionStorage` flag (`acdl:login-pending`, 5
     cardTitle: 'Electronics',           // '' for impressions
     cardPosition: 1,                    // clicks
     ctaText: 'Shop electronics',        // clicks
-    ctaUrl: 'https://…/electronics',    // clicks
+    ctaUrl: 'https://…/electronics',    // clicks ('' for buttons)
     sectionTitle: 'Departments',
-    variation: 'default',               // impressions
     cardCount: 3,                       // impressions
     action: 'impression' | 'card-click' | 'cta-click'
   }
@@ -192,14 +203,14 @@ The CUG result uses a short-lived `sessionStorage` flag (`acdl:login-pending`, 5
   component: {
     type: 'department-card',
     departmentName: 'electronics', cardTitle: 'Electronics', cardPosition: 1,
-    ctaText: 'Shop electronics', ctaUrl: 'https://…/electronics', sectionTitle: 'Departments',
+    ctaText: 'Shop electronics', ctaUrl: 'https://…/electronics',
     clickType: 'card' | 'cta',
     action: 'click'
   }
 }
 ```
 
-### 2.5 `departmentFilterInteraction` (Product Grid filters)
+### 2.5 `departmentFilterInteraction` (`blocks/product-grid/product-grid.js`)
 
 | action | Trigger |
 | --- | --- |
@@ -211,53 +222,48 @@ The CUG result uses a short-lived `sessionStorage` flag (`acdl:login-pending`, 5
   event: 'departmentFilterInteraction',
   component: {
     type: 'department-filter',
-    departmentName: 'electronics',      // category filter: the selected department ('all' when reset)
+    departmentName: 'electronics',      // category filter: the selected category ('all' when reset)
     filterType: 'category' | 'brand' | 'price' | 'sale' | 'all',
     filterValue: 'Aperture',
     filterLabel: 'Aperture',
     resultCount: 1,
-    listName: 'all-electronics',
     action: 'apply' | 'clear'
   }
 }
 ```
 
-### 2.6 `topNavInteraction` (header, both variants)
-
-A single delegated listener on the header `nav` covers the storefront header (`.nav-*`) and the training header (`.nm-*`). Forms inside the header (search, sign-in) are excluded because they report `searchInteraction` / `loginInteraction`.
+### 2.6 `topNavInteraction` (header blocks)
 
 | action | Trigger |
 | --- | --- |
-| `click` | Click on a header link: brand, section link, submenu link or tool link (account, wishlist, cart). |
-| `expand` / `collapse` | Click on a submenu toggle. The state is read after the header code has toggled it. Desktop hover is not tracked. |
-| `menu-open` / `menu-close` | Mobile hamburger. |
-| `tool-click` | Header buttons such as the cart, search or account button. |
+| `click` | Click on a header link: brand, section link, submenu link or tool link (account, wishlist, cart). Links in the header search and sign-in forms are excluded, because they report `searchInteraction` / `loginInteraction`. In the storefront header, the mini cart button also reports a `click`. |
+| `expand` / `collapse` | A submenu is opened or closed by a click: the section buttons in the training header, and the dropdowns of the storefront header on mobile. Desktop hover is not tracked. |
+| `menu-open` / `menu-close` | The mobile hamburger. |
 
 ```js
 {
   event: 'topNavInteraction',
   component: {
-    type: 'top-nav',
-    navType: 'header',
+    type: 'navigation',
+    menuItem: 'All departments',        // link text or menu label
+    menuUrl: 'https://…/shop',          // links only
     area: 'brand' | 'sections' | 'tools' | 'menu',
-    linkText: 'Electronics',
-    linkUrl: 'https://…/electronics',   // links only
     level: 2,                           // 1 = top level, 2 = submenu
     parentItem: 'Shop',                 // top-level item of a submenu link
-    action: 'click' | 'expand' | 'collapse' | 'menu-open' | 'menu-close' | 'tool-click'
+    action: 'click' | 'expand' | 'collapse' | 'menu-open' | 'menu-close'
   }
 }
 ```
 
-### 2.7 `searchInteraction` (header search, Search block, Product Grid keyword)
+### 2.7 `searchInteraction` (Search block, header search, Product Grid keyword)
 
 | action | Trigger |
 | --- | --- |
+| `search` | A search runs: the header search form, the Search block (submit button or popular term), or the Product Grid keyword box (after an 800 ms typing pause or Enter). `resultCount` is `-1` when the results are shown on the next page. |
+| `results-view` | A product grid opened with `?q=` shows the results of a search started on the previous page. Use it for the zero-result rate of header searches. |
 | `open` | The storefront header search panel opens. |
-| `submit` | A search runs: header form, Search block (submit button or popular term), or the Product Grid keyword box. The grid fires after an 800 ms typing pause or Enter, and the same term is not counted twice. `resultCount` is `-1` when the results are shown on the next page. |
-| `results-view` | A product listing opened with `?q=` shows the results of a search started on the previous page. Use it for the zero-result rate of header searches. |
-| `suggestion-click` | Click on a popular term (Search block) or a Live Search autocomplete suggestion (storefront header). |
-| `result-click` | Click on a site search result (Search block, `site` scope). |
+| `suggestion-click` | A popular search term (Search block) or a Live Search autocomplete suggestion (storefront header) is clicked. |
+| `result-click` | A site search result (Search block, `site` scope) is clicked. |
 | `clear` | The Search block input is cleared. |
 | `error` | The site search index could not be loaded. |
 
@@ -267,21 +273,21 @@ A single delegated listener on the header `nav` covers the storefront header (`.
   component: {
     type: 'search',
     location: 'header' | 'search-block' | 'product-grid',
-    scope: 'site' | 'products' | 'content' | 'stores',
-    trigger: 'submit' | 'suggestion' | 'typing' | 'url' | 'clear',
+    scope: 'site' | 'products' | 'content' | 'stores',   // Search block only
     searchTerm: 'headphones',           // sanitized, see section 1
     resultCount: 12,                    // -1 = not known on this page
-    hasResults: true,
+    trigger: 'submit' | 'suggestion' | 'typing' | 'url' | 'clear',
+    departmentName: 'electronics',      // product grid on a department page
     suggestionText: 'jacket',           // suggestion-click
-    resultText: 'Nova Pro …', resultUrl: 'https://…', resultPosition: 1, // result-click
-    action: 'open' | 'submit' | 'results-view' | 'suggestion-click' | 'result-click' | 'clear' | 'error'
+    resultText: 'Nova Pro …', resultUrl: 'https://…', resultPosition: 1,   // result-click
+    action: 'search' | 'results-view' | 'open' | 'suggestion-click' | 'result-click' | 'clear' | 'error'
   }
 }
 ```
 
-### 2.8 `pageScrollDepth` (every page)
+### 2.8 `pageScrollDepth` (`scripts/delayed.js`, every page)
 
-Fires once per milestone per page view, at 25, 50, 75 and 100 %. The measure is the bottom of the viewport relative to the page height, so short pages can reach 100 % without scrolling. Measurements are throttled with `requestAnimationFrame`, and the listeners are removed once 100 % is reached.
+Fires once per milestone per page view, at 25, 50, 75 and 100 %. The measure is the bottom of the viewport relative to the page height, so short pages can reach 100 % without scrolling. Measurements are throttled with `requestAnimationFrame`, and the listener is removed once 100 % is reached. Tracking starts in the delayed phase (about 3 s after load); milestones already passed by then are reported on the first measurement.
 
 ```js
 {
@@ -290,9 +296,9 @@ Fires once per milestone per page view, at 25, 50, 75 and 100 %. The measure is 
 }
 ```
 
-### 2.9 `pageEngagementTime` (every page)
+### 2.9 `pageEngagementTime` (`scripts/delayed.js`, every page)
 
-**Active time** counts only while the tab is visible and the visitor has interacted (scroll, pointer, key, touch or wheel) within the last 30 seconds.
+**Active time** counts only while the tab is visible and the visitor has interacted (scroll, pointer, key, touch or wheel) within the last 30 seconds. Counting starts in the delayed phase, about 3 s after load.
 
 | trigger | When |
 | --- | --- |
@@ -321,15 +327,15 @@ The sum of `incrementalSeconds` over a page view is its total active time. Map i
 
 | KPI | Event(s) | Calculation |
 | --- | --- | --- |
-| Hero banner engagement | `heroBannerInteraction` | Hero CTR = `click` ÷ `impression`, split by `title`, `variation`, `experience`, `ctaType` |
+| Hero banner engagement | `heroBannerInteraction` | Hero CTR = `click` ÷ `impression`, split by `title`, `variation`, `ctaType` |
 | Login clicks | `loginInteraction` `click` | Count, by `location` |
 | Login success rate | `loginInteraction` | `success` ÷ (`success` + `failure`) |
 | Signup starts | `signupInteraction` `start` | Count; start rate = `start` ÷ `impression` |
 | Signup completions | `signupInteraction` `complete` | Count; completion rate = `complete` ÷ `start` |
 | Department engagement | `departmentInteraction`, `departmentCardClick` | Department CTR = `departmentCardClick` ÷ `departmentInteraction impression`, by `departmentName` |
 | Department filter usage | `departmentFilterInteraction` | Filter uses per department page view, by `filterType` |
-| Navigation engagement | `topNavInteraction` | Clicks by `linkText`, `area`, `level`; menu opens on mobile |
-| Search engagement | `searchInteraction` | Searches (`submit`), zero-result rate (`submit`/`results-view` with `hasResults = false`), search exits / result CTR (`result-click` ÷ `submit`) |
+| Navigation engagement | `topNavInteraction` | Clicks by `menuItem`, `area`, `level`; menu opens on mobile |
+| Search engagement | `searchInteraction` | Searches (`search`), zero-result rate (`search` / `results-view` with `resultCount = 0`), result CTR (`result-click` ÷ `search`) |
 | CTA click-through rate | All `click`, `card-click`, `cta-click` actions | CTA clicks ÷ impressions of the same component |
 | Page engagement | `pageScrollDepth`, `pageEngagementTime` | Scroll-milestone reach; average active time per page = Σ `incrementalSeconds` ÷ page views |
 
@@ -346,11 +352,11 @@ These numbers are free in the current SDR (`doc/kpi-and-sdr-guide.md`, `doc/sdr/
 | eVar70 (hit expiry) | Component type | `component.type` |
 | eVar71 (hit) | Component action | `component.action` |
 | eVar72 (hit) | Component title / card title | `component.title` or `component.cardTitle` |
-| eVar73 (hit) | Component variation / experience | `component.variation` (+ `experience`) |
-| eVar74 (hit) | CTA text | `component.ctaText` / `linkText` |
+| eVar73 (hit) | Component variation | `component.variation` |
+| eVar74 (hit) | CTA text | `component.ctaText` / `menuItem` |
 | eVar75 (visit) | Department | `component.departmentName` |
 | eVar76 (hit) | Department filter | `filterType:filterValue` |
-| eVar77 (hit) | Navigation item | `area:level:parentItem:linkText` |
+| eVar77 (hit) | Navigation item | `area:level:parentItem:menuItem` |
 | eVar78 (visit) | Internal search term | `component.searchTerm` |
 | eVar79 (hit) | Auth location | `component.location` |
 | prop50 | Scroll depth milestone | `engagement.milestone` (pathing on page + milestone) |
@@ -365,8 +371,8 @@ These numbers are free in the current SDR (`doc/kpi-and-sdr-guide.md`, `doc/sdr/
 | event98 | Department card clicks | `departmentCardClick` |
 | event99 | Department filter uses | `departmentFilterInteraction` |
 | event100 | Top navigation clicks | `topNavInteraction` `click` |
-| event101 | Internal searches | `searchInteraction` `submit` |
-| event102 | Null searches | `searchInteraction` `submit` / `results-view` with `resultCount = 0` |
+| event101 | Internal searches | `searchInteraction` `search` |
+| event102 | Null searches | `searchInteraction` `search` / `results-view` with `resultCount = 0` |
 | event103 | Search result clicks | `searchInteraction` `result-click` |
 | event104 | Component impressions (all) | any `impression` action |
 | event105 | CTA clicks (all) | any `click`, `card-click`, `cta-click` action |
@@ -396,7 +402,7 @@ Install the **Adobe Client Data Layer** extension and configure it to use the ex
 
 Implementation notes:
 
-- Read values from the pushed message (`%event.message.component.title%`), not from the computed state, so the values belong exactly to the event that triggered the rule.
+- Read values from the pushed message (`%event.message.component.title%`), not from the computed state (see section 1).
 - **Clicks that navigate and exit summaries:** set `s.useBeacon = true` (AppMeasurement), or use `sendBeacon` / `fetch keepalive` with Web SDK. Otherwise the hit can be lost when the page unloads.
 - With **Web SDK** (AEP), map the same `component` / `engagement` attributes to XDM `_<tenant>.engagement.*` fields and send them as `web.webInteraction.linkClicks` (clicks) or a custom `eventType` (impressions, time).
 - Consent: `getConsent()` in `scripts/scripts.js` is still a stub. The pushes themselves are always made, so gate the Tags rules (or the Analytics extension) on the CMP consent state.
@@ -407,8 +413,8 @@ Implementation notes:
 
 | Use case | Workspace setup |
 | --- | --- |
-| Which hero message and CTA work best? | Freeform table: eVar72 (hero title) × eVar73 (variation/experience). Metrics: event90, event91 and calculated *Hero CTR* = event91 ÷ event90. Break down by eVar74 for primary vs secondary CTA. |
-| Personalization lift on the hero | Same table, filtered on the Target experience (eVar73 experience). Compare *Hero CTR* and downstream orders. |
+| Which hero message and CTA work best? | Freeform table: eVar72 (hero title) × eVar73 (variation). Metrics: event90, event91 and calculated *Hero CTR* = event91 ÷ event90. Break down by eVar74 for primary vs secondary CTA. |
+| Personalization lift on the hero | Same table, segmented on the Target activity / experience. Compare *Hero CTR* and downstream orders. |
 | Login health | Trend of event92, event93, event94 and *Login success rate* = event93 ÷ (event93 + event94), by eVar79 (`login-form`, `commerce-login`, `header-dropdown`). Alert when the success rate drops. |
 | Signup funnel | Fallout: signup impression (event111) → start (event95) → click (`signupInteraction click`) → complete (event96). Break down by device and marketing channel. |
 | Department interest | eVar75 (department) with event97, event98, *Department CTR*, then orders and revenue (visit-expiry eVar gives credit to the department visited). |
@@ -422,14 +428,14 @@ Implementation notes:
 
 ## 6. QA checklist
 
-1. Enable debugging: `sessionStorage.setItem('acdl:debug', 'true')`, then reload.
+1. Open the page and type `window.adobeDataLayer` in the console to see the pushes.
 2. **Shop page:** the hero `impression` fires once on load. Scrolling to **Departments** fires one `departmentInteraction impression`. Clicking **Shop electronics** fires `departmentInteraction cta-click` and `departmentCardClick`. **Collections** cards do not fire department events.
-3. **Department page** (`/electronics`): grid impression with `departmentName: electronics`. A brand filter fires `departmentFilterInteraction`; sorting does not. **Clear filters** fires `action: clear`.
-4. **Search:** a Search block term fires `submit` with a `resultCount`. Searching for an email address shows `[email]`.
+3. **Department page** (`/electronics`): grid impression with `departmentName: electronics`. A brand filter fires `departmentFilterInteraction`; sorting does not. **Clear filters** fires `action: clear`. Clicking a product fires `card-click`, and **Add to cart** fires `cta-click`.
+4. **Search:** a Search block term fires `searchInteraction` `search`. A term containing an email address or phone number shows `[email]` / `[number]`.
 5. **Header:** opening a submenu fires `expand`, a submenu link fires `click` with `level: 2` and `parentItem`. On mobile, the hamburger fires `menu-open` / `menu-close`.
 6. **Account page** (`#aep:sign-in`): `loginInteraction click` then `success`. **Membership page** (`#aep:enroll`): `signupInteraction click` then `complete`.
-7. **Engagement:** stay active for 10 s and the `pageEngagementTime 10s` milestone fires. Switch tabs and an `exit` summary fires once.
-8. Scroll the impression area back and forth: impressions must not repeat. `adobeDataLayer.getState('component')` must contain only the keys of the last component event.
+7. **Engagement:** stay active for about 13 s (3 s delayed phase + 10 s) and the `pageEngagementTime 10s` milestone fires. Switch tabs and an `exit` summary fires once.
+8. Scroll the impression area back and forth: impressions must not repeat.
 
 ---
 

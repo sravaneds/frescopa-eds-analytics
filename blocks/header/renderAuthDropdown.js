@@ -6,9 +6,6 @@ import { events } from '@dropins/tools/event-bus.js';
 import { getCookie } from '../../scripts/configs.js';
 import { CUSTOMER_FORGOTPASSWORD_PATH } from '../../scripts/constants.js';
 import { rootLink } from '../../scripts/scripts.js';
-import {
-  pushLogin, withAuthTracking, createLoginResultHandlers,
-} from '../../scripts/analytics/auth.js';
 
 function checkAndRedirect(redirections) {
   Object.entries(redirections).some(([currentPath, redirectPath]) => {
@@ -21,16 +18,47 @@ function checkAndRedirect(redirections) {
 }
 
 function renderSignIn(element) {
-  // analytics (loginInteraction): click on submit, success / failure from the drop-in callbacks
-  const result = createLoginResultHandlers('header-dropdown');
-  authRenderer.render(SignIn, withAuthTracking({
-    onSuccessCallback: () => {},
+  // Adobe Client Data Layer: header sign-in dropdown (loginInteraction)
+  window.adobeDataLayer = window.adobeDataLayer || [];
+  // one success or failure per sign-in attempt, reset on every submit
+  let resultReported = false;
+  authRenderer.render(SignIn, {
+    // the drop-in calls this only after a successful sign-in (no redirect in the dropdown)
+    onSuccessCallback: () => {
+      if (resultReported) return;
+      resultReported = true;
+      // success: the customer signed in from the header dropdown
+      window.adobeDataLayer.push({
+        event: 'loginInteraction',
+        component: { type: 'login', location: 'header-dropdown', action: 'success' },
+      });
+    },
+    // the drop-in calls this when the credentials are rejected or the request fails
+    onErrorCallback: () => {
+      if (resultReported) return;
+      resultReported = true;
+      // failure: the sign-in from the header dropdown was rejected
+      window.adobeDataLayer.push({
+        event: 'loginInteraction',
+        component: { type: 'login', location: 'header-dropdown', action: 'failure' },
+      });
+    },
     formSize: 'small',
     routeForgotPassword: () => rootLink(CUSTOMER_FORGOTPASSWORD_PATH),
-  }, result))(element);
+  })(element);
+
+  // click: the sign-in button in the dropdown was clicked (or Enter pressed)
   element.addEventListener('submit', (e) => {
-    result.reset();
-    pushLogin('click', { location: 'header-dropdown' }, { domEvent: e });
+    resultReported = false;
+    window.adobeDataLayer.push({
+      event: 'loginInteraction',
+      component: {
+        type: 'login',
+        location: 'header-dropdown',
+        ctaText: (e.submitter?.textContent || '').trim(),
+        action: 'click',
+      },
+    });
   }, true);
 }
 

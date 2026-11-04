@@ -13,8 +13,6 @@ import renderAuthCombine from './renderAuthCombine.js';
 import { renderAuthDropdown } from './renderAuthDropdown.js';
 import renderCugUser from './renderCugUser.js';
 import { rootLink } from '../../scripts/scripts.js';
-import trackTopNav from '../../scripts/analytics/navigation.js';
-import { pushSearch, trackHeaderSearch } from '../../scripts/analytics/search.js';
 
 // media query match that indicates mobile/tablet width
 const isDesktop = window.matchMedia('(min-width: 900px)');
@@ -230,6 +228,20 @@ export default async function decorate(block) {
           if (event.target.tagName === 'A') return;
           if (!isDesktop.matches) {
             navSection.classList.toggle('active');
+            // Adobe Client Data Layer: mobile submenu opened or closed
+            if (navSection.classList.contains('nav-drop')) {
+              window.adobeDataLayer = window.adobeDataLayer || [];
+              window.adobeDataLayer.push({
+                event: 'topNavInteraction',
+                component: {
+                  type: 'navigation',
+                  menuItem: (navSection.querySelector('.submenu-title')?.textContent || '').trim(),
+                  area: 'sections',
+                  level: 1,
+                  action: navSection.classList.contains('active') ? 'expand' : 'collapse',
+                },
+              });
+            }
           }
         });
         navSection.addEventListener('mouseenter', () => {
@@ -285,7 +297,17 @@ export default async function decorate(block) {
     }
   }
 
-  cartButton.addEventListener('click', () => toggleMiniCart());
+  cartButton.addEventListener('click', () => {
+    toggleMiniCart();
+    // Adobe Client Data Layer: mini cart button clicked in the top navigation
+    window.adobeDataLayer = window.adobeDataLayer || [];
+    window.adobeDataLayer.push({
+      event: 'topNavInteraction',
+      component: {
+        type: 'navigation', menuItem: 'Cart', area: 'tools', level: 1, action: 'click',
+      },
+    });
+  });
 
   // Cart Item Counter
   events.on(
@@ -325,10 +347,42 @@ export default async function decorate(block) {
   const searchForm = searchPanel.querySelector('form');
 
   searchForm.action = rootLink('/search');
-  // analytics (searchInteraction): submit and Live Search suggestion clicks
-  trackHeaderSearch(searchForm, {
-    suggestions: searchPanel.querySelector('#search_autocomplete'),
-    scope: 'products',
+
+  // Adobe Client Data Layer: header search submitted. Results are on the search page, so the
+  // count is not known here (-1). Email addresses and long numbers are redacted from the term.
+  searchForm.addEventListener('submit', () => {
+    const keyword = searchInput.value.trim();
+    if (!keyword) return;
+    window.adobeDataLayer = window.adobeDataLayer || [];
+    window.adobeDataLayer.push({
+      event: 'searchInteraction',
+      component: {
+        type: 'search',
+        location: 'header',
+        searchTerm: keyword.toLowerCase().replace(/[^\s@]+@[^\s@]+\.[^\s@]+/g, '[email]')
+          .replace(/\d[\d\s-]{5,}\d/g, '[number]').slice(0, 100),
+        resultCount: -1,
+        action: 'search',
+      },
+    });
+  });
+
+  // Adobe Client Data Layer: Live Search autocomplete suggestion clicked
+  searchPanel.querySelector('#search_autocomplete')?.addEventListener('click', (e) => {
+    const suggestion = e.target.closest('a[href]');
+    if (!suggestion) return;
+    window.adobeDataLayer = window.adobeDataLayer || [];
+    window.adobeDataLayer.push({
+      event: 'searchInteraction',
+      component: {
+        type: 'search',
+        location: 'header',
+        searchTerm: searchInput.value.trim().toLowerCase().slice(0, 100),
+        suggestionText: suggestion.textContent.trim().replace(/\s+/g, ' ').slice(0, 100),
+        suggestionUrl: suggestion.href,
+        action: 'suggestion-click',
+      },
+    });
   });
 
   async function toggleSearch(state) {
@@ -337,8 +391,12 @@ export default async function decorate(block) {
     searchPanel.classList.toggle('nav-tools-panel--show', show);
 
     if (show) {
-      // analytics (searchInteraction): search panel opened
-      pushSearch('open', { location: 'header', scope: 'products' });
+      // Adobe Client Data Layer: header search panel opened
+      window.adobeDataLayer = window.adobeDataLayer || [];
+      window.adobeDataLayer.push({
+        event: 'searchInteraction',
+        component: { type: 'search', location: 'header', action: 'open' },
+      });
       await import('./searchbar.js');
       searchInput.focus();
     }
@@ -391,6 +449,17 @@ export default async function decorate(block) {
     navWrapper.classList.toggle('active');
     overlay.classList.toggle('show');
     toggleMenu(nav, navSections);
+    // Adobe Client Data Layer: mobile menu opened or closed
+    window.adobeDataLayer = window.adobeDataLayer || [];
+    window.adobeDataLayer.push({
+      event: 'topNavInteraction',
+      component: {
+        type: 'navigation',
+        menuItem: 'menu',
+        area: 'menu',
+        action: nav.getAttribute('aria-expanded') === 'true' ? 'menu-open' : 'menu-close',
+      },
+    });
   });
   nav.prepend(hamburger);
   nav.setAttribute('aria-expanded', 'false');
@@ -412,6 +481,27 @@ export default async function decorate(block) {
   renderAuthDropdown(navTools);
   renderCugUser(navTools);
 
-  // analytics (topNavInteraction): links, submenus, hamburger and header tools
-  trackTopNav(nav, { navType: 'header' });
+  // Adobe Client Data Layer: top navigation link clicked (brand, section, submenu or tool link).
+  // Links in the header search and sign-in forms are tracked as search / login events.
+  nav.addEventListener('click', (e) => {
+    const link = e.target.closest('a[href]');
+    if (!link || link.closest('form, #auth-dropin-container')) return;
+    const submenu = link.closest('.submenu-wrapper');
+    let area = 'sections';
+    if (link.closest('.nav-brand')) area = 'brand';
+    else if (link.closest('.nav-tools')) area = 'tools';
+    window.adobeDataLayer = window.adobeDataLayer || [];
+    window.adobeDataLayer.push({
+      event: 'topNavInteraction',
+      component: {
+        type: 'navigation',
+        menuItem: (link.textContent || link.getAttribute('aria-label') || '').trim().replace(/\s+/g, ' '),
+        menuUrl: link.href,
+        area,
+        level: submenu ? 2 : 1,
+        parentItem: (submenu?.querySelector('.submenu-title')?.textContent || '').trim(),
+        action: 'click',
+      },
+    });
+  });
 }

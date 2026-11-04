@@ -18,6 +18,24 @@ export default async function renderCugUser(navTools) {
     user = null;
   }
 
+  // Adobe Client Data Layer: success of a login submitted from the login form block
+  // (blocks/login-form). Reported once, and only within 5 minutes of the submit.
+  try {
+    const pending = JSON.parse(sessionStorage.getItem('acdl:login-pending'));
+    if (pending && user?.authenticated) {
+      sessionStorage.removeItem('acdl:login-pending');
+      if (Date.now() - pending.time < 5 * 60 * 1000) {
+        window.adobeDataLayer = window.adobeDataLayer || [];
+        window.adobeDataLayer.push({
+          event: 'loginInteraction',
+          component: { type: 'login', location: pending.location, action: 'success' },
+        });
+      }
+    }
+  } catch (e) {
+    // storage unavailable or invalid value: nothing to report
+  }
+
   if (!user?.authenticated) {
     const signIn = document.createElement('a');
     signIn.href = `/login?redirect=${encodeURIComponent(window.location.pathname)}`;

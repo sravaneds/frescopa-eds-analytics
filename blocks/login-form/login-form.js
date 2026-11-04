@@ -1,7 +1,3 @@
-import {
-  trackLoginBlock, markLoginPending, resolvePendingLogin,
-} from '../../scripts/analytics/auth.js';
-
 /**
  * Login form block for CUG authentication.
  *
@@ -60,9 +56,54 @@ export default function decorate(block) {
   form.append(emailLabel, emailInput, passwordLabel, passwordInput, button);
   block.append(form);
 
-  // analytics (loginInteraction): the server redirects back here with ?error= on failure.
-  // Only a login submitted from this site is reported, so reloads are not counted again.
-  if (error) resolvePendingLogin({ failed: true });
-  // impression + "Sign in" click; the result is reported on the next page view
-  trackLoginBlock(block, 'login-form', () => markLoginPending('login-form'));
+  // Adobe Client Data Layer: login engagement (loginInteraction)
+  window.adobeDataLayer = window.adobeDataLayer || [];
+
+  // failure: the server sent the visitor back with ?error=. Only counted when the form was
+  // submitted in this session (pending flag), so reloading the error page is not counted again
+  let pending = null;
+  try {
+    pending = JSON.parse(sessionStorage.getItem('acdl:login-pending'));
+  } catch (e) {
+    pending = null;
+  }
+  if (error && pending) {
+    sessionStorage.removeItem('acdl:login-pending');
+    window.adobeDataLayer.push({
+      event: 'loginInteraction',
+      component: {
+        type: 'login', location: 'login-form', reason: error, action: 'failure',
+      },
+    });
+  }
+
+  // impression: the login form is 50 % visible, reported once per page view
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver((entries) => {
+      if (!entries.some((entry) => entry.isIntersecting)) return;
+      observer.disconnect();
+      window.adobeDataLayer.push({
+        event: 'loginInteraction',
+        component: { type: 'login', location: 'login-form', action: 'impression' },
+      });
+    }, { threshold: 0.5 });
+    observer.observe(block);
+  }
+
+  // click: "Sign in" clicked (or Enter pressed) with both fields filled in. The success is
+  // reported on the next page by the header (blocks/header/renderCugUser.js) once /auth/me
+  // confirms the session
+  form.addEventListener('submit', () => {
+    try {
+      sessionStorage.setItem('acdl:login-pending', JSON.stringify({ location: 'login-form', time: Date.now() }));
+    } catch (e) {
+      // storage unavailable: the click is still tracked
+    }
+    window.adobeDataLayer.push({
+      event: 'loginInteraction',
+      component: {
+        type: 'login', location: 'login-form', ctaText: button.textContent, action: 'click',
+      },
+    });
+  });
 }

@@ -16,7 +16,6 @@ import {
   signIn, signOut, enrollMembership, resetProfile, getProfile, getAudiences, getPrimaryAudience,
 } from './profile.js';
 import { getCart } from './store.js';
-import { pushLogin, pushSignup } from '../analytics/auth.js';
 
 const BLOCK_EVENTS = {
   hero: 'heroClick',
@@ -76,12 +75,24 @@ function refreshUser() {
 
 const ACTIONS = {
   'sign-in': () => {
-    // demo sign-in link: the click is the login attempt and always succeeds
-    pushLogin('click', { location: 'link', method: 'demo' });
+    window.adobeDataLayer = window.adobeDataLayer || [];
+    // Adobe Client Data Layer: demo sign-in link clicked (the login attempt)
+    window.adobeDataLayer.push({
+      event: 'loginInteraction',
+      component: {
+        type: 'login', location: 'link', method: 'demo', action: 'click',
+      },
+    });
     signIn();
     refreshUser();
     pushEvent('loginComplete', { loginMethod: 'demo', customerId: getProfile().customerId });
-    pushLogin('success', { location: 'link', method: 'demo' });
+    // Adobe Client Data Layer: demo sign-in always succeeds
+    window.adobeDataLayer.push({
+      event: 'loginInteraction',
+      component: {
+        type: 'login', location: 'link', method: 'demo', action: 'success',
+      },
+    });
   },
   'sign-out': () => {
     signOut();
@@ -89,11 +100,24 @@ const ACTIONS = {
     pushEvent('logout', {});
   },
   enroll: () => {
+    window.adobeDataLayer = window.adobeDataLayer || [];
+    // Adobe Client Data Layer: "Join Rewards" signup CTA clicked
+    window.adobeDataLayer.push({
+      event: 'signupInteraction',
+      component: {
+        type: 'signup', location: 'link', method: 'membership', action: 'click',
+      },
+    });
     enrollMembership();
     refreshUser();
     pushEvent('membershipEnroll', { loyaltyTier: getProfile().loyaltyTier });
-    // Rewards enrollment completes the signup journey (the click is tracked site-wide)
-    pushSignup('complete', { location: 'link', method: 'membership' });
+    // Adobe Client Data Layer: Rewards enrollment completed
+    window.adobeDataLayer.push({
+      event: 'signupInteraction',
+      component: {
+        type: 'signup', location: 'link', method: 'membership', action: 'complete',
+      },
+    });
   },
   'reset-profile': () => {
     resetProfile();

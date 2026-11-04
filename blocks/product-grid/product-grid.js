@@ -1,11 +1,7 @@
-import { loadCSS } from '../../scripts/aem.js';
+import { loadCSS, getMetadata } from '../../scripts/aem.js';
 import { pushEvent } from '../../scripts/aep/datalayer.js';
 import { parseProductRow, renderProductCard, getListName } from '../../scripts/aep/product-card.js';
 import { normalizeText } from '../../scripts/aep/site-index.js';
-import {
-  getPageDepartment, trackDepartmentBlock, trackDepartmentFilter,
-} from '../../scripts/analytics/department.js';
-import { pushSearch } from '../../scripts/analytics/search.js';
 
 const PRICE_RANGES = [
   {
@@ -86,6 +82,13 @@ export default async function decorate(block) {
   empty.hidden = true;
   empty.textContent = 'No products match your selection. Try removing a filter.';
 
+  // Adobe Client Data Layer: department pages (page-type "category") make this grid a
+  // department block; the department is the page's "category" metadata, e.g. "electronics"
+  window.adobeDataLayer = window.adobeDataLayer || [];
+  const departmentName = getMetadata('page-type') === 'category'
+    ? getMetadata('category').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')
+    : '';
+
   const params = new URLSearchParams(window.location.search);
   const state = {
     q: params.get('q') || '',
@@ -154,14 +157,20 @@ export default async function decorate(block) {
           filterLabel: el.options[el.selectedIndex].text,
           resultCount,
         });
-        // analytics (departmentFilterInteraction): sorting is not a filter
-        if (key !== 'sort') {
-          trackDepartmentFilter({
-            filterType: key,
-            filterValue: el.value,
-            filterLabel: el.options[el.selectedIndex].text,
-            resultCount,
-            listName,
+        // department filter used: any filter on a department page, or the category
+        // (department) filter on any page. Sorting is not a filter.
+        if (key !== 'sort' && (departmentName || key === 'category')) {
+          window.adobeDataLayer.push({
+            event: 'departmentFilterInteraction',
+            component: {
+              type: 'department-filter',
+              departmentName: key === 'category' ? (el.value || 'all') : departmentName,
+              filterType: key,
+              filterValue: el.value || 'all',
+              filterLabel: el.options[el.selectedIndex].text,
+              resultCount,
+              action: 'apply',
+            },
           });
         }
       });
@@ -177,9 +186,21 @@ export default async function decorate(block) {
       pushEvent('filterApply', {
         component: 'product-grid', listName, filterType: 'sale', filterValue: String(state.sale), resultCount,
       });
-      trackDepartmentFilter({
-        filterType: 'sale', filterValue: String(state.sale), resultCount, listName,
-      });
+      // department filter used: "On sale" on a department page
+      if (departmentName) {
+        window.adobeDataLayer.push({
+          event: 'departmentFilterInteraction',
+          component: {
+            type: 'department-filter',
+            departmentName,
+            filterType: 'sale',
+            filterValue: String(state.sale),
+            filterLabel: 'On sale',
+            resultCount,
+            action: 'apply',
+          },
+        });
+      }
     });
     toolbar.append(sale);
 
@@ -195,15 +216,26 @@ export default async function decorate(block) {
       window.setTimeout(() => {
         const resultCount = apply();
         pushEvent('filterClear', { component: 'product-grid', listName, resultCount });
-        trackDepartmentFilter({
-          filterType: 'all', filterValue: 'all', resultCount, listName, action: 'clear',
-        });
+        // department filters cleared on a department page
+        if (departmentName) {
+          window.adobeDataLayer.push({
+            event: 'departmentFilterInteraction',
+            component: {
+              type: 'department-filter',
+              departmentName,
+              filterType: 'all',
+              filterValue: 'all',
+              filterLabel: clear.textContent,
+              resultCount,
+              action: 'clear',
+            },
+          });
+        }
       });
     });
     toolbar.append(clear);
 
-    // analytics (searchInteraction): last reported term, so a pause after the same
-    // term or pressing Enter after the debounce does not count the search twice
+    // last term sent to the data layer, so Enter after the typing pause does not count twice
     let lastSearchTerm = '';
     const submitSearch = (trigger = 'typing') => {
       state.q = qInput.value.trim();
@@ -212,9 +244,21 @@ export default async function decorate(block) {
         pushEvent(resultCount ? 'searchSubmit' : 'searchNoResults', {
           SearchTerm: state.q, searchType: 'product', resultCount, component: 'product-grid', listName,
         });
+        // keyword search in the product grid: after an 800 ms typing pause or Enter. Email
+        // addresses and long numbers are redacted from the term.
         if (state.q !== lastSearchTerm) {
-          pushSearch('submit', {
-            location: 'product-grid', scope: 'products', trigger, searchTerm: state.q, resultCount, listName,
+          window.adobeDataLayer.push({
+            event: 'searchInteraction',
+            component: {
+              type: 'search',
+              location: 'product-grid',
+              searchTerm: state.q.toLowerCase().replace(/[^\s@]+@[^\s@]+\.[^\s@]+/g, '[email]')
+                .replace(/\d[\d\s-]{5,}\d/g, '[number]').slice(0, 100),
+              resultCount,
+              departmentName,
+              trigger,
+              action: 'search',
+            },
           });
         }
       }
@@ -247,20 +291,81 @@ export default async function decorate(block) {
     pushEvent('searchResultsView', {
       SearchTerm: state.q, searchType: 'product', resultCount: list.querySelectorAll('.product-card:not([hidden])').length, listName,
     });
-    // analytics (searchInteraction): results of a search submitted on the previous page
-    pushSearch('results-view', {
-      location: 'product-grid',
-      scope: 'products',
-      trigger: 'url',
-      searchTerm: state.q,
-      resultCount: list.querySelectorAll('.product-card:not([hidden])').length,
-      listName,
+    // search results shown for a search started on the previous page (?q=)
+    window.adobeDataLayer.push({
+      event: 'searchInteraction',
+      component: {
+        type: 'search',
+        location: 'product-grid',
+        searchTerm: state.q.toLowerCase().replace(/[^\s@]+@[^\s@]+\.[^\s@]+/g, '[email]')
+          .replace(/\d[\d\s-]{5,}\d/g, '[number]').slice(0, 100),
+        resultCount: list.querySelectorAll('.product-card:not([hidden])').length,
+        trigger: 'url',
+        action: 'results-view',
+      },
     });
   }
 
-  // analytics (departmentInteraction, departmentCardClick): product grids on department pages
-  const department = getPageDepartment();
-  if (department) {
-    trackDepartmentBlock(block, { cardSelector: '.product-card', departmentName: department });
+  if (!departmentName) return;
+
+  // department section impression: the grid of a department page is 50 % visible,
+  // reported once per block
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver((entries) => {
+      if (!entries.some((entry) => entry.isIntersecting)) return;
+      observer.disconnect();
+      window.adobeDataLayer.push({
+        event: 'departmentInteraction',
+        component: {
+          type: 'department',
+          departmentName,
+          cardTitle: '',
+          sectionTitle: listName,
+          cardCount: list.querySelectorAll('.product-card:not([hidden])').length,
+          action: 'impression',
+        },
+      });
+    }, { threshold: 0.25 });
+    observer.observe(block);
   }
+
+  // department card click / CTA click: product link (card click), or the "Add to cart" and
+  // wishlist buttons (CTA click) of a product card on a department page
+  list.addEventListener('click', (e) => {
+    const el = e.target.closest('a[href], button');
+    const card = el?.closest('.product-card');
+    if (!card) return;
+    const isCta = el.tagName === 'BUTTON';
+    const cardTitle = (card.querySelector('.product-card-name')?.textContent || '').trim();
+    const cardPosition = cards.findIndex((c) => c.el === card) + 1;
+    // the product link also contains the badge ("Sale"), so its label is the product name
+    const ctaText = isCta ? (el.getAttribute('aria-label') || el.textContent || '').trim() : cardTitle;
+    window.adobeDataLayer.push({
+      event: 'departmentInteraction',
+      component: {
+        type: 'department',
+        departmentName,
+        cardTitle,
+        cardPosition,
+        ctaText,
+        ctaUrl: isCta ? '' : el.href,
+        sectionTitle: listName,
+        action: isCta ? 'cta-click' : 'card-click',
+      },
+    });
+    // department card click KPI: one per click on a product card of the department
+    window.adobeDataLayer.push({
+      event: 'departmentCardClick',
+      component: {
+        type: 'department-card',
+        departmentName,
+        cardTitle,
+        cardPosition,
+        ctaText,
+        ctaUrl: isCta ? '' : el.href,
+        clickType: isCta ? 'cta' : 'card',
+        action: 'click',
+      },
+    });
+  });
 }
