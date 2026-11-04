@@ -343,46 +343,37 @@ The sum of `incrementalSeconds` over a page view is its total active time. Map i
 
 ## 4. Adobe Analytics and Adobe Tags implementation
 
-### 4.1 Proposed variables
+### 4.1 Variables
 
-These numbers are free in the current SDR (`doc/kpi-and-sdr-guide.md`, `doc/sdr/novamart-sdr.csv`). Confirm them with the report suite owner before you enable them.
+The **SDR is the source of truth**: `doc/sdr/engagement-sdr.csv` (one row per variable, with business question, settings, data-layer source, Tags rule and status), summarized in `doc/engagement-sdr.md`. Business requirements are in `doc/engagement-brd.md`. Summary:
 
 | Variable | Name | Value / source |
 | --- | --- | --- |
-| eVar70 (hit expiry) | Component type | `component.type` |
-| eVar71 (hit) | Component action | `component.action` |
-| eVar72 (hit) | Component title / card title | `component.title` or `component.cardTitle` |
-| eVar73 (hit) | Component variation | `component.variation` |
-| eVar74 (hit) | CTA text | `component.ctaText` / `menuItem` |
+| eVar1 *(existing)* | Page Name, also on every engagement link hit | `DL - Page Name` data element (link hits don't carry `pageName`) |
+| eVar30 *(existing)* | CTA Name | hero `ctaType:ctaText` |
+| eVar40 / prop40, eVar43, prop41 *(existing)* | Search Term, Search Type, Search Result Count | `component.searchTerm`, `location:scope`, `resultCount` |
+| eVar71 | Component Action | `component.action` |
+| eVar72 | Component Title | `component.title` (hero) or `component.cardTitle` |
+| eVar73 | Component Variation | `component.variation` (hero) |
 | eVar75 (visit) | Department | `component.departmentName` |
-| eVar76 (hit) | Department filter | `filterType:filterValue` |
-| eVar77 (hit) | Navigation item | `area:level:parentItem:menuItem` |
-| eVar78 (visit) | Internal search term | `component.searchTerm` |
-| eVar79 (hit) | Auth location | `component.location` |
-| prop50 | Scroll depth milestone | `engagement.milestone` (pathing on page + milestone) |
-| event90 | Hero impressions | `heroBannerInteraction` `impression` |
-| event91 | Hero CTA clicks | `heroBannerInteraction` `click` |
-| event92 | Login clicks | `loginInteraction` `click` |
-| event93 | Login successes | `loginInteraction` `success` |
-| event94 | Login failures | `loginInteraction` `failure` |
-| event95 | Signup starts | `signupInteraction` `start` |
-| event96 | Signup completions | `signupInteraction` `complete` |
-| event97 | Department impressions | `departmentInteraction` `impression` |
-| event98 | Department card clicks | `departmentCardClick` |
-| event99 | Department filter uses | `departmentFilterInteraction` |
-| event100 | Top navigation clicks | `topNavInteraction` `click` |
-| event101 | Internal searches | `searchInteraction` `search` |
-| event102 | Null searches | `searchInteraction` `search` / `results-view` with `resultCount = 0` |
-| event103 | Search result clicks | `searchInteraction` `result-click` |
-| event104 | Component impressions (all) | any `impression` action |
-| event105 | CTA clicks (all) | any `click`, `card-click`, `cta-click` action |
-| event106–109 | Scroll 25 / 50 / 75 / 100 % | `pageScrollDepth` `scrollDepth` |
-| event110 (numeric) | Active engagement seconds | `engagement.incrementalSeconds` |
-| event111 | Signup impressions | `signupInteraction` `impression` |
-| event112 | Login impressions | `loginInteraction` `impression` |
-| event113 | Signup clicks | `signupInteraction` `click` |
-| event114 | Navigation menu toggles | `topNavInteraction` `expand`, `collapse`, `menu-open`, `menu-close` |
-| eVar1 (existing) | Page name on every engagement link hit | `DL - Page Name` data element (link hits don't carry `pageName`) |
+| eVar76 | Department Filter | `filterType:filterValue` |
+| eVar77 | Navigation Item | `area:level:parentItem:menuItem` |
+| eVar79 | Login / Signup Location | `component.location` (+ `:method`) |
+| prop50 | Scroll Milestone | `engagement.milestone` |
+| event90 / event91 | Hero Impressions / Hero CTA Clicks | `heroBannerInteraction` |
+| event92 / 93 / 94 / 112 | Login Clicks / Successes / Failures / Impressions | `loginInteraction` |
+| event111 / 113 / 95 / 96 | Signup Impressions / Clicks / Starts / Completions | `signupInteraction` |
+| event97 | Department Impressions | `departmentInteraction` `impression` |
+| event98 | Department Card Clicks | `departmentCardClick` |
+| event99 | Department Filter Uses | `departmentFilterInteraction` |
+| event100 / event114 | Top Navigation Clicks / Navigation Menu Toggles | `topNavInteraction` |
+| event20 / event27 *(existing)* | Searches / Null Searches | `searchInteraction` `search`, `results-view` |
+| event103 | Search Result Clicks | `searchInteraction` `result-click`, `suggestion-click` |
+| event106–109 | Scroll 25 / 50 / 75 / 100 % | `pageScrollDepth` |
+| event110 (numeric) | Active Engagement Seconds | `engagement.incrementalSeconds` |
+| event10 *(existing)* | Scroll Milestone | **Retire**: replaced by event106–109 |
+
+Site-wide totals ("all impressions", "all CTA clicks") are calculated metrics, not extra events (setup guide, section 5).
 
 Impressions, scroll milestones, engagement time and exit summaries are **non-interaction** hits. Send them with `s.tl()` (link type `o`) so they don't inflate page views or affect bounce rate.
 
@@ -390,20 +381,20 @@ Impressions, scroll milestones, engagement time and exit summaries are **non-int
 
 Install the **Adobe Client Data Layer** extension and configure it to use the existing `window.adobeDataLayer` array (do not let it create a new one).
 
-| Rule | Event | Conditions | Action |
-| --- | --- | --- | --- |
-| ENG – Hero | ACDL "Data Pushed", specific event `heroBannerInteraction` | – | Set variables from `%event.message.component.*%`; `event90` if `action = impression`, `event91` if `click`; send beacon `s.tl` |
-| ENG – Login | `loginInteraction` | value comparison on `%event.message.component.action%` | event92/93/94/112 |
-| ENG – Signup | `signupInteraction` | as above | event95/96/111/113, `event105` on `click` |
-| ENG – Department | `departmentInteraction` | – | event97, `event105` on clicks |
-| ENG – Department card | `departmentCardClick` | – | event98 |
-| ENG – Department filter | `departmentFilterInteraction` | – | event99, eVar76 |
-| ENG – Navigation | `topNavInteraction` | – | event100 on `click`, event114 on toggles, eVar77 |
-| ENG – Search | `searchInteraction` | – | event101/102/103, eVar78 |
-| ENG – Scroll | `pageScrollDepth` | – | event106–109 by `scrollDepth`, prop50 |
-| ENG – Engagement time | `pageEngagementTime` | `incrementalSeconds > 0` | `event110=<incrementalSeconds>` |
+| Rule | Event | Sends |
+| --- | --- | --- |
+| Rule 18: Login engagement | `loginInteraction` | event92/93/94/112, eVar79 |
+| Rule 19: Top navigation | `topNavInteraction` | event100, event114, eVar77 |
+| Rule 20: Signup engagement | `signupInteraction` | event111/113/95/96, eVar79 |
+| Rule 21: Department interaction | `departmentInteraction` (impressions only) | event97, eVar75 |
+| Rule 22: Department card click | `departmentCardClick` | event98, eVar72, eVar75 |
+| Rule 23: Department filter | `departmentFilterInteraction` | event99, eVar75, eVar76 |
+| Rule 24: Scroll depth (replaces Rule 15) | `pageScrollDepth` | event106–109, prop50 |
+| Rule 25: Engagement time | `pageEngagementTime` | `event110=<incrementalSeconds>` |
+| Rule 26: Hero engagement | `heroBannerInteraction` | event90/91, eVar30, eVar72, eVar73 |
+| Rule 27: Search engagement (replaces Rule 12) | `searchInteraction` | event20/27/103, eVar40, eVar43, prop41 |
 
-Ready-to-paste rule code (Rules 18–25), segments, calculated metrics and the Workspace project are in `doc/engagement-report/workspace-and-tags-setup.md`.
+All rules also send eVar1 (page name) and eVar71 (action). Ready-to-paste rule code, segments, calculated metrics and the Workspace project are in `doc/engagement-report/workspace-and-tags-setup.md`. Rule 18 is explained step by step in `doc/login-engagement-analytics-guide.md`.
 
 Implementation notes:
 
@@ -418,15 +409,15 @@ Implementation notes:
 
 | Use case | Workspace setup |
 | --- | --- |
-| Which hero message and CTA work best? | Freeform table: eVar72 (hero title) × eVar73 (variation). Metrics: event90, event91 and calculated *Hero CTR* = event91 ÷ event90. Break down by eVar74 for primary vs secondary CTA. |
+| Which hero message and CTA work best? | Freeform table: eVar72 (hero title) × eVar73 (variation). Metrics: event90, event91 and calculated *Hero CTR* = event91 ÷ event90. Break down by eVar30 (CTA Name, `primary:` / `secondary:`) for primary vs secondary CTA. |
 | Personalization lift on the hero | Same table, segmented on the Target activity / experience. Compare *Hero CTR* and downstream orders. |
 | Login health | Trend of event92, event93, event94 and *Login success rate* = event93 ÷ (event93 + event94), by eVar79 (`login-form`, `commerce-login`, `header-dropdown`). Alert when the success rate drops. |
 | Signup funnel | Fallout: signup impression (event111) → start (event95) → click (`signupInteraction click`) → complete (event96). Break down by device and marketing channel. |
 | Department interest | eVar75 (department) with event97, event98, *Department CTR*, then orders and revenue (visit-expiry eVar gives credit to the department visited). |
 | Filter usefulness | eVar76 × event99 per department; compare with the product views that follow (flow from filter to product page). |
 | Navigation design | eVar77 × event100. Find navigation items nobody uses, and compare mobile hamburger opens (`menu-open`) with desktop. |
-| Search quality | eVar78 × event101, event102 and *Null-search rate* = event102 ÷ event101. Search CTR = event103 ÷ event101. Top null-result terms feed merchandising and synonyms. |
-| Overall CTA click-through | event105 ÷ event104 by eVar70 (component type), to compare blocks site-wide. |
+| Search quality | eVar40 × event20, event27 and *Null-search rate* = event27 ÷ event20. Search CTR = event103 ÷ event20. Top null-result terms feed merchandising and synonyms. |
+| Overall CTA click-through | Calculated metrics *All CTA Clicks* ÷ *All Component Impressions*, and each component's own CTR, to compare blocks site-wide. |
 | Content engagement | Pages × event106–109 (scroll reach %) and *Average active time* = event110 ÷ Page Views. Combine with bounce rate to find pages that are read but don't convert. |
 
 ---
@@ -451,7 +442,7 @@ Implementation notes:
 | `heroBannerInteraction click` | `heroClick` | Map hero KPIs to the new event only. Keep `heroClick` for the existing Target/AEP training rules. |
 | `departmentInteraction` / `departmentCardClick` | `ctaClick` (cards) | Use the new events for department KPIs, and keep `ctaClick` as the generic CTA counter. Do not map both to the same success event. |
 | `topNavInteraction` | `navClick`, `navToggle` | Use the new event for navigation reports. |
-| `searchInteraction` | `searchInitiate`, `searchSubmit`, `searchNoResults`, `searchSuggestionClick`, `searchResultClick`, `searchResultsView` | The new event has one name and sanitized terms. Prefer it for eVar78 / event101–103. |
+| `searchInteraction` | `searchInitiate`, `searchSubmit`, `searchNoResults`, `searchSuggestionClick`, `searchResultClick`, `searchResultsView` | The new event has one name and sanitized terms. Rule 27 maps it to the existing search variables (eVar40, event20, event27) and replaces Rule 12. |
 | `departmentFilterInteraction` | `filterApply`, `filterClear` | `filterApply` stays the generic filter event; the new event adds department context. |
 | `pageScrollDepth` | `scrollDepth` (25/50/75/90/100) | Use `pageScrollDepth` for KPI reporting. Plan to retire `scrollDepth` from the Analytics rules. |
 | `loginInteraction success` | `loginComplete` (demo sign-in), drop-in `sign-in` ACDL event | `loginComplete` keeps the identity (CRM ID) logic. Count login KPIs from `loginInteraction` only. |

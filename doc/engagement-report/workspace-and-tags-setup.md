@@ -4,7 +4,7 @@ This is the build sheet behind the stakeholder report (`engagement-report-templa
 
 1. [Data readiness](#1-data-readiness): what has to be in place before any number appears
 2. [Report suite variables](#2-report-suite-variables)
-3. [Tags rules](#3-tags-rules) for navigation, signup, department, scroll and engagement time (login is Rule 18 in `doc/login-engagement-analytics-guide.md`)
+3. [Tags rules](#3-tags-rules) for navigation, signup, department, scroll, engagement time, hero and search (login is Rule 18 in `doc/login-engagement-analytics-guide.md`)
 4. [Segments](#4-segments)
 5. [Calculated metrics](#5-calculated-metrics)
 6. [The Workspace project](#6-the-workspace-project), panel by panel
@@ -23,7 +23,7 @@ Data layer events and fields are described in `docs/analytics/adobe-client-data-
 | 1 | Merge `feature/acdl-tracking` into `main`, so the live site pushes the engagement events | All three KPIs | Open (branch pushed, no pull request) |
 | 2 | Page view rule (Rule 1) and data elements from `doc/adobe-analytics-setup-guide.md` | Page views, unique visitors, pages, device, traffic source | Unknown (the 30 October assessment found no rules in the library) |
 | 3 | Report suite variables in [section 2](#2-report-suite-variables) | All three KPIs | Open |
-| 4 | Rule 18 (login) and Rules 19–25 in [section 3](#3-tags-rules) | All three KPIs | Open |
+| 4 | Rule 18 (login) and Rules 19–27 in [section 3](#3-tags-rules); disable Rules 12 and 15 | All three KPIs | Open |
 | 5 | Development library built, then a production library before go-live | All three KPIs | Open |
 | 6 | **30 + 30 days of data collected** after items 1–5, for a full current and previous period | % change versus the previous period | Not started |
 | 7 | Marketing Channel processing rules in the report suite | Traffic source (Last Touch Channel) | Unknown; use **Referrer Type** until they exist |
@@ -36,7 +36,7 @@ Until item 6 is done, a "previous period" either doesn't exist or is only partly
 
 ## 2. Report suite variables
 
-**Adobe Analytics → Admin → Report Suites →** `tcsdmprtnrsndbxtcstraining-dev` **→ Edit Settings.** These numbers follow `docs/analytics/adobe-client-data-layer-events.md` (event113 and event114 are new here). If any number is already taken, choose a free one and use it everywhere below.
+**Adobe Analytics → Admin → Report Suites →** `tcsdmprtnrsndbxtcstraining-dev` **→ Edit Settings.** The full variable list, with business questions and data-layer sources, is the SDR: `doc/sdr/engagement-sdr.csv` (summary in `doc/engagement-sdr.md`). If any number is already taken, choose a free one and update the SDR first.
 
 ### Success events (*Conversion → Success Events*, type Counter unless noted)
 
@@ -53,19 +53,26 @@ Until item 6 is done, a "previous period" either doesn't exist or is only partly
 | event100 | Top Navigation Clicks | Rule 19 |
 | event114 | Navigation Menu Toggles | Rule 19 |
 | event97 | Department Impressions | Rule 21 |
-| event105 | CTA Clicks (all) | Rules 20, 21 |
 | event98 | Department Card Clicks | Rule 22 |
 | event99 | Department Filter Uses | Rule 23 |
 | event106 / 107 / 108 / 109 | Scroll 25 % / 50 % / 75 % / 100 % | Rule 24 |
 | event110 | Active Engagement Seconds (**Numeric**) | Rule 25 |
+| event90 | Hero Impressions | Rule 26 |
+| event91 | Hero CTA Clicks | Rule 26 |
+| event103 | Search Result Clicks | Rule 27 |
+| event20, event27 | Searches, Null Searches *(already in the setup guide)* | Rule 27 (replaces Rule 12) |
+| event10 | Scroll Milestone *(setup guide)* | **Retire**: replaced by event106–109; disable Rule 15 |
 
 ### Conversion variables (*Conversion → Conversion Variables*)
 
 | eVar | Name | Expire after | Value |
 | --- | --- | --- | --- |
 | eVar1 | Page Name *(already in the setup guide)* | Hit | Page name, sent on every engagement hit too |
+| eVar30 | CTA Name *(already in the setup guide)* | Hit | `primary:Browse all products` (hero) |
+| eVar40 / prop40, eVar43, prop41 | Search Term, Search Type, Search Result Count *(already in the setup guide)* | Visit / Hit | Rule 27 |
 | eVar71 | Component Action | Hit | `click`, `impression`, `success`, `expand`, … |
-| eVar72 | Component Title | Hit | Card title (department rules) |
+| eVar72 | Component Title | Hit | Hero title, card title or product name |
+| eVar73 | Component Variation | Hit | Hero block variant, `default` |
 | eVar75 | Department | **Visit** | `electronics`, `fashion`, `home-appliances` |
 | eVar76 | Department Filter | Hit | `brand:Aperture` |
 | eVar77 | Navigation Item | Hit | `sections:2:Shop:Electronics` (area:level:parent:item) |
@@ -119,7 +126,7 @@ s.useBeacon = true;                                   // nav clicks leave the pa
 
 ```js
 var c = event.message.component || {};
-var counters = { impression: 'event111', click: 'event113,event105', start: 'event95', complete: 'event96' };
+var counters = { impression: 'event111', click: 'event113', start: 'event95', complete: 'event96' };
 s.events = counters[c.action];
 s.eVar1 = _satellite.getVar('DL - Page Name');
 s.eVar71 = c.action;
@@ -131,14 +138,15 @@ s.useBeacon = true;
 
 ### Rule 21: Department interaction
 
-- **Event:** `departmentInteraction` · **Link name:** `department:%event.message.component.action%`
+- **Event:** `departmentInteraction` · **Condition:** Value Comparison `%event.message.component.action%` *equals* `impression` · **Link name:** `department:impression`
+- Clicks are counted once, by Rule 22. The condition keeps this rule from sending a second hit for the same click.
 
 ```js
 var c = event.message.component || {};
-s.events = c.action === 'impression' ? 'event97' : 'event105';
+// impressions only (see the condition); clicks are counted by Rule 22
+s.events = 'event97';
 s.eVar1 = _satellite.getVar('DL - Page Name');
-s.eVar71 = c.action;                                  // impression | card-click | cta-click
-s.eVar72 = c.cardTitle || '';
+s.eVar71 = 'impression';
 // impressions on the Shop page list several departments ("electronics,fashion,home-appliances")
 var dept = c.departmentName || '';
 s.eVar75 = dept.indexOf(',') > -1 ? 'all-departments' : dept;
@@ -205,6 +213,59 @@ s.linkTrackEvents = 'event110';
 s.useBeacon = true;                                   // exit summaries are sent while the page closes
 ```
 
+### Rule 26: Hero engagement
+
+- **Event:** `heroBannerInteraction` · **Link name:** `hero:%event.message.component.action%`
+
+```js
+var c = event.message.component || {};
+s.events = c.action === 'impression' ? 'event90' : 'event91';
+s.eVar1 = _satellite.getVar('DL - Page Name');
+s.eVar71 = c.action;                                  // impression | click
+s.eVar72 = c.title;
+s.eVar73 = c.variation;
+if (c.action === 'click') s.eVar30 = c.ctaType + ':' + c.ctaText;   // primary | secondary | link
+s.linkTrackVars = 'events,eVar1,eVar30,eVar71,eVar72,eVar73';
+s.linkTrackEvents = s.events;
+s.useBeacon = true;
+```
+
+### Rule 27: Search engagement (replaces Rule 12)
+
+- **Event:** `searchInteraction`
+- **Condition:** Core → **Custom Code**:
+
+```js
+var c = event.message.component || {};
+// every search counts. The product grid sends each distinct term once (after an 800 ms typing
+// pause or Enter), so a visitor who pauses mid-word can add a partial term: known limitation
+if (c.action === 'search') return true;
+// header searches show their results (and zero-result state) on the next page
+if (c.action === 'results-view') return c.resultCount === 0;
+return c.action === 'result-click' || c.action === 'suggestion-click';
+```
+
+- **Link name:** `search:%event.message.component.action%`
+- **Disable Rule 12** when this rule is published, or searches are counted twice.
+
+```js
+var c = event.message.component || {};
+var ev = [];
+if (c.action === 'search') ev.push('event20');
+if ((c.action === 'search' || c.action === 'results-view') && c.resultCount === 0) ev.push('event27');
+if (c.action === 'result-click' || c.action === 'suggestion-click') ev.push('event103');
+s.events = ev.join(',');
+s.eVar1 = _satellite.getVar('DL - Page Name');
+s.eVar40 = c.searchTerm || '';                        // already sanitized on the site
+s.prop40 = 'D=v40';
+s.eVar43 = c.location + (c.scope ? ':' + c.scope : '');
+s.prop41 = c.resultCount >= 0 ? String(c.resultCount) : 'unknown';
+s.eVar71 = c.action;
+s.linkTrackVars = 'events,eVar1,eVar40,prop40,eVar43,prop41,eVar71';
+s.linkTrackEvents = 'event20,event27,event103';
+s.useBeacon = true;
+```
+
 > **Server calls.** Impressions, scroll milestones and engagement time add link hits. Up to 4 scroll + 7 time hits per page view is typical; check this against your Analytics contract. If needed, send only the 50 % and 100 % milestones and the `exit` summary.
 
 Build the library afterwards (**Publishing Flow → Add All Changed Resources → Save & Build to Development**) and test every rule in the Debugger as in the login guide, Step 5.
@@ -251,6 +312,11 @@ Build the library afterwards (**Publishing Flow → Add All Changed Resources �
 | **Avg Active Seconds per Page View** | Active Engagement Seconds ÷ Page Views | More accurate than Time Spent (counts only active, visible time) |
 | **Scroll 75 % Reach** | Scroll 75 % ÷ Page Views | Use the same formula with event107/event109 for 50 % / 100 % |
 | **Filter Use Rate** | Department Filter Uses ÷ Page Views | Use with segment Department Page Views |
+| **Hero CTR** | Hero CTA Clicks ÷ Hero Impressions | |
+| **Null Search Rate** | Null Searches ÷ Searches | |
+| **All Component Impressions** | Hero Impressions + Department Impressions + Login Impressions + Signup Impressions | Replaces a separate "all impressions" event |
+| **All CTA Clicks** | Hero CTA Clicks + Department Card Clicks + Top Navigation Clicks + Login Clicks + Signup Clicks | Replaces a separate "all CTA clicks" event |
+| **Overall CTR** | All CTA Clicks ÷ All Component Impressions | Site-wide CTA click-through |
 
 Standard metrics used as-is: **Page Views**, **Visits**, **Unique Visitors**, **Time Spent per Visit (seconds)**, **Average Time on Site**, **Bounce Rate**, **Entries**.
 
