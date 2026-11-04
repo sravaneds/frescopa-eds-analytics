@@ -526,14 +526,31 @@ export function rootLink(link) {
 }
 
 /**
+ * Consent used when no decision is available for a topic. No consent management platform
+ * (CMP) is connected yet, so this keeps the previous behaviour (granted). Change it, or let
+ * the CMP set window.aepConsent, once privacy has defined the consent categories.
+ */
+const CONSENT_DEFAULT = true;
+const CONSENT_STORAGE_KEY = 'aep:consent';
+
+/**
  * Check if consent was given for a specific topic.
- * @param {*} topic Topic identifier
+ * Decision order:
+ *  1. window.aepConsent: object set by a CMP adapter, e.g. { 'commerce-collection': false }
+ *  2. localStorage 'aep:consent': the same JSON object, useful for testing a denied state
+ *  3. CONSENT_DEFAULT
+ * @param {string} topic Topic identifier, e.g. 'commerce-collection'
  * @returns {boolean} True if consent was given
  */
-// eslint-disable-next-line no-unused-vars
 export function getConsent(topic) {
-  console.warn('getConsent not implemented');
-  return true;
+  const sources = [window.aepConsent];
+  try {
+    sources.push(JSON.parse(localStorage.getItem(CONSENT_STORAGE_KEY) || 'null'));
+  } catch (e) {
+    // storage unavailable or invalid JSON: fall back to the default
+  }
+  const decision = sources.find((source) => source && typeof source[topic] === 'boolean');
+  return decision ? decision[topic] : CONSENT_DEFAULT;
 }
 
 export async function loadPage() {
