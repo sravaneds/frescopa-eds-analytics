@@ -1,5 +1,6 @@
 import { pushEvent, SITE_ROOT, CURRENCY } from '../../scripts/aep/datalayer.js';
 import { loadIndex, searchIndex } from '../../scripts/aep/site-index.js';
+import { pushSearch, trackSearchResults } from '../../scripts/analytics/search.js';
 
 let searchCount = 0;
 
@@ -113,6 +114,10 @@ export default function decorate(block) {
   const results = document.createElement('div');
   results.className = 'search-results';
 
+  // analytics (searchInteraction): shared attributes of this search block
+  const analytics = { location: 'search-block', scope };
+  trackSearchResults(results, analytics, () => input.value);
+
   const runSite = async (term, trigger) => {
     const url = new URL(window.location.href);
     if (term) url.searchParams.set('q', term);
@@ -121,6 +126,7 @@ export default function decorate(block) {
     if (!term) {
       status.textContent = '';
       results.textContent = '';
+      if (trigger === 'clear') pushSearch('clear', analytics);
       return;
     }
     status.textContent = 'Searching…';
@@ -132,12 +138,16 @@ export default function decorate(block) {
       pushEvent(found.length ? 'searchSubmit' : 'searchNoResults', {
         SearchTerm: term, searchType, trigger, component: 'search', resultCount: found.length,
       });
+      pushSearch('submit', {
+        ...analytics, trigger, searchTerm: term, resultCount: found.length,
+      });
     } catch (e) {
       status.textContent = 'Search is not available right now. Please try again later.';
       results.textContent = '';
       pushEvent('searchError', {
         SearchTerm: term, searchType, trigger, component: 'search', errorMessage: e.message,
       });
+      pushSearch('error', { ...analytics, trigger, searchTerm: term });
     }
   };
 
@@ -153,6 +163,10 @@ export default function decorate(block) {
         pushEvent('searchSubmit', {
           SearchTerm: term, searchType, trigger, component: 'search', resultCount: -1,
         });
+        // results are counted on the product listing page (results-view)
+        pushSearch('submit', {
+          ...analytics, trigger, searchTerm: term, resultCount: -1,
+        });
         window.location.href = `${SITE_ROOT}/products?q=${encodeURIComponent(term)}`;
         return;
       }
@@ -160,6 +174,13 @@ export default function decorate(block) {
       pushEvent(detail.resultCount ? 'searchSubmit' : 'searchNoResults', {
         SearchTerm: term, searchType, trigger, component: 'search', resultCount: detail.resultCount,
       });
+      if (term) {
+        pushSearch('submit', {
+          ...analytics, trigger, searchTerm: term, resultCount: detail.resultCount,
+        });
+      } else if (trigger === 'clear') {
+        pushSearch('clear', analytics);
+      }
       return;
     }
     const resultCount = filterPage(term, block);
@@ -168,6 +189,11 @@ export default function decorate(block) {
       pushEvent(resultCount ? 'searchSubmit' : 'searchNoResults', {
         SearchTerm: term, searchType, trigger, component: 'search', resultCount,
       });
+      pushSearch('submit', {
+        ...analytics, trigger, searchTerm: term, resultCount,
+      });
+    } else if (trigger === 'clear') {
+      pushSearch('clear', analytics);
     }
   };
 
@@ -199,6 +225,7 @@ export default function decorate(block) {
       chip.addEventListener('click', () => {
         input.value = term;
         pushEvent('searchSuggestionClick', { SearchTerm: term, searchType, component: 'search' });
+        pushSearch('suggestion-click', { ...analytics, searchTerm: term, suggestionText: term });
         run(term, 'suggestion');
       });
       chips.append(chip);

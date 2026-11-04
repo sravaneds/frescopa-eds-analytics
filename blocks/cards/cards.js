@@ -1,5 +1,6 @@
 import { createOptimizedPicture } from '../../scripts/aem.js';
 import { isSameOriginImage, moveInstrumentation } from '../../scripts/scripts.js';
+import { isDepartmentCards, trackDepartmentBlock } from '../../scripts/analytics/department.js';
 
 export default function decorate(block) {
   /* change to ul, li */
@@ -23,4 +24,7 @@ export default function decorate(block) {
   });
   block.textContent = '';
   block.append(ul);
+
+  // analytics (departmentInteraction, departmentCardClick): only for cards that list departments
+  if (isDepartmentCards(block)) trackDepartmentBlock(block, { cardSelector: 'li' });
 }

@@ -1,3 +1,7 @@
+import {
+  trackLoginBlock, markLoginPending, resolvePendingLogin,
+} from '../../scripts/analytics/auth.js';
+
 /**
  * Login form block for CUG authentication.
  *
@@ -55,4 +59,10 @@ export default function decorate(block) {
 
   form.append(emailLabel, emailInput, passwordLabel, passwordInput, button);
   block.append(form);
+
+  // analytics (loginInteraction): the server redirects back here with ?error= on failure.
+  // Only a login submitted from this site is reported, so reloads are not counted again.
+  if (error) resolvePendingLogin({ failed: true });
+  // impression + "Sign in" click; the result is reported on the next page view
+  trackLoginBlock(block, 'login-form', () => markLoginPending('login-form'));
 }

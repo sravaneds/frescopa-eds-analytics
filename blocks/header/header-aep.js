@@ -3,6 +3,8 @@ import { loadFragment } from '../fragment/fragment.js';
 import { pushEvent, SITE_ROOT } from '../../scripts/aep/datalayer.js';
 import { getProfile } from '../../scripts/aep/profile.js';
 import { getCart, getWishlist } from '../../scripts/aep/store.js';
+import trackTopNav from '../../scripts/analytics/navigation.js';
+import { trackHeaderSearch } from '../../scripts/analytics/search.js';
 
 const isDesktop = window.matchMedia('(min-width: 900px)');
 
@@ -141,6 +143,8 @@ export default async function decorate(block, navPath) {
     pushEvent('searchInitiate', { SearchTerm: term, searchType: 'header', component: 'header' });
     window.location.href = await searchUrl(term);
   });
+  // analytics (searchInteraction): header search submit
+  trackHeaderSearch(search, { scope: 'site' });
   menu.append(search);
 
   const tools = document.createElement('ul');
@@ -193,6 +197,9 @@ export default async function decorate(block, navPath) {
     if (!nav.contains(e.target)) closeSubmenus(nav);
   });
   isDesktop.addEventListener('change', () => setMenu(false));
+
+  // analytics (topNavInteraction): links, submenus, hamburger and header tools
+  trackTopNav(nav, { navType: 'header' });
 
   // highlight current page
   nav.querySelectorAll('a').forEach((a) => {

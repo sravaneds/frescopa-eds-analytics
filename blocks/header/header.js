@@ -13,6 +13,8 @@ import renderAuthCombine from './renderAuthCombine.js';
 import { renderAuthDropdown } from './renderAuthDropdown.js';
 import renderCugUser from './renderCugUser.js';
 import { rootLink } from '../../scripts/scripts.js';
+import trackTopNav from '../../scripts/analytics/navigation.js';
+import { pushSearch, trackHeaderSearch } from '../../scripts/analytics/search.js';
 
 // media query match that indicates mobile/tablet width
 const isDesktop = window.matchMedia('(min-width: 900px)');
@@ -323,6 +325,11 @@ export default async function decorate(block) {
   const searchForm = searchPanel.querySelector('form');
 
   searchForm.action = rootLink('/search');
+  // analytics (searchInteraction): submit and Live Search suggestion clicks
+  trackHeaderSearch(searchForm, {
+    suggestions: searchPanel.querySelector('#search_autocomplete'),
+    scope: 'products',
+  });
 
   async function toggleSearch(state) {
     const show = state ?? !searchPanel.classList.contains('nav-tools-panel--show');
@@ -330,6 +337,8 @@ export default async function decorate(block) {
     searchPanel.classList.toggle('nav-tools-panel--show', show);
 
     if (show) {
+      // analytics (searchInteraction): search panel opened
+      pushSearch('open', { location: 'header', scope: 'products' });
       await import('./searchbar.js');
       searchInput.focus();
     }
@@ -402,4 +411,7 @@ export default async function decorate(block) {
   );
   renderAuthDropdown(navTools);
   renderCugUser(navTools);
+
+  // analytics (topNavInteraction): links, submenus, hamburger and header tools
+  trackTopNav(nav, { navType: 'header' });
 }

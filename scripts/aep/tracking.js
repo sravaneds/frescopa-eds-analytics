@@ -16,6 +16,7 @@ import {
   signIn, signOut, enrollMembership, resetProfile, getProfile, getAudiences, getPrimaryAudience,
 } from './profile.js';
 import { getCart } from './store.js';
+import { pushLogin, pushSignup } from '../analytics/auth.js';
 
 const BLOCK_EVENTS = {
   hero: 'heroClick',
@@ -75,9 +76,12 @@ function refreshUser() {
 
 const ACTIONS = {
   'sign-in': () => {
+    // demo sign-in link: the click is the login attempt and always succeeds
+    pushLogin('click', { location: 'link', method: 'demo' });
     signIn();
     refreshUser();
     pushEvent('loginComplete', { loginMethod: 'demo', customerId: getProfile().customerId });
+    pushLogin('success', { location: 'link', method: 'demo' });
   },
   'sign-out': () => {
     signOut();
@@ -88,6 +92,8 @@ const ACTIONS = {
     enrollMembership();
     refreshUser();
     pushEvent('membershipEnroll', { loyaltyTier: getProfile().loyaltyTier });
+    // Rewards enrollment completes the signup journey (the click is tracked site-wide)
+    pushSignup('complete', { location: 'link', method: 'membership' });
   },
   'reset-profile': () => {
     resetProfile();

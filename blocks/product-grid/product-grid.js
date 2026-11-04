@@ -2,6 +2,10 @@ import { loadCSS } from '../../scripts/aem.js';
 import { pushEvent } from '../../scripts/aep/datalayer.js';
 import { parseProductRow, renderProductCard, getListName } from '../../scripts/aep/product-card.js';
 import { normalizeText } from '../../scripts/aep/site-index.js';
+import {
+  getPageDepartment, trackDepartmentBlock, trackDepartmentFilter,
+} from '../../scripts/analytics/department.js';
+import { pushSearch } from '../../scripts/analytics/search.js';
 
 const PRICE_RANGES = [
   {
@@ -150,6 +154,16 @@ export default async function decorate(block) {
           filterLabel: el.options[el.selectedIndex].text,
           resultCount,
         });
+        // analytics (departmentFilterInteraction): sorting is not a filter
+        if (key !== 'sort') {
+          trackDepartmentFilter({
+            filterType: key,
+            filterValue: el.value,
+            filterLabel: el.options[el.selectedIndex].text,
+            resultCount,
+            listName,
+          });
+        }
       });
       toolbar.append(wrap);
     });
@@ -162,6 +176,9 @@ export default async function decorate(block) {
       const resultCount = apply();
       pushEvent('filterApply', {
         component: 'product-grid', listName, filterType: 'sale', filterValue: String(state.sale), resultCount,
+      });
+      trackDepartmentFilter({
+        filterType: 'sale', filterValue: String(state.sale), resultCount, listName,
       });
     });
     toolbar.append(sale);
@@ -178,18 +195,30 @@ export default async function decorate(block) {
       window.setTimeout(() => {
         const resultCount = apply();
         pushEvent('filterClear', { component: 'product-grid', listName, resultCount });
+        trackDepartmentFilter({
+          filterType: 'all', filterValue: 'all', resultCount, listName, action: 'clear',
+        });
       });
     });
     toolbar.append(clear);
 
-    const submitSearch = () => {
+    // analytics (searchInteraction): last reported term, so a pause after the same
+    // term or pressing Enter after the debounce does not count the search twice
+    let lastSearchTerm = '';
+    const submitSearch = (trigger = 'typing') => {
       state.q = qInput.value.trim();
       const resultCount = apply();
       if (state.q) {
         pushEvent(resultCount ? 'searchSubmit' : 'searchNoResults', {
           SearchTerm: state.q, searchType: 'product', resultCount, component: 'product-grid', listName,
         });
+        if (state.q !== lastSearchTerm) {
+          pushSearch('submit', {
+            location: 'product-grid', scope: 'products', trigger, searchTerm: state.q, resultCount, listName,
+          });
+        }
       }
+      lastSearchTerm = state.q;
     };
     let timer;
     qInput.addEventListener('input', () => {
@@ -199,7 +228,7 @@ export default async function decorate(block) {
     toolbar.addEventListener('submit', (e) => {
       e.preventDefault();
       window.clearTimeout(timer);
-      submitSearch();
+      submitSearch('submit');
     });
     block.append(toolbar);
   }
@@ -218,5 +247,20 @@ export default async function decorate(block) {
     pushEvent('searchResultsView', {
       SearchTerm: state.q, searchType: 'product', resultCount: list.querySelectorAll('.product-card:not([hidden])').length, listName,
     });
+    // analytics (searchInteraction): results of a search submitted on the previous page
+    pushSearch('results-view', {
+      location: 'product-grid',
+      scope: 'products',
+      trigger: 'url',
+      searchTerm: state.q,
+      resultCount: list.querySelectorAll('.product-card:not([hidden])').length,
+      listName,
+    });
+  }
+
+  // analytics (departmentInteraction, departmentCardClick): product grids on department pages
+  const department = getPageDepartment();
+  if (department) {
+    trackDepartmentBlock(block, { cardSelector: '.product-card', departmentName: department });
   }
 }
