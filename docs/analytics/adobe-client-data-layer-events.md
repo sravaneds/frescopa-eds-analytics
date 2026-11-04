@@ -380,6 +380,9 @@ These numbers are free in the current SDR (`doc/kpi-and-sdr-guide.md`, `doc/sdr/
 | event110 (numeric) | Active engagement seconds | `engagement.incrementalSeconds` |
 | event111 | Signup impressions | `signupInteraction` `impression` |
 | event112 | Login impressions | `loginInteraction` `impression` |
+| event113 | Signup clicks | `signupInteraction` `click` |
+| event114 | Navigation menu toggles | `topNavInteraction` `expand`, `collapse`, `menu-open`, `menu-close` |
+| eVar1 (existing) | Page name on every engagement link hit | `DL - Page Name` data element (link hits don't carry `pageName`) |
 
 Impressions, scroll milestones, engagement time and exit summaries are **non-interaction** hits. Send them with `s.tl()` (link type `o`) so they don't inflate page views or affect bounce rate.
 
@@ -391,14 +394,16 @@ Install the **Adobe Client Data Layer** extension and configure it to use the ex
 | --- | --- | --- | --- |
 | ENG – Hero | ACDL "Data Pushed", specific event `heroBannerInteraction` | – | Set variables from `%event.message.component.*%`; `event90` if `action = impression`, `event91` if `click`; send beacon `s.tl` |
 | ENG – Login | `loginInteraction` | value comparison on `%event.message.component.action%` | event92/93/94/112 |
-| ENG – Signup | `signupInteraction` | as above | event95/96/111, `event105` on `click` |
+| ENG – Signup | `signupInteraction` | as above | event95/96/111/113, `event105` on `click` |
 | ENG – Department | `departmentInteraction` | – | event97, `event105` on clicks |
 | ENG – Department card | `departmentCardClick` | – | event98 |
 | ENG – Department filter | `departmentFilterInteraction` | – | event99, eVar76 |
-| ENG – Navigation | `topNavInteraction` | – | event100 on `click`, eVar77 |
+| ENG – Navigation | `topNavInteraction` | – | event100 on `click`, event114 on toggles, eVar77 |
 | ENG – Search | `searchInteraction` | – | event101/102/103, eVar78 |
 | ENG – Scroll | `pageScrollDepth` | – | event106–109 by `scrollDepth`, prop50 |
 | ENG – Engagement time | `pageEngagementTime` | `incrementalSeconds > 0` | `event110=<incrementalSeconds>` |
+
+Ready-to-paste rule code (Rules 18–25), segments, calculated metrics and the Workspace project are in `doc/engagement-report/workspace-and-tags-setup.md`.
 
 Implementation notes:
 
