@@ -5,6 +5,11 @@ import { getConsent } from './scripts.js';
 import { loadScript } from './aem.js';
 
 async function initAnalytics() {
+  // The Adobe Commerce events SDK and collector serve the Commerce drop-in pages. On the
+  // NovaMart training pages they would load a second copy of the Adobe Client Data Layer
+  // and send storefront events for a different store (aemshop.net).
+  if (document.body.classList.contains('aep-training')) return;
+
   try {
     // Load Commerce events SDK and collector
     // only if "analytics" has been added to the config.
@@ -51,9 +56,6 @@ async function initAnalytics() {
 }
 
 if (document.prerendering) {
-  document.addEventListener('prerenderingchange', initAnalytics, {
-    once: true,
-  });
   document.addEventListener('prerenderingchange', initAnalytics, { once: true });
 } else {
   initAnalytics();
