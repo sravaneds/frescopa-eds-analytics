@@ -72,7 +72,6 @@ async function push(detectedPageType) {
     window.adobeDataLayer.push({
       event: EVENT_NAME,
       page: {
-        event: EVENT_NAME,
         pageInfo,
         urlInfo: getUrlInfo(),
       },
