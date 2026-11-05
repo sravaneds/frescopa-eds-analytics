@@ -315,7 +315,11 @@ async function loadEager(doc) {
 
   await runExperimentation(doc, experimentationConfig);
 
-  await initializeDropins();
+  // The NovaMart training pages use their own demo store (scripts/aep/store.js), so the
+  // Commerce drop-ins and their calls to the Commerce backend are not started there.
+  if (!document.body.classList.contains('aep-training')) {
+    await initializeDropins();
+  }
 
   window.adobeDataLayer = window.adobeDataLayer || [];
 
