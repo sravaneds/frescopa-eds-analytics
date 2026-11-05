@@ -18,6 +18,7 @@ import {
   loadCSS,
 } from './aem.js';
 import { trackHistory } from './commerce.js';
+import pushPageViewSchema from './page-view-schema.js';
 import initializeDropins from './initializers/index.js';
 import { initializeConfig, getRootPath, getListOfRootPaths } from './configs.js';
 
@@ -385,6 +386,9 @@ async function loadEager(doc) {
 
     // Template Decorations
     await applyTemplates(doc);
+
+    // Adobe Client Data Layer: page-view schema (page.pageInfo, page.urlInfo, campainInfo)
+    pushPageViewSchema(pageType);
 
     // Load LCP blocks
     await loadSection(main.querySelector('.section'), (section) => {

@@ -10,16 +10,21 @@ import { getConsent } from './scripts.js';
 
 /**
  * Gets placeholders object.
+ * The site has no placeholders sheet, so a sheet is only fetched when a page sets the
+ * "placeholders" metadata (sheet URL, optionally a second line with an override sheet).
+ * Without it the Commerce drop-ins use their built-in labels.
  * @param {string} [prefix] Location of placeholders
  * @returns {object} Window placeholders object
  */
 // eslint-disable-next-line import/prefer-default-export
 export async function fetchPlaceholders(prefix = 'default') {
-  const overrides = getMetadata('placeholders') || getRootPath().replace(/\/$/, '/placeholders.json') || '';
+  const overrides = getMetadata('placeholders');
   const [fallback, override] = overrides.split('\n');
   window.placeholders = window.placeholders || {};
 
-  if (!window.placeholders[prefix]) {
+  if (!overrides) {
+    window.placeholders[prefix] = window.placeholders[prefix] || {};
+  } else if (!window.placeholders[prefix]) {
     window.placeholders[prefix] = new Promise((resolve) => {
       const url = fallback || `${prefix === 'default' ? '' : prefix}/placeholders.json`;
       Promise.all([fetch(url), override ? fetch(override) : Promise.resolve()])
